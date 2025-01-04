@@ -5,8 +5,7 @@ public class SoundManager : MonoBehaviour
     //class to handle the sounds in the game
 public static SoundManager Instance;
 
-[SerializeField] private AudioClip backgroundMusicClip;// The background music clip
-private AudioSource backgroundMusicSource;//instance of the audio source for the background music
+
     private void Awake()
     {
         if (Instance == null)
@@ -20,19 +19,8 @@ private AudioSource backgroundMusicSource;//instance of the audio source for the
         }
     }
 
-    private void Start(){
-        //Start the background music
-        startBackgroundMusic();
-    }
-    private void startBackgroundMusic(){
-        //Create an instance of the audio source
-        //and play the background music with it
-        backgroundMusicSource = gameObject.AddComponent<AudioSource>();
-        backgroundMusicSource.clip = backgroundMusicClip;
-        backgroundMusicSource.loop = true;
-        backgroundMusicSource.spatialBlend = 0;
-        backgroundMusicSource.Play();
-    }
+   
+   
    
 
     public void PlaySound(AudioClip clip, Transform spawnPosition, float volume){
