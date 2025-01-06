@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: d4b616419721ee34c92c228dfb5bff61
+guid: 35a771f39cf9c3d449d55299c55370cf
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 9200775849295203296
-    second: lives_0
+      213: -2386825093097399846
+    second: sphere-Photoroom_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -113,13 +113,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: lives_0
+      name: sphere-Photoroom_0
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 21
-        height: 18
+        width: 15
+        height: 13
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -128,8 +128,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 0ebcb3b13e8bfaf70800000000000000
-      internalID: 9200775849295203296
+      spriteID: ad9d0f8493b40eed0800000000000000
+      internalID: -2386825093097399846
       vertices: []
       indices: 
       edges: []

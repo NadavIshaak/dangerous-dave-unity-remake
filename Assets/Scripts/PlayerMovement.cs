@@ -7,14 +7,16 @@ public class PlayerMovement : MonoBehaviour
     private Vector2 moveInput;
     [SerializeField] private float moveSpeed = 5f;
     [SerializeField] private float jumpForce = 8f;
-
+    private PlayerAnimationConttroler animationConttroler;
     private Rigidbody2D rb;
-    private bool isGrounded;
+    private bool didMove=false;
+
 
     private void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
         controls = new InputSystem_Actions();
+        animationConttroler = GetComponent<PlayerAnimationConttroler>();
     }
 
     private void OnEnable()
@@ -37,11 +39,18 @@ public class PlayerMovement : MonoBehaviour
     {
         // Horizontal movement
         rb.linearVelocity = new Vector2(moveInput.x * moveSpeed, rb.linearVelocity.y);
+        if(didMove==true)
+        animationConttroler.Move(moveInput.x,rb.linearVelocity.y);
     }
 
     private void OnMove(InputAction.CallbackContext context)
     {
         moveInput = context.ReadValue<Vector2>();
+        if (moveInput.x!=0)
+        {
+            didMove = true;
+        }
+        
     }
 
     private void OnJump(InputAction.CallbackContext context)
@@ -49,22 +58,11 @@ public class PlayerMovement : MonoBehaviour
         if (rb.linearVelocity.y==0)
         {
             rb.linearVelocity = new Vector2(rb.linearVelocity.x, jumpForce);
+            animationConttroler.Jump();
         }
     }
 
-    private void OnCollisionEnter2D(Collision2D collision)
-    {
-        if (collision.gameObject.CompareTag("Ground"))
-        {
-            isGrounded = true;
-        }
-    }
 
-    private void OnCollisionExit2D(Collision2D collision)
-    {
-        if (collision.gameObject.CompareTag("Ground"))
-        {
-            isGrounded = false;
-        }
-    }
+
+   
 }

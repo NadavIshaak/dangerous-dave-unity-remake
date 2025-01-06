@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 4cc7babd07b64834c87dab635ae5e3ae
+guid: 4506db2843c57924dbeeb95f1dfc1dd6
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -7446703621033277865
-    second: diamonds_0
+      213: -9184983656604611101
+    second: redDiamonds-Photoroom_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -113,7 +113,7 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: diamonds_0
+      name: redDiamonds-Photoroom_0
       rect:
         serializedVersion: 2
         x: 0
@@ -128,8 +128,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 75642b0d28ef7a890800000000000000
-      internalID: -7446703621033277865
+      spriteID: 3ed40584702688080800000000000000
+      internalID: -9184983656604611101
       vertices: []
       indices: 
       edges: []
@@ -147,8 +147,7 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable:
-      diamonds_0: -7446703621033277865
+    nameFileIdTable: {}
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
