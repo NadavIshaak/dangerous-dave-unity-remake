@@ -3,14 +3,10 @@ using UnityEngine;
 public class PlayerAnimationConttroler : MonoBehaviour
 {
     private Animator animator;
-    private bool isRight = true; 
     private bool isMoving = false;
-
-    // Track whether we’re currently in the air
-    private bool isAirborne = false;
-
+    private float prevYSpeed;
+    private bool isInAir = false;
     // Track whether we moved horizontally while in the air
-    private bool movedInAir = false;
 
     private void Awake()
     {
@@ -24,99 +20,35 @@ public class PlayerAnimationConttroler : MonoBehaviour
     /// </summary>
     public void Move(float moveInput, float ySpeed)
     {
-        // Determine facing direction
-        if (moveInput > 0)
-        {
-            if (!isRight)
-            {
-                isRight = true;
-                animator.SetBool("IsRight", true);
-            }
+        if(moveInput>0){
+            animator.SetBool("IsRight", true);
+            if(ySpeed==0)
+            animator.SetTrigger("Move");
+            if(ySpeed==0&&prevYSpeed!=0)
+            isInAir = false;
+            isMoving = true;
         }
-        else if (moveInput < 0)
-        {
-            if (isRight)
-            {
-                isRight = false;
-                animator.SetBool("IsRight", false);
-            }
+        else if(moveInput<0){
+            animator.SetBool("IsRight", false);
+            if(ySpeed==0)
+            animator.SetTrigger("Move");
+            if(ySpeed==0&&prevYSpeed!=0)
+            isInAir = false;
+            isMoving = true;
         }
-
-        // Jumping or falling?
-        if (ySpeed != 0)
-        {
-            // We are airborne
-            if (!isAirborne)
-            {
-                // Trigger jump once when leaving ground
-                animator.SetTrigger("Jump");
-                isAirborne = true;
-                movedInAir = false; 
-            }
-
-            // If we press horizontal input while in the air
-            if (moveInput != 0)
-            {
-                movedInAir = true;
-            }
-            isMoving = false;
+        else if(moveInput==0&&ySpeed==0&&!isInAir){
+            animator.SetTrigger("Stop"); 
         }
-        else 
-        {
-            // ySpeed == 0 => on the ground
-            if (isAirborne)
-            {
-                // We just landed
-                isAirborne = false;
-                if (movedInAir)
-                {
-                    // Land in left/right idle
-                    if (isRight)
-                    {
-                        // Could be "StopRight" or "RightIdle" in your Animator
-                        animator.SetTrigger("StopRight");
-                    }
-                    else
-                    {
-                        // Could be "StopLeft" or "LeftIdle"
-                        animator.SetTrigger("StopLeft");
-                    }
-                }
-                else
-                {
-                    // Land in a "middle" idle animation
-                    animator.SetTrigger("StopMiddle");
-                }
-                movedInAir = false;
-                isMoving = false;
-            }
+        else if(moveInput==0&&ySpeed==0&&isInAir){
+            isInAir = false;
+            if(isMoving)
+            animator.SetTrigger("StopInAir");
             else
             {
-                // Already on the ground, check horizontal input
-                if (moveInput != 0)
-                {
-                    // Move
-                    if (!isMoving)
-                    {
-                        animator.SetTrigger("Move");
-                        isMoving = true;
-                    }
-                }
-                else
-                {
-                    // No horizontal input on ground => remain idle
-                    if (isMoving)
-                    {
-                        // We just stopped
-                        if (isRight)
-                            animator.SetTrigger("StopRight");
-                        else
-                            animator.SetTrigger("StopLeft");
-                        isMoving = false;
-                    }
-                }
+                animator.SetTrigger("StopMiddle");
             }
         }
+    prevYSpeed=ySpeed;
     }
 
     /// <summary>
@@ -125,7 +57,7 @@ public class PlayerAnimationConttroler : MonoBehaviour
     public void Jump()
     {
         animator.SetTrigger("Jump");
-        isAirborne = true;
-        movedInAir = false;
+        isMoving = false;
+        isInAir = true;
     }
 }
