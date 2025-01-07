@@ -29,7 +29,7 @@ public class SoundObject : MonoBehaviour, IPoolable
         audioSource.clip = null;
         audioSource.volume = 1f;
         audioSource.pitch = 1f;
-        audioSource.spatialBlend = 1f;
+        audioSource.spatialBlend = 0f;
         audioSource.loop = false;
     }
 

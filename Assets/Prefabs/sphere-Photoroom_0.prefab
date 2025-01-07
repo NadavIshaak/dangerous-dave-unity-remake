@@ -102,7 +102,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _value: 1000
-  _collectSound: {fileID: 0}
+  _collectSound: {fileID: 8300000, guid: 0168677fd7bf37a4ab33350b82fc24ca, type: 3}
 --- !u!60 &-2580226155416027603
 PolygonCollider2D:
   m_ObjectHideFlags: 0

@@ -111,7 +111,7 @@ public class PlayerMovement : MonoBehaviour
         // Horizontal movement
         rb.linearVelocity = new Vector2(moveInput.x * moveSpeed, rb.linearVelocity.y);
 
-        // Call animation update if we moved or jumped
+        // Call animation update if we moved or jumpe
         // (Dangerous Dave anim typically flips between left/right frames or idle frames)
         if (didMove)
         {
@@ -136,7 +136,7 @@ public class PlayerMovement : MonoBehaviour
         if (Mathf.Abs(rb.linearVelocity.y) < 0.01f)
         {
             rb.linearVelocity = new Vector2(rb.linearVelocity.x, jumpForce);
-            animationConttroler.Jump();
+            animationConttroler.Jump(moveInput.x);
         }
     }
 }

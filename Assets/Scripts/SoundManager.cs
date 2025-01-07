@@ -33,12 +33,8 @@ public static SoundManager Instance;
         audioSource.clip = clip;
         //set the volume of the audio source
         audioSource.volume =volume;
-        //set random pitch of the audio source
-        audioSource.pitch = Random.Range(0.8f, 1.2f);
         //set loop to false
         audioSource.loop = false;
-        //set the spatial blend of the audio source
-        audioSource.spatialBlend = 1;
         //Play the audio clip
         audioSource.Play();
         //return the audio source after the clip has finished playing
