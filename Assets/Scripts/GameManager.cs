@@ -14,6 +14,9 @@ public class GameManager : MonoBehaviour
     [SerializeField] Image _oneLifeRenderer;
     [SerializeField] Image _twoLifeRenderer;
     [SerializeField] Image _threeLifeRenderer;
+    [SerializeField] Image _trophyCollectedRenderer;
+    bool _trophyCollected = false;
+
     private int _score = 0;
     private int _lives = 3;
 
@@ -42,6 +45,7 @@ public class GameManager : MonoBehaviour
         _oneLifeRenderer = GameObject.Find("OneLife")?.GetComponent<Image>();
         _twoLifeRenderer = GameObject.Find("TwoLife")?.GetComponent<Image>();
         _threeLifeRenderer = GameObject.Find("ThreeLife")?.GetComponent<Image>();
+        _trophyCollectedRenderer = GameObject.Find("GoThru")?.GetComponent<Image>();
     }
 
     public void AddScore(int value)
@@ -89,5 +93,9 @@ public class GameManager : MonoBehaviour
         _hundredsRenderer.sprite = _numberSprites[hundreds];
         _tensRenderer.sprite = _numberSprites[tens];
         _onesRenderer.sprite = _numberSprites[ones];
+    }
+    public void ThrophyCollected()
+    {
+        _trophyCollectedRenderer.enabled = true;
     }
 }
