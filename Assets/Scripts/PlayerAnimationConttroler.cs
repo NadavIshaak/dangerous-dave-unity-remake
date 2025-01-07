@@ -1,66 +1,3 @@
-// using UnityEngine;
-
-// public class PlayerAnimationConttroler : MonoBehaviour
-// {
-//     private Animator animator;
-//     private bool isMoving = false;
-//     private float prevYSpeed;
-//     private bool isInAir = false;
-//     // Track whether we moved horizontally while in the air
-
-//     private void Awake()
-//     {
-//         animator = GetComponent<Animator>();
-//     }
-
-//     /// <summary>
-//     /// Updates the player's animation based on horizontal input (moveInput) and vertical speed (ySpeed).
-//     /// If the player did not move in the air, they'll land in a "middle" idle.
-//     /// If they did move, they'll land in a left/right idle.
-//     /// </summary>
-//     public void Move(float moveInput, float ySpeed)
-//     {
-//         if(moveInput>0){
-//             animator.SetBool("IsRight", true);
-//             if(ySpeed==0&&!isInAir)
-//             animator.SetTrigger("Move");
-//             if(ySpeed==0&&prevYSpeed!=0)
-//             isInAir = false;
-//             isMoving = true;
-//         }
-//         else if(moveInput<0){
-//             animator.SetBool("IsRight", false);
-//             if(ySpeed==0&&!isInAir)
-//             animator.SetTrigger("Move");
-//             if(ySpeed==0&&prevYSpeed!=0)
-//             isInAir = false;
-//             isMoving = true;
-//         }
-//         else if(moveInput==0&&ySpeed==0&&!isInAir){
-//             animator.SetTrigger("Stop"); 
-//         }
-//         else if(moveInput==0&&ySpeed==0&&isInAir){
-//             isInAir = false;
-//             if(isMoving)
-//             animator.SetTrigger("StopInAir");
-//             else
-//             {
-//                 animator.SetTrigger("StopMiddle");
-//             }
-//         }
-//     prevYSpeed=ySpeed;
-//     }
-
-//     /// <summary>
-//     /// Optional direct call for jump if your code triggers it manually.
-//     /// </summary>
-//     public void Jump()
-//     {
-//         animator.SetTrigger("Jump");
-//         isMoving = false;
-//         isInAir = true;
-//     }
-// }
 using UnityEngine;
 
 public class PlayerAnimationConttroler : MonoBehaviour
@@ -70,6 +7,7 @@ public class PlayerAnimationConttroler : MonoBehaviour
     private bool isAirborne = false;
     private bool movedInAir = false;
     private bool isMovingOnGround = false;
+    private bool isRight = true; // Track the direction the player is facing
 
     private void Awake()
     {
@@ -92,8 +30,8 @@ public class PlayerAnimationConttroler : MonoBehaviour
                 isAirborne = true;
                 movedInAir = false;
 
-                if (moveInput > 0) animator.SetTrigger("RightJump");
-                else if (moveInput < 0) animator.SetTrigger("LeftJump");
+                if (isRight) animator.SetTrigger("RightJump");
+                else animator.SetTrigger("LeftJump");
 
                 isMovingOnGround = false;
             }
@@ -102,6 +40,20 @@ public class PlayerAnimationConttroler : MonoBehaviour
             if (Mathf.Abs(moveInput) > 0.01f)
             {
                 movedInAir = true;
+
+                // Determine facing direction while airborne
+                if (moveInput > 0 && !isRight)
+                {
+                    isRight = true;
+                    animator.SetBool("IsRight", true);
+                    animator.SetTrigger("RightJump");
+                }
+                else if (moveInput < 0 && isRight)
+                {
+                    isRight = false;
+                    animator.SetBool("IsRight", false);
+                    animator.SetTrigger("LeftJump");
+                }
             }
         }
         else
@@ -109,23 +61,37 @@ public class PlayerAnimationConttroler : MonoBehaviour
             // On ground
             if (isAirborne)
             {
-                // We just landed, do nothing => remain stuck in the last jump frame
+                // We just landed
                 isAirborne = false;
-                movedInAir = false;
-                isMovingOnGround = false;
+                HandleLanding();
             }
             else
             {
                 // Already on ground
-                if (Mathf.Abs(moveInput) > 0.01f)
+                if (Mathf.Abs(moveInput) > 0f)
                 {
+                    // Determine facing direction
+                    if (moveInput > 0 && !isRight)
+                    {
+                        isRight = true;
+                        animator.SetBool("IsRight", true);
+                        isMovingOnGround = false;
+                    }
+                    else if (moveInput < 0 && isRight)
+                    {
+                        isRight = false;
+                        animator.SetBool("IsRight", false);
+                        isMovingOnGround = false;
+                    }
+
                     // Trigger move only once at start
                     if (!isMovingOnGround)
                     {
-                        if (moveInput > 0) animator.SetTrigger("RightMove");
-                        else if (moveInput < 0) animator.SetTrigger("LeftMove");
+                        if (isRight) animator.SetTrigger("RightMove");
+                        else animator.SetTrigger("LeftMove");
 
                         isMovingOnGround = true;
+                        animator.speed = 1; // Ensure the animation is playing
                     }
                 }
                 else
@@ -133,7 +99,8 @@ public class PlayerAnimationConttroler : MonoBehaviour
                     // Not moving => remain stuck in current animation
                     if (isMovingOnGround)
                     {
-                        // If you want to remain stuck in the move frame, do nothing here
+                        // Stop the animation immediately
+                        animator.speed = 0;
                         isMovingOnGround = false;
                     }
                 }
@@ -144,14 +111,38 @@ public class PlayerAnimationConttroler : MonoBehaviour
     /// <summary>
     /// If the movement script calls this directly on jump
     /// </summary>
-    public void Jump(float moveInput)
+    public void Jump()
     {
         isAirborne = true;
         movedInAir = false;
-        if (isMovingOnGround)
+
+        if (isRight)
         {
-            if (moveInput > 0) animator.SetTrigger("RightJump");
-            else if (moveInput < 0) animator.SetTrigger("LeftJump");
+            animator.SetTrigger("RightJump");
         }
+        else
+        {
+            animator.SetTrigger("LeftJump");
+        }
+
+        animator.speed = 1; // Ensure the jump animation is playing
+    }
+
+    /// <summary>
+    /// Handles the landing logic and triggers the appropriate idle animation.a
+    /// </summary>
+    private void HandleLanding()
+    {
+        if (movedInAir)
+        {
+            if (isRight) animator.SetTrigger("RightIdle");
+            else animator.SetTrigger("LeftIdle");
+        }
+        else
+        {
+            animator.SetTrigger("CenterIdle");
+        }
+
+        movedInAir = false;
     }
 }

@@ -113,21 +113,13 @@ public class PlayerMovement : MonoBehaviour
 
         // Call animation update if we moved or jumpe
         // (Dangerous Dave anim typically flips between left/right frames or idle frames)
-        if (didMove)
-        {
             animationConttroler.Move(moveInput.x, rb.linearVelocity.y);
-        }
-        else
-        {
-            // Even if we're standing still, send the current speed to handle idle/landing
-            animationConttroler.Move(0, rb.linearVelocity.y);
-        }
+       
     }
 
     private void OnMove(InputAction.CallbackContext context)
     {
         moveInput = context.ReadValue<Vector2>();
-        didMove = (moveInput.x != 0);
     }
 
     private void OnJump(InputAction.CallbackContext context)
@@ -136,7 +128,7 @@ public class PlayerMovement : MonoBehaviour
         if (Mathf.Abs(rb.linearVelocity.y) < 0.01f)
         {
             rb.linearVelocity = new Vector2(rb.linearVelocity.x, jumpForce);
-            animationConttroler.Jump(moveInput.x);
+            animationConttroler.Jump();
         }
     }
 }
