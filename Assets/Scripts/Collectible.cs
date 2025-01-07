@@ -17,9 +17,9 @@ public class Collectible : MonoBehaviour
         
     }
 
-    private void OnCollisionEnter2D(Collision2D other) {
-            SoundManager.Instance.PlaySound(_collectSound, transform, 1);
-            GameManager.Instance.AddScore(_value);
-            Destroy(gameObject);
+    private void OnTriggerEnter2D(Collider2D other) {
+        SoundManager.Instance.PlaySound(_collectSound, transform, 1);
+        GameManager.Instance.AddScore(_value);
+        Destroy(gameObject);
     }
 }

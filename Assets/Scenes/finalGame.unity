@@ -953,7 +953,7 @@ GameObject:
   - component: {fileID: 137629209}
   - component: {fileID: 137629208}
   m_Layer: 5
-  m_Name: Image (4)
+  m_Name: Ones
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1296,7 +1296,7 @@ GameObject:
   - component: {fileID: 181319579}
   - component: {fileID: 181319578}
   m_Layer: 5
-  m_Name: Image (9)
+  m_Name: ThreeLife
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1645,7 +1645,7 @@ GameObject:
   - component: {fileID: 255297526}
   - component: {fileID: 255297525}
   m_Layer: 5
-  m_Name: Image (7)
+  m_Name: OneLife
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -6968,7 +6968,7 @@ Rigidbody2D:
     m_Bits: 0
   m_Interpolate: 0
   m_SleepingMode: 1
-  m_CollisionDetection: 0
+  m_CollisionDetection: 1
   m_Constraints: 4
 --- !u!95 &964861852
 Animator:
@@ -8471,7 +8471,7 @@ GameObject:
   - component: {fileID: 1180882604}
   - component: {fileID: 1180882603}
   m_Layer: 5
-  m_Name: Image
+  m_Name: TensOfThousands
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -8524,7 +8524,7 @@ MonoBehaviour:
   m_FillAmount: 1
   m_FillClockwise: 1
   m_FillOrigin: 0
-  m_UseSpriteMesh: 0
+  m_UseSpriteMesh: 1
   m_PixelsPerUnitMultiplier: 1
 --- !u!222 &1180882604
 CanvasRenderer:
@@ -8568,6 +8568,25 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 16ec8c35ff843224da0fb3ff8384c6d1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _numberSprites:
+  - {fileID: 5088316998373936774, guid: f3b8d5cbd948afe418850941c040c9f9, type: 3}
+  - {fileID: -855298285791758126, guid: b273a467edd37e44bb0cbaf07a22002e, type: 3}
+  - {fileID: 6937817954938267909, guid: 32ab831b33593d4448e2e30b71af265a, type: 3}
+  - {fileID: -6470460504253458178, guid: bf1c0dcaba6f3d4488dad543e3674f58, type: 3}
+  - {fileID: -4178046375966092550, guid: 5d093d89afe0f0144bafaf153da0bcff, type: 3}
+  - {fileID: 4130640169021434097, guid: 5fe689fdcf064394fb09058ec71ed8e2, type: 3}
+  - {fileID: 3465286685962602723, guid: 61635340b2377e447899dfeb87373cc1, type: 3}
+  - {fileID: 7028616704906629411, guid: 729be668d0c22aa4c9e90af0f26e1500, type: 3}
+  - {fileID: 8288426215254106694, guid: 017fac85ef9d79e468edd63473d08a7e, type: 3}
+  - {fileID: 4113829005332862926, guid: 734edaab5bfa2c644a223a786aa86956, type: 3}
+  _tenOfThousandsRenderer: {fileID: 1180882603}
+  _thousandsRenderer: {fileID: 1854812626}
+  _hundredsRenderer: {fileID: 1572158860}
+  _tensRenderer: {fileID: 2000227073}
+  _onesRenderer: {fileID: 137629208}
+  _oneLifeRenderer: {fileID: 0}
+  _twoLifeRenderer: {fileID: 0}
+  _threeLifeRenderer: {fileID: 0}
 --- !u!4 &1226881363
 Transform:
   m_ObjectHideFlags: 0
@@ -9877,6 +9896,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1441215047}
+  - component: {fileID: 1441215048}
   m_Layer: 0
   m_Name: GameStage
   m_TagString: Untagged
@@ -9900,6 +9920,37 @@ Transform:
   - {fileID: 284427660}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1441215048
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1441215046}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 16ec8c35ff843224da0fb3ff8384c6d1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _numberSprites:
+  - {fileID: 5088316998373936774, guid: f3b8d5cbd948afe418850941c040c9f9, type: 3}
+  - {fileID: -855298285791758126, guid: b273a467edd37e44bb0cbaf07a22002e, type: 3}
+  - {fileID: 6937817954938267909, guid: 32ab831b33593d4448e2e30b71af265a, type: 3}
+  - {fileID: -6470460504253458178, guid: bf1c0dcaba6f3d4488dad543e3674f58, type: 3}
+  - {fileID: -4178046375966092550, guid: 5d093d89afe0f0144bafaf153da0bcff, type: 3}
+  - {fileID: 4130640169021434097, guid: 5fe689fdcf064394fb09058ec71ed8e2, type: 3}
+  - {fileID: 3465286685962602723, guid: 61635340b2377e447899dfeb87373cc1, type: 3}
+  - {fileID: 7028616704906629411, guid: 729be668d0c22aa4c9e90af0f26e1500, type: 3}
+  - {fileID: 8288426215254106694, guid: 017fac85ef9d79e468edd63473d08a7e, type: 3}
+  - {fileID: 4113829005332862926, guid: 734edaab5bfa2c644a223a786aa86956, type: 3}
+  _tenOfThousandsRenderer: {fileID: 0}
+  _thousandsRenderer: {fileID: 0}
+  _hundredsRenderer: {fileID: 0}
+  _tensRenderer: {fileID: 0}
+  _onesRenderer: {fileID: 0}
+  _oneLifeRenderer: {fileID: 0}
+  _twoLifeRenderer: {fileID: 0}
+  _threeLifeRenderer: {fileID: 0}
 --- !u!1 &1471279553
 GameObject:
   m_ObjectHideFlags: 0
@@ -10532,7 +10583,7 @@ GameObject:
   - component: {fileID: 1572158861}
   - component: {fileID: 1572158860}
   m_Layer: 5
-  m_Name: Image (2)
+  m_Name: Hundreds
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -10585,7 +10636,7 @@ MonoBehaviour:
   m_FillAmount: 1
   m_FillClockwise: 1
   m_FillOrigin: 0
-  m_UseSpriteMesh: 0
+  m_UseSpriteMesh: 1
   m_PixelsPerUnitMultiplier: 1
 --- !u!222 &1572158861
 CanvasRenderer:
@@ -13847,7 +13898,7 @@ GameObject:
   - component: {fileID: 1854812627}
   - component: {fileID: 1854812626}
   m_Layer: 5
-  m_Name: Image (1)
+  m_Name: Thousands
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -13900,7 +13951,7 @@ MonoBehaviour:
   m_FillAmount: 1
   m_FillClockwise: 1
   m_FillOrigin: 0
-  m_UseSpriteMesh: 0
+  m_UseSpriteMesh: 1
   m_PixelsPerUnitMultiplier: 1
 --- !u!222 &1854812627
 CanvasRenderer:
@@ -14056,7 +14107,7 @@ GameObject:
   - component: {fileID: 2000227074}
   - component: {fileID: 2000227073}
   m_Layer: 5
-  m_Name: Image (3)
+  m_Name: Tens
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -14464,7 +14515,7 @@ GameObject:
   - component: {fileID: 2040166288}
   - component: {fileID: 2040166287}
   m_Layer: 5
-  m_Name: Image (8)
+  m_Name: TwoLife
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
