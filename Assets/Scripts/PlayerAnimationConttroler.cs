@@ -22,7 +22,7 @@ public class PlayerAnimationConttroler : MonoBehaviour
     {
         if(moveInput>0){
             animator.SetBool("IsRight", true);
-            if(ySpeed==0)
+            if(ySpeed==0&&!isInAir)
             animator.SetTrigger("Move");
             if(ySpeed==0&&prevYSpeed!=0)
             isInAir = false;
@@ -30,7 +30,7 @@ public class PlayerAnimationConttroler : MonoBehaviour
         }
         else if(moveInput<0){
             animator.SetBool("IsRight", false);
-            if(ySpeed==0)
+            if(ySpeed==0&&!isInAir)
             animator.SetTrigger("Move");
             if(ySpeed==0&&prevYSpeed!=0)
             isInAir = false;
