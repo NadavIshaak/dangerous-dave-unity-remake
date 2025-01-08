@@ -1,6 +1,7 @@
 
 using UnityEngine;
 using UnityEngine.InputSystem;
+using System; 
 
 public class PlayerMovement : MonoBehaviour
 {
@@ -9,7 +10,8 @@ public class PlayerMovement : MonoBehaviour
 
     [SerializeField] private float moveSpeed = 5f;
     [SerializeField] private float jumpForce = 8f;
-    [SerializeField] private Vector3 victoryWalkStart;
+    [SerializeField] private Transform victoryWalkStart;
+    [SerializeField] private LayerMask wallLayerMask;
 
     private Rigidbody2D rb;
     private PlayerAnimationConttroler animationConttroler;
@@ -32,7 +34,10 @@ public class PlayerMovement : MonoBehaviour
         controls.Player.Move.performed += OnMove;
         controls.Player.Move.canceled += OnMove;
         controls.Player.Jump.performed += OnJump;
-         GameManager.Instance.OnVictoryWalkStart += StartVictoryWalk;
+    }
+    private void Start()
+    {
+        GameManager.Instance.OnVictoryWalkStart += StartVictoryWalk;
         OnVictoryWalkEnd += GameManager.Instance.OnVictoryWalkEnd;
     }
 
@@ -60,6 +65,7 @@ public class PlayerMovement : MonoBehaviour
         else{
             rb.linearVelocity = new Vector2(moveSpeed,0);
             animationConttroler.Move(moveSpeed,0);
+
             RaycastHit2D hit = Physics2D.Raycast(transform.position, Vector2.right, 0.5f, wallLayerMask);
             if (hit.collider != null)
             {
@@ -87,7 +93,7 @@ public class PlayerMovement : MonoBehaviour
      private void StartVictoryWalk()
     {
         // Teleport the player to the victory walk area
-        transform.position = victoryWalkStart;
+        transform.position = victoryWalkStart.position;
         isVictoryWalking = true;
     }
 }

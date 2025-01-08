@@ -1,6 +1,6 @@
 using UnityEngine;
 using UnityEngine.UI;
-
+using System; 
 public class GameManager : MonoBehaviour
 {
     public static GameManager Instance;
@@ -18,7 +18,9 @@ public class GameManager : MonoBehaviour
     [SerializeField] private Canvas _canvas;
     [SerializeField] private Image _LevelOnesRenderer;
     [SerializeField] private Image _LevelTensRenderer;
-    [SerializeField] private Prefab Player;
+    [SerializeField] private GameObject Player;
+    [SerializeField] private CinemachineVirtualCamera mainCamera;
+    [SerializeField] private CinemachineVirtualCamera victoryWalkCamera;
     bool _trophyCollected = false;
      public event Action OnVictoryWalkStart;
 
@@ -87,6 +89,8 @@ public class GameManager : MonoBehaviour
             _trophyCollected = false;
             _canvas.enabled = false;
             OnVictoryWalkStart?.Invoke();
+            mainCamera.Priority = 0;
+            victoryWalkCamera.Priority = 10;
         }
     }
     public void OnVictoryWalkEnd()
@@ -98,6 +102,8 @@ public class GameManager : MonoBehaviour
         updateLevel();
         Vector3 nextAreaPosition = new Vector3(20, 0, 0); // Example position
         Instantiate(Player, nextAreaPosition, Quaternion.identity);
+        mainCamera.Priority = 10;
+        victoryWalkCamera.Priority = 0;
     }
     private void updateLevel()
     {
