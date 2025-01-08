@@ -18,8 +18,7 @@ public class PlayerMovement : MonoBehaviour
     public event Action OnVictoryWalkEnd;
     private bool isVictoryWalking = false;
 
-    // Tracks if we pressed horizontal input in the current frame
-    private bool didMove = false;
+
 
     public void Awake()
     {

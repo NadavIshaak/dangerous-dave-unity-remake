@@ -19,7 +19,7 @@ public class Collectible : MonoBehaviour
 
     protected virtual void OnTriggerEnter2D(Collider2D other) {
         SoundManager.Instance.PlaySound(_collectSound, transform, 1);
-        GameManager.Instance.AddScore(_value);
+        ScoreManager.Instance.AddScore(_value);
         Destroy(gameObject);
     }
 }
