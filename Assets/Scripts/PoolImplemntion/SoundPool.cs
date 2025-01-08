@@ -6,7 +6,7 @@ public class SoundPool : MonoPool<SoundObject>
 
     public override void Return(SoundObject sound)
     {
-        if(sound.GetAudioSource().loop==true)
+        if(sound.GetAudioSource().loop.Equals(true))
         {
             return;
         }

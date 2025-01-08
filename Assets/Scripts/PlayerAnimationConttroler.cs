@@ -41,8 +41,16 @@ public class PlayerAnimationConttroler : MonoBehaviour
 
                 isMovingOnGround = false;
 
-                // Play jump sound
-                PlaySound(jumpSound);
+                // Play jump sound if jumping
+                if (ySpeed > 0)
+                {
+                    PlaySound(jumpSound);
+                }
+                else
+                {
+                    // Play fall sound if falling without jumping
+                    PlaySound(fallSound);
+                }
             }
 
             // If we move horizontally while airborne
@@ -74,7 +82,7 @@ public class PlayerAnimationConttroler : MonoBehaviour
                 isAirborne = false;
                 HandleLanding();
 
-                // Stop jump sound
+                // Stop jump or fall sound
                 StopSound();
             }
             else
@@ -106,7 +114,7 @@ public class PlayerAnimationConttroler : MonoBehaviour
                         animator.speed = 1; // Ensure the animation is playing
 
                         // Play move sound
-                        PlaySound(moveSound, true);
+                        PlaySound(moveSound);
                     }
                 }
                 else
@@ -119,7 +127,7 @@ public class PlayerAnimationConttroler : MonoBehaviour
                         isMovingOnGround = false;
 
                         // Stop move sound
-                       // StopSound();
+                        StopSound();
                     }
                 }
             }
@@ -165,14 +173,7 @@ public class PlayerAnimationConttroler : MonoBehaviour
         }
 
         movedInAir = false;
-
-        // Play fall sound if landing without jumping
-        if (!movedInAir)
-        {
-            PlaySound(fallSound);
-        }
     }
-
     /// <summary>
     /// Plays the specified sound.
     /// </summary>
