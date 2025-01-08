@@ -7004,6 +7004,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: af47eaa8f0880a94291fad93c0083898, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  jumpSound: {fileID: 8300000, guid: b6e0ce0f06be78342ba6dd39e3a6b87c, type: 3}
+  moveSound: {fileID: 8300000, guid: 9426cc38719eb2d4fa778276cdbabdc4, type: 3}
+  fallSound: {fileID: 8300000, guid: 6edd8f3dc2eec0044919c8dacfda928e, type: 3}
 --- !u!61 &964861854
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -8584,10 +8587,10 @@ MonoBehaviour:
   _hundredsRenderer: {fileID: 1572158860}
   _tensRenderer: {fileID: 2000227073}
   _onesRenderer: {fileID: 137629208}
-  _oneLifeRenderer: {fileID: 0}
-  _twoLifeRenderer: {fileID: 0}
-  _threeLifeRenderer: {fileID: 0}
-  _trophyCollectedRenderer: {fileID: 0}
+  _oneLifeRenderer: {fileID: 255297525}
+  _twoLifeRenderer: {fileID: 2040166287}
+  _threeLifeRenderer: {fileID: 181319578}
+  _trophyCollectedRenderer: {fileID: 971875931}
 --- !u!4 &1226881363
 Transform:
   m_ObjectHideFlags: 0
@@ -9897,7 +9900,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1441215047}
-  - component: {fileID: 1441215048}
   m_Layer: 0
   m_Name: GameStage
   m_TagString: Untagged
@@ -9921,38 +9923,6 @@ Transform:
   - {fileID: 284427660}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1441215048
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1441215046}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 16ec8c35ff843224da0fb3ff8384c6d1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _numberSprites:
-  - {fileID: 5088316998373936774, guid: f3b8d5cbd948afe418850941c040c9f9, type: 3}
-  - {fileID: -855298285791758126, guid: b273a467edd37e44bb0cbaf07a22002e, type: 3}
-  - {fileID: 6937817954938267909, guid: 32ab831b33593d4448e2e30b71af265a, type: 3}
-  - {fileID: -6470460504253458178, guid: bf1c0dcaba6f3d4488dad543e3674f58, type: 3}
-  - {fileID: -4178046375966092550, guid: 5d093d89afe0f0144bafaf153da0bcff, type: 3}
-  - {fileID: 4130640169021434097, guid: 5fe689fdcf064394fb09058ec71ed8e2, type: 3}
-  - {fileID: 3465286685962602723, guid: 61635340b2377e447899dfeb87373cc1, type: 3}
-  - {fileID: 7028616704906629411, guid: 729be668d0c22aa4c9e90af0f26e1500, type: 3}
-  - {fileID: 8288426215254106694, guid: 017fac85ef9d79e468edd63473d08a7e, type: 3}
-  - {fileID: 4113829005332862926, guid: 734edaab5bfa2c644a223a786aa86956, type: 3}
-  _tenOfThousandsRenderer: {fileID: 0}
-  _thousandsRenderer: {fileID: 0}
-  _hundredsRenderer: {fileID: 0}
-  _tensRenderer: {fileID: 0}
-  _onesRenderer: {fileID: 0}
-  _oneLifeRenderer: {fileID: 0}
-  _twoLifeRenderer: {fileID: 0}
-  _threeLifeRenderer: {fileID: 0}
-  _trophyCollectedRenderer: {fileID: 0}
 --- !u!1 &1471279553
 GameObject:
   m_ObjectHideFlags: 0

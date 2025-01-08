@@ -5,6 +5,8 @@ public class SoundManager : MonoBehaviour
     //class to handle the sounds in the game
 public static SoundManager Instance;
 
+private SoundObject currentSoundObject;
+
 
     private void Awake()
     {
@@ -19,11 +21,23 @@ public static SoundManager Instance;
         }
     }
 
+    public void stopSound()
+    {
+        if (currentSoundObject == null)
+        {
+            return;
+        }
+        SoundPool.Instance.ImmediateReturn(currentSoundObject);
+    }
+    public void setCurrentSoundObject(SoundObject soundObject)
+    {
+        currentSoundObject = soundObject;
+    }
    
    
    
 
-    public void PlaySound(AudioClip clip, Transform spawnPosition, float volume){
+    public SoundObject PlaySound(AudioClip clip, Transform spawnPosition, float volume,bool loop=false){
         SoundObject soundObject = SoundPool.Instance.Get();
         //Create an instance of the audio source
         AudioSource audioSource= soundObject.GetComponent<AudioSource>();
@@ -33,11 +47,10 @@ public static SoundManager Instance;
         audioSource.clip = clip;
         //set the volume of the audio source
         audioSource.volume =volume;
-        //set loop to false
-        audioSource.loop = false;
         //Play the audio clip
         audioSource.Play();
         //return the audio source after the clip has finished playing
         SoundPool.Instance.Return(soundObject);
+        return soundObject;
     }
 }

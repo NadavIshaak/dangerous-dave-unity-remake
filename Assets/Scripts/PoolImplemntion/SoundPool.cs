@@ -6,6 +6,10 @@ public class SoundPool : MonoPool<SoundObject>
 
     public override void Return(SoundObject sound)
     {
+        if(sound.GetAudioSource().loop==true)
+        {
+            return;
+        }
         //return the sound to the pool after the sound has finished playing
          StartCoroutine(WaitThenReturn(sound, sound.GetAudioSource().clip.length));
     }

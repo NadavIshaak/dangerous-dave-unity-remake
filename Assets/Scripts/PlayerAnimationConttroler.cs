@@ -3,6 +3,11 @@ using UnityEngine;
 public class PlayerAnimationConttroler : MonoBehaviour
 {
     private Animator animator;
+    private AudioSource audioSource;
+
+    [SerializeField] private AudioClip jumpSound;
+    [SerializeField] private AudioClip moveSound;
+    [SerializeField] private AudioClip fallSound;
 
     private bool isAirborne = false;
     private bool movedInAir = false;
@@ -12,6 +17,7 @@ public class PlayerAnimationConttroler : MonoBehaviour
     private void Awake()
     {
         animator = GetComponent<Animator>();
+        audioSource = GetComponent<AudioSource>();
     }
 
     /// <summary>
@@ -34,6 +40,9 @@ public class PlayerAnimationConttroler : MonoBehaviour
                 else animator.SetTrigger("LeftJump");
 
                 isMovingOnGround = false;
+
+                // Play jump sound
+                PlaySound(jumpSound);
             }
 
             // If we move horizontally while airborne
@@ -64,11 +73,14 @@ public class PlayerAnimationConttroler : MonoBehaviour
                 // We just landed
                 isAirborne = false;
                 HandleLanding();
+
+                // Stop jump sound
+                StopSound();
             }
             else
             {
                 // Already on ground
-                if (Mathf.Abs(moveInput) > 0f)
+                if (Mathf.Abs(moveInput) > 0.01f)
                 {
                     // Determine facing direction
                     if (moveInput > 0 && !isRight)
@@ -92,6 +104,9 @@ public class PlayerAnimationConttroler : MonoBehaviour
 
                         isMovingOnGround = true;
                         animator.speed = 1; // Ensure the animation is playing
+
+                        // Play move sound
+                        PlaySound(moveSound, true);
                     }
                 }
                 else
@@ -102,6 +117,9 @@ public class PlayerAnimationConttroler : MonoBehaviour
                         // Stop the animation immediately
                         animator.speed = 0;
                         isMovingOnGround = false;
+
+                        // Stop move sound
+                       // StopSound();
                     }
                 }
             }
@@ -126,10 +144,13 @@ public class PlayerAnimationConttroler : MonoBehaviour
         }
 
         animator.speed = 1; // Ensure the jump animation is playing
+
+        // Play jump sound
+        PlaySound(jumpSound);
     }
 
     /// <summary>
-    /// Handles the landing logic and triggers the appropriate idle animation.a
+    /// Handles the landing logic and triggers the appropriate idle animation.
     /// </summary>
     private void HandleLanding()
     {
@@ -144,5 +165,29 @@ public class PlayerAnimationConttroler : MonoBehaviour
         }
 
         movedInAir = false;
+
+        // Play fall sound if landing without jumping
+        if (!movedInAir)
+        {
+            PlaySound(fallSound);
+        }
+    }
+
+    /// <summary>
+    /// Plays the specified sound.
+    /// </summary>
+    private void PlaySound(AudioClip clip,bool loop=false)
+    {
+        SoundManager.Instance.stopSound();
+       SoundObject soundObject=SoundManager.Instance.PlaySound(clip, transform, 1,loop);
+        SoundManager.Instance.setCurrentSoundObject(soundObject);
+    }
+
+    /// <summary>
+    /// Stops the currently playing sound.
+    /// </summary>
+    private void StopSound()
+    {
+        SoundManager.Instance.stopSound();
     }
 }
