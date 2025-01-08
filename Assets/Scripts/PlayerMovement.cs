@@ -16,12 +16,12 @@ public class PlayerMovement : MonoBehaviour
     private Rigidbody2D rb;
     private PlayerAnimationConttroler animationConttroler;
     public event Action OnVictoryWalkEnd;
-      private bool isVictoryWalking = false;
+    private bool isVictoryWalking = false;
 
     // Tracks if we pressed horizontal input in the current frame
     private bool didMove = false;
 
-    private void Awake()
+    public void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
         animationConttroler = GetComponent<PlayerAnimationConttroler>();
@@ -39,6 +39,7 @@ public class PlayerMovement : MonoBehaviour
     {
         GameManager.Instance.OnVictoryWalkStart += StartVictoryWalk;
         OnVictoryWalkEnd += GameManager.Instance.OnVictoryWalkEnd;
+        OnVictoryWalkEnd += StageScript.Instance.OnEndWalk;
     }
 
     private void OnDisable()
@@ -47,8 +48,9 @@ public class PlayerMovement : MonoBehaviour
         controls.Player.Move.canceled -= OnMove;
         controls.Player.Jump.performed -= OnJump;
         controls.Disable();
-         GameManager.Instance.OnVictoryWalkStart -= StartVictoryWalk;
+        GameManager.Instance.OnVictoryWalkStart -= StartVictoryWalk;
         OnVictoryWalkEnd -= GameManager.Instance.OnVictoryWalkEnd;
+        OnVictoryWalkEnd -= StageScript.Instance.OnEndWalk;
     }
 
     private void Update()
@@ -83,6 +85,10 @@ public class PlayerMovement : MonoBehaviour
 
     private void OnJump(InputAction.CallbackContext context)
     {
+        if(isVictoryWalking)
+        {
+            return;
+        }
         // Simple jump if on the ground (approx: linear velocity y == 0)
         if (Mathf.Abs(rb.linearVelocity.y) < 0.01f)
         {
