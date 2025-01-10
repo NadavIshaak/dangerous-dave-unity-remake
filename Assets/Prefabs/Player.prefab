@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 4410264208077883995}
   - component: {fileID: 1579755278963955509}
   - component: {fileID: 8369032373982741143}
-  - component: {fileID: 1350764454913147904}
+  - component: {fileID: -3317753033417134933}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -106,7 +106,7 @@ Rigidbody2D:
   m_UseAutoMass: 0
   m_Mass: 1
   m_LinearDamping: 0
-  m_AngularDamping: 0.05
+  m_AngularDamping: 0
   m_GravityScale: 1
   m_Material: {fileID: 6200000, guid: 925d96f343b041947b49f0999d162ac5, type: 2}
   m_IncludeLayers:
@@ -115,7 +115,7 @@ Rigidbody2D:
   m_ExcludeLayers:
     serializedVersion: 2
     m_Bits: 0
-  m_Interpolate: 0
+  m_Interpolate: 1
   m_SleepingMode: 1
   m_CollisionDetection: 1
   m_Constraints: 4
@@ -137,6 +137,10 @@ MonoBehaviour:
   wallLayerMask:
     serializedVersion: 2
     m_Bits: 64
+  MoveSound: {fileID: 8300000, guid: 9426cc38719eb2d4fa778276cdbabdc4, type: 3}
+  FallingSound: {fileID: 8300000, guid: 6edd8f3dc2eec0044919c8dacfda928e, type: 3}
+  jumpSound: {fileID: 8300000, guid: b6e0ce0f06be78342ba6dd39e3a6b87c, type: 3}
+  WinSound: {fileID: 8300000, guid: 5e346900097ab2645bb7b63f3c0408c9, type: 3}
 --- !u!95 &1579755278963955509
 Animator:
   serializedVersion: 7
@@ -171,11 +175,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: af47eaa8f0880a94291fad93c0083898, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  jumpSound: {fileID: 8300000, guid: b6e0ce0f06be78342ba6dd39e3a6b87c, type: 3}
-  moveSound: {fileID: 8300000, guid: 9426cc38719eb2d4fa778276cdbabdc4, type: 3}
-  fallSound: {fileID: 8300000, guid: 6edd8f3dc2eec0044919c8dacfda928e, type: 3}
---- !u!61 &1350764454913147904
-BoxCollider2D:
+--- !u!60 &-3317753033417134933
+PolygonCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -218,5 +219,15 @@ BoxCollider2D:
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Size: {x: 0.35, y: 0.63}
-  m_EdgeRadius: 0
+  m_Points:
+    m_Paths:
+    - - {x: 0.145, y: 0.275}
+      - {x: 0.095, y: 0.315}
+      - {x: -0.175, y: 0.315}
+      - {x: -0.175, y: -0.21499999}
+      - {x: -0.145, y: -0.315}
+      - {x: 0.125, y: -0.315}
+      - {x: 0.114999995, y: -0.275}
+      - {x: 0.125, y: -0.205}
+      - {x: 0.145, y: -0.044999998}
+  m_UseDelaunayMesh: 0

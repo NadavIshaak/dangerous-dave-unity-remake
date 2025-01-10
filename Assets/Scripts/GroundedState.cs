@@ -68,11 +68,11 @@ public class GroundedState : PlayerState
         RaycastHit2D hitRight = Physics2D.Raycast(bottomRight, Vector2.down, 0.2f, player.GetWallLayerMask());
         player.GetRigidbody().linearVelocity = new Vector2(player.GetMoveInput().x * player.GetMoveSpeed(), player.GetRigidbody().linearVelocity.y);
         checkFirstMoveAndDirection();
-        if(player.GetMoveInput().x>0&&!isRight&&!isFalling&&firstMove){
+        if(player.GetMoveInput().x>0&&!isRight&&firstMove){
             player.GetAnimationConttroler().ChangeDirection(true);
             isRight=true;
         }
-        else if(player.GetMoveInput().x<0&&isRight&&!isFalling){
+        else if(player.GetMoveInput().x<0&&isRight&&firstMove){
             player.GetAnimationConttroler().ChangeDirection(false);
             isRight=false;
         }
@@ -86,13 +86,14 @@ public class GroundedState : PlayerState
             PlaySound(true,true,MoveSound);
             isStop=false;
         }
-        else if(!isFalling&&(hitLeft.collider == null && hitRight.collider == null))
+        else if(!isFalling&&(hitLeft.collider == null && hitRight.collider == null)&&firstMove)
         {
             PlaySound(true,true,FallingSound);
             isFalling=true;
             player.GetAnimationConttroler().FallWhileWalking();
+            Debug.Log("Falling");
         }
-        else if(isFalling&&(hitLeft.collider != null || hitRight.collider != null)){
+        else if(isFalling&&(hitLeft.collider != null || hitRight.collider != null)&&firstMove){
             isFalling=false;
             isStop=true;
             firstMove=false;
