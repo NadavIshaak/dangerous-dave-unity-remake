@@ -1,6 +1,6 @@
 using UnityEngine;
 using UnityEngine.UI;
-public class LifeManager : MonoBehaviour
+public class LifeManager : MonoSingleton<LifeManager>
 {
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     [SerializeField] Image _oneLifeRenderer;

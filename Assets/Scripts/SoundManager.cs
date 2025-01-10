@@ -23,7 +23,6 @@ private SoundObject currentSoundObject;
 
     public void stopSound()
     {
-        Debug.Log(currentSoundObject);
         if (currentSoundObject == null)
         {
             return;

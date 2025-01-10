@@ -10,6 +10,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private Image _LevelOnesRenderer;
     [SerializeField] private Image _LevelTensRenderer;
     [SerializeField] private GameObject Player;
+    [SerializeField] private GameObject _stage2Spawn;
     bool _trophyCollected = false;
      public event Action OnVictoryWalkStart;
     private int _currentLevel = 1;
@@ -46,7 +47,7 @@ public class GameManager : MonoBehaviour
         _canvas.enabled = true;
         _currentLevel++;
         updateLevel();
-        Vector3 nextAreaPosition = new Vector3(20, 0, 0); // Example position
+        Vector3 nextAreaPosition = _stage2Spawn.transform.position;
         Instantiate(Player, nextAreaPosition, Quaternion.identity);
     }
     private void updateLevel()
