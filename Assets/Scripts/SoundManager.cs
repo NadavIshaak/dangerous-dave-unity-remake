@@ -23,6 +23,7 @@ private SoundObject currentSoundObject;
 
     public void stopSound()
     {
+        Debug.Log(currentSoundObject);
         if (currentSoundObject == null)
         {
             return;
@@ -34,6 +35,7 @@ private SoundObject currentSoundObject;
    
 
     public void PlaySound(AudioClip clip, Transform spawnPosition, float volume,bool loop=false,bool shouldKeep=false){
+        stopSound();
         SoundObject soundObject = SoundPool.Instance.Get();
         //Create an instance of the audio source
         AudioSource audioSource= soundObject.GetComponent<AudioSource>();
@@ -45,6 +47,15 @@ private SoundObject currentSoundObject;
         audioSource.volume =volume;
         //Play the audio clip
         audioSource.Play();
+        if(loop){
+            audioSource.loop=true;
+        }
+        else{
+            audioSource.loop=false;
+        }
+        if(shouldKeep){
+            currentSoundObject=soundObject;
+        }
         //return the audio source after the clip has finished playing
         SoundPool.Instance.Return(soundObject);
     }

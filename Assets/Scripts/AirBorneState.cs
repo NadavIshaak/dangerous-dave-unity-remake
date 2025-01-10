@@ -4,12 +4,16 @@ public class AirborneState : PlayerState
 {
     bool isOffGround=false;
     bool moveInAir=false;
+    private AudioClip jumpSound;
     public AirborneState(PlayerMovement player) : base(player) { }
 
     public override void Enter()
     {
+        jumpSound=player.GetJumpSound();
         isOffGround=false;
         moveInAir=false;
+        SoundManager.Instance.stopSound();
+        SoundManager.Instance.PlaySound(jumpSound,player.GetTransform(),1,true,true);
     }
 
     public override void HandleInput()
@@ -49,10 +53,14 @@ public class AirborneState : PlayerState
             player.GetAnimationConttroler().ChangeDirection(false);
         }
     }
+    private void PlaySound(bool ShouldKeep,bool ShouldLoop,AudioClip clip)
+    {
+        SoundManager.Instance.PlaySound(clip,player.GetTransform(),1,ShouldLoop,ShouldKeep);
+    }
 
     public override void Exit()
     {
-        // Exit airborne state logic
+        SoundManager.Instance.stopSound();
     }
     private bool IsGrounded()
     {

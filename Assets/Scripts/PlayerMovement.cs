@@ -11,6 +11,10 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float jumpForce = 8f;
     [SerializeField] private Transform victoryWalkStart;
     [SerializeField] private LayerMask wallLayerMask;
+    [SerializeField] private AudioClip MoveSound;
+    [SerializeField] private AudioClip FallingSound;
+    [SerializeField] private AudioClip jumpSound;
+    [SerializeField] private AudioClip WinSound;
     private Collider2D collide;
     private Rigidbody2D rb;
     private PlayerAnimationConttroler animationConttroler;
@@ -93,5 +97,9 @@ public class PlayerMovement : MonoBehaviour
     public Transform GetTransform() => transform;
     public void SetTransform(Transform value) => transform.position = value.position;
     public Collider2D GetCollider() => collide;
+    public AudioClip GetMoveSound() => MoveSound;
+    public AudioClip GetFallingSound() => FallingSound;
+    public AudioClip GetJumpSound() => jumpSound;
+    public AudioClip GetWinSound() => WinSound;
     
 }

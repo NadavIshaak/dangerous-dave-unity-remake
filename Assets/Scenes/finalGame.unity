@@ -21775,6 +21775,22 @@ PrefabInstance:
       value: Player
       objectReference: {fileID: 0}
     - target: {fileID: 4410264208077883995, guid: 4ca3899366a8e3b45a01ae5d119fb8f0, type: 3}
+      propertyPath: WinSound
+      value: 
+      objectReference: {fileID: 8300000, guid: 5e346900097ab2645bb7b63f3c0408c9, type: 3}
+    - target: {fileID: 4410264208077883995, guid: 4ca3899366a8e3b45a01ae5d119fb8f0, type: 3}
+      propertyPath: MoveSound
+      value: 
+      objectReference: {fileID: 8300000, guid: 9426cc38719eb2d4fa778276cdbabdc4, type: 3}
+    - target: {fileID: 4410264208077883995, guid: 4ca3899366a8e3b45a01ae5d119fb8f0, type: 3}
+      propertyPath: jumpSound
+      value: 
+      objectReference: {fileID: 8300000, guid: b6e0ce0f06be78342ba6dd39e3a6b87c, type: 3}
+    - target: {fileID: 4410264208077883995, guid: 4ca3899366a8e3b45a01ae5d119fb8f0, type: 3}
+      propertyPath: FallingSound
+      value: 
+      objectReference: {fileID: 8300000, guid: 6edd8f3dc2eec0044919c8dacfda928e, type: 3}
+    - target: {fileID: 4410264208077883995, guid: 4ca3899366a8e3b45a01ae5d119fb8f0, type: 3}
       propertyPath: victoryWalkStart
       value: 
       objectReference: {fileID: 1332586310}

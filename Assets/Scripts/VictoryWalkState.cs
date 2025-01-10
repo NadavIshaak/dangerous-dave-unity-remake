@@ -3,11 +3,15 @@ using UnityEngine;
 public class VictoryWalkState : PlayerState
 {
     public VictoryWalkState(PlayerMovement player) : base(player) { }
+    private AudioClip WinSound;
 
     public override void Enter()
     {
         // Enter victory walk state logic
         player.SetTransform(player.GetVictoryWalkStart());
+        WinSound=player.GetWinSound();
+        SoundManager.Instance.PlaySound(WinSound,player.GetTransform(),1,false,false);
+        player.GetAnimationConttroler().ChangeDirection(true);
     }
 
     public override void HandleInput()

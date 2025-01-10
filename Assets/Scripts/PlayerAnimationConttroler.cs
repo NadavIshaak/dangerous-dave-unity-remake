@@ -5,9 +5,6 @@ public class PlayerAnimationConttroler : MonoBehaviour
     private Animator animator;
     private AudioSource audioSource;
     private SpriteRenderer spriteRenderer;
-    [SerializeField] private AudioClip jumpSound;
-    [SerializeField] private AudioClip moveSound;
-    [SerializeField] private AudioClip fallSound;
 
     private void Awake()
     {

@@ -7,11 +7,15 @@ public class GroundedState : PlayerState
     private bool isStop=true;
     private bool isFalling=false;
     private bool firstMove=false;
+    private AudioClip MoveSound;
+        private AudioClip FallingSound;
+    
     public override void Enter()
     {
         isStop=true;
         firstMove=false;
-        Debug.Log("Enter grounded state");
+        MoveSound=player.GetMoveSound();
+        FallingSound=player.GetFallingSound();
     }
 
     public override void HandleInput()
@@ -21,7 +25,6 @@ public class GroundedState : PlayerState
             player.GetAnimationConttroler().Jump();
             player.GetRigidbody().AddForce(Vector2.up * player.GetJumpForce(), ForceMode2D.Impulse);
             player.TransitionToState(player.airborneState);
-            Debug.Log("Transition to airborne state");
         }
     }
 
@@ -35,11 +38,16 @@ public class GroundedState : PlayerState
     {
         player.GetAnimationConttroler().ResumeMovement();
     }
+    private void PlaySound(bool ShouldKeep,bool ShouldLoop,AudioClip clip)
+    {
+        SoundManager.Instance.PlaySound(clip,player.GetTransform(),1,ShouldLoop,ShouldKeep);
+    }
 
     private void checkFirstMoveAndDirection(){
         if(player.GetMoveInput().x!=0&&!firstMove)
         {
             player.GetAnimationConttroler().Move();
+            PlaySound(true,true,MoveSound);
             if(player.GetMoveInput().x>0){
                 player.GetAnimationConttroler().ChangeDirection(true);
                 isRight=true;
@@ -70,14 +78,17 @@ public class GroundedState : PlayerState
         }
         else if(player.GetMoveInput().x==0&&!isStop&&!isFalling&&firstMove){
             player.GetAnimationConttroler().StopInMovement();
+            SoundManager.Instance.stopSound();
             isStop=true;
         }
         else if(player.GetMoveInput().x!=0&&isStop&&!isFalling&&firstMove){
             player.GetAnimationConttroler().ResumeMovement();
+            PlaySound(true,true,MoveSound);
             isStop=false;
         }
         else if(!isFalling&&(hitLeft.collider == null && hitRight.collider == null))
         {
+            PlaySound(true,true,FallingSound);
             isFalling=true;
             player.GetAnimationConttroler().FallWhileWalking();
         }
@@ -85,6 +96,7 @@ public class GroundedState : PlayerState
             isFalling=false;
             isStop=true;
             firstMove=false;
+            SoundManager.Instance.stopSound();
             player.GetAnimationConttroler().HitGroundWithMovement();
         }
     }
