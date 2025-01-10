@@ -7,98 +7,91 @@ public class PlayerMovement : MonoBehaviour
 {
     private InputSystem_Actions controls;
     private Vector2 moveInput;
-
     [SerializeField] private float moveSpeed = 5f;
     [SerializeField] private float jumpForce = 8f;
     [SerializeField] private Transform victoryWalkStart;
     [SerializeField] private LayerMask wallLayerMask;
-
+    private Collider2D collide;
     private Rigidbody2D rb;
     private PlayerAnimationConttroler animationConttroler;
     public event Action OnVictoryWalkEnd;
-    private bool isVictoryWalking = false;
-
-
-
-    public void Awake()
+    public PlayerState currentState;
+    public GroundedState groundedState;
+    public AirborneState airborneState;
+    public VictoryWalkState victoryWalkState;
+    private void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
+        collide = GetComponent<Collider2D>();
         animationConttroler = GetComponent<PlayerAnimationConttroler>();
+        groundedState = new GroundedState(this);
+        airborneState = new AirborneState(this);
+        victoryWalkState = new VictoryWalkState(this);
         controls = new InputSystem_Actions();
     }
-
-    private void OnEnable()
-    {
-        controls.Enable();
-        controls.Player.Move.performed += OnMove;
-        controls.Player.Move.canceled += OnMove;
-        controls.Player.Jump.performed += OnJump;
-    }
-    private void Start()
+     private void Start()
     {
         GameManager.Instance.OnVictoryWalkStart += StartVictoryWalk;
         OnVictoryWalkEnd += GameManager.Instance.OnVictoryWalkEnd;
         OnVictoryWalkEnd += StageScript.Instance.OnEndWalk;
     }
-
+    private void OnEnable()
+    {
+        controls.Enable();
+        controls.Player.Move.performed += OnMove;
+        controls.Player.Move.canceled += OnMove;
+    }
     private void OnDisable()
     {
-        controls.Player.Move.performed -= OnMove;
-        controls.Player.Move.canceled -= OnMove;
-        controls.Player.Jump.performed -= OnJump;
-        controls.Disable();
         GameManager.Instance.OnVictoryWalkStart -= StartVictoryWalk;
         OnVictoryWalkEnd -= GameManager.Instance.OnVictoryWalkEnd;
         OnVictoryWalkEnd -= StageScript.Instance.OnEndWalk;
+        controls.Player.Move.performed -= OnMove;
+        controls.Player.Move.canceled -= OnMove;
     }
-
     private void Update()
     {
-        if(!isVictoryWalking)
-        {
-        // Horizontal movement
-        rb.linearVelocity = new Vector2(moveInput.x * moveSpeed, rb.linearVelocity.y);
-
-        // Call animation update if we moved or jumpe
-        // (Dangerous Dave anim typically flips between left/right frames or idle frames)
-            animationConttroler.Move(moveInput.x, rb.linearVelocity.y);
-        }
-        else{
-            rb.linearVelocity = new Vector2(moveSpeed,0);
-            animationConttroler.Move(moveSpeed,0);
-
-            RaycastHit2D hit = Physics2D.Raycast(transform.position, Vector2.right, 0.5f, wallLayerMask);
-            if (hit.collider != null)
-            {
-                isVictoryWalking = false;
-                OnVictoryWalkEnd?.Invoke();
-                Destroy(gameObject);
-            }
-        }
-    }
-
-    private void OnMove(InputAction.CallbackContext context)
-    {
-        moveInput = context.ReadValue<Vector2>();
-    }
-
-    private void OnJump(InputAction.CallbackContext context)
-    {
-        if(isVictoryWalking)
+        if (currentState == null)
         {
             return;
         }
-        // Simple jump if on the ground (approx: linear velocity y == 0)
-        if (Mathf.Abs(rb.linearVelocity.y) < 0.01f)
+        currentState.HandleInput();
+        currentState.Update();
+    }
+
+    public void TransitionToState(PlayerState state)
+    {
+        currentState?.Exit();
+        currentState = state;
+        currentState.Enter();
+    }
+
+    private void StartVictoryWalk()
+    {
+        TransitionToState(victoryWalkState);
+    }
+     public void TriggerVictoryWalkEnd()
+    {
+        OnVictoryWalkEnd?.Invoke();
+    }
+    private void OnMove(UnityEngine.InputSystem.InputAction.CallbackContext context)
+    {
+        moveInput = context.ReadValue<Vector2>();
+        if (currentState == null&&moveInput.x!=0)
         {
-            rb.linearVelocity = new Vector2(rb.linearVelocity.x, jumpForce);
-            animationConttroler.Jump();
+            TransitionToState(groundedState);
         }
     }
-     private void StartVictoryWalk()
-    {
-        // Teleport the player to the victory walk area
-        transform.position = victoryWalkStart.position;
-        isVictoryWalking = true;
-    }
+    public LayerMask GetWallLayerMask() => wallLayerMask;
+    public Rigidbody2D GetRigidbody() => rb;
+    public Vector2 GetMoveInput() => moveInput;
+    public float GetMoveSpeed() => moveSpeed;
+    public float GetJumpForce() => jumpForce;
+    public PlayerAnimationConttroler GetAnimationConttroler() => animationConttroler;
+    public Transform GetVictoryWalkStart() => victoryWalkStart;
+    public InputSystem_Actions GetControls() => controls;
+    public Transform GetTransform() => transform;
+    public void SetTransform(Transform value) => transform.position = value.position;
+    public Collider2D GetCollider() => collide;
+    
 }

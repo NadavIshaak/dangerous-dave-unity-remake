@@ -29,15 +29,11 @@ private SoundObject currentSoundObject;
         }
         SoundPool.Instance.ImmediateReturn(currentSoundObject);
     }
-    public void setCurrentSoundObject(SoundObject soundObject)
-    {
-        currentSoundObject = soundObject;
-    }
    
    
    
 
-    public SoundObject PlaySound(AudioClip clip, Transform spawnPosition, float volume,bool loop=false){
+    public void PlaySound(AudioClip clip, Transform spawnPosition, float volume,bool loop=false,bool shouldKeep=false){
         SoundObject soundObject = SoundPool.Instance.Get();
         //Create an instance of the audio source
         AudioSource audioSource= soundObject.GetComponent<AudioSource>();
@@ -51,6 +47,5 @@ private SoundObject currentSoundObject;
         audioSource.Play();
         //return the audio source after the clip has finished playing
         SoundPool.Instance.Return(soundObject);
-        return soundObject;
     }
 }

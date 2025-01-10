@@ -4,191 +4,47 @@ public class PlayerAnimationConttroler : MonoBehaviour
 {
     private Animator animator;
     private AudioSource audioSource;
-
+    private SpriteRenderer spriteRenderer;
     [SerializeField] private AudioClip jumpSound;
     [SerializeField] private AudioClip moveSound;
     [SerializeField] private AudioClip fallSound;
 
-    private bool isAirborne = false;
-    private bool movedInAir = false;
-    private bool isMovingOnGround = false;
-    private bool isRight = true; // Track the direction the player is facing
-
     private void Awake()
     {
         animator = GetComponent<Animator>();
-        audioSource = GetComponent<AudioSource>();
+        spriteRenderer = GetComponent<SpriteRenderer>();
     }
 
-    /// <summary>
-    /// Called every frame from PlayerMovement. 
-    /// If ySpeed != 0, we handle air logic. Otherwise, we stay in a stuck 
-    /// ground-move animation if the player is moving.
-    /// </summary>
-    public void Move(float moveInput, float ySpeed)
+    public void Move()
     {
-        // If ySpeed != 0 => airborne
-        if (Mathf.Abs(ySpeed) > 0.01f)
-        {
-            if (!isAirborne)
-            {
-                // Just jumped/fell
-                isAirborne = true;
-                movedInAir = false;
-
-                if (isRight) animator.SetTrigger("RightJump");
-                else animator.SetTrigger("LeftJump");
-
-                isMovingOnGround = false;
-
-                // Play jump sound if jumping
-                if (ySpeed > 0)
-                {
-                    PlaySound(jumpSound);
-                }
-                else
-                {
-                    // Play fall sound if falling without jumping
-                    PlaySound(fallSound);
-                }
-            }
-
-            // If we move horizontally while airborne
-            if (Mathf.Abs(moveInput) > 0.01f)
-            {
-                movedInAir = true;
-
-                // Determine facing direction while airborne
-                if (moveInput > 0 && !isRight)
-                {
-                    isRight = true;
-                    animator.SetBool("IsRight", true);
-                    animator.SetTrigger("RightJump");
-                }
-                else if (moveInput < 0 && isRight)
-                {
-                    isRight = false;
-                    animator.SetBool("IsRight", false);
-                    animator.SetTrigger("LeftJump");
-                }
-            }
-        }
-        else
-        {
-            // On ground
-            if (isAirborne)
-            {
-                // We just landed
-                isAirborne = false;
-                HandleLanding();
-
-                // Stop jump or fall sound
-                StopSound();
-            }
-            else
-            {
-                // Already on ground
-                if (Mathf.Abs(moveInput) > 0.01f)
-                {
-                    // Determine facing direction
-                    if (moveInput > 0 && !isRight)
-                    {
-                        isRight = true;
-                        animator.SetBool("IsRight", true);
-                        isMovingOnGround = false;
-                    }
-                    else if (moveInput < 0 && isRight)
-                    {
-                        isRight = false;
-                        animator.SetBool("IsRight", false);
-                        isMovingOnGround = false;
-                    }
-
-                    // Trigger move only once at start
-                    if (!isMovingOnGround)
-                    {
-                        if (isRight) animator.SetTrigger("RightMove");
-                        else animator.SetTrigger("LeftMove");
-
-                        isMovingOnGround = true;
-                        animator.speed = 1; // Ensure the animation is playing
-
-                        // Play move sound
-                        PlaySound(moveSound);
-                    }
-                }
-                else
-                {
-                    // Not moving => remain stuck in current animation
-                    if (isMovingOnGround)
-                    {
-                        // Stop the animation immediately
-                        animator.speed = 0;
-                        isMovingOnGround = false;
-
-                        // Stop move sound
-                        StopSound();
-                    }
-                }
-            }
-        }
+        animator.SetTrigger("Move");
     }
-
-    /// <summary>
-    /// If the movement script calls this directly on jump
-    /// </summary>
+    public void ChangeDirection(bool facingRight)
+    {
+        spriteRenderer.flipX = !facingRight;
+    }
+    public void StopInMovement()
+    {
+        animator.speed = 0;
+    }
+    public void ResumeMovement()
+    {
+        animator.speed = 1;
+    }
     public void Jump()
     {
-        isAirborne = true;
-        movedInAir = false;
-
-        if (isRight)
-        {
-            animator.SetTrigger("RightJump");
-        }
-        else
-        {
-            animator.SetTrigger("LeftJump");
-        }
-
-        animator.speed = 1; // Ensure the jump animation is playing
-
-        // Play jump sound
-        PlaySound(jumpSound);
+        animator.SetTrigger("Jump");
     }
-
-    /// <summary>
-    /// Handles the landing logic and triggers the appropriate idle animation.
-    /// </summary>
-    private void HandleLanding()
+    public void FallWhileWalking()
     {
-        if (movedInAir)
-        {
-            if (isRight) animator.SetTrigger("RightIdle");
-            else animator.SetTrigger("LeftIdle");
-        }
-        else
-        {
-            animator.SetTrigger("CenterIdle");
-        }
-
-        movedInAir = false;
+        animator.SetTrigger("FallWhileWalking");
     }
-    /// <summary>
-    /// Plays the specified sound.
-    /// </summary>
-    private void PlaySound(AudioClip clip,bool loop=false)
+    public void HitGroundWithMovement()
     {
-        SoundManager.Instance.stopSound();
-       SoundObject soundObject=SoundManager.Instance.PlaySound(clip, transform, 1,loop);
-        SoundManager.Instance.setCurrentSoundObject(soundObject);
+        animator.SetTrigger("HitGroundWithMovement");
     }
-
-    /// <summary>
-    /// Stops the currently playing sound.
-    /// </summary>
-    private void StopSound()
+    public void HitGroundWithoutMovement()
     {
-        SoundManager.Instance.stopSound();
+        animator.SetTrigger("HitGroundWithoutMovement");
     }
 }
