@@ -15,5 +15,6 @@ public class DangerousObject : MonoBehaviour
     }
     void OnCollisionEnter2D(Collision2D other) {
         LifeManager.Instance.RemoveLife();
+        GameManager.Instance.TriggerPlayerDeath();
     }
 }

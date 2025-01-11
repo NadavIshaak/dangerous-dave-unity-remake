@@ -44,4 +44,8 @@ public class PlayerAnimationConttroler : MonoBehaviour
     {
         animator.SetTrigger("HitGroundWithoutMovement");
     }
+     public void Death()
+    {
+        animator.SetTrigger("Death");
+    }
 }

@@ -12,6 +12,7 @@ public class VictoryWalkState : PlayerState
         WinSound=player.GetWinSound();
         SoundManager.Instance.PlaySound(WinSound,player.GetTransform(),1,false,false);
         player.GetAnimationConttroler().ChangeDirection(true);
+         player.GetAnimationConttroler().Move();
     }
 
     public override void HandleInput()
@@ -22,16 +23,14 @@ public class VictoryWalkState : PlayerState
     public override void Update()
     {
         // Auto walk logic
-        player.GetRigidbody().linearVelocity = new Vector2(player.GetMoveSpeed(), 0);
-        player.GetAnimationConttroler().Move();
-
+        player.GetRigidbody().linearVelocity = new Vector2(player.GetMoveSpeed()*1.1f, 0);
         // Raycast to detect walls
         RaycastHit2D hit = Physics2D.Raycast(player.GetTransform().position, Vector2.right, 0.5f, player.GetWallLayerMask());
         if (hit.collider != null)
         {
             player.TransitionToState(player.groundedState);
             player.TriggerVictoryWalkEnd();
-            Object.Destroy(player.gameObject); // Delete the player
+            player.Invoke("DestroyPlayer", 0f);
         }
     }
 

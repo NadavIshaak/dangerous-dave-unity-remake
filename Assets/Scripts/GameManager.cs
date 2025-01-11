@@ -10,7 +10,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private Image _LevelOnesRenderer;
     [SerializeField] private Image _LevelTensRenderer;
     [SerializeField] private GameObject Player;
-    [SerializeField] private GameObject _stage2Spawn;
+    [SerializeField] private GameObject[] _stagesSpawns;
     bool _trophyCollected = false;
      public event Action OnVictoryWalkStart;
     private int _currentLevel = 1;
@@ -47,8 +47,13 @@ public class GameManager : MonoBehaviour
         _canvas.enabled = true;
         _currentLevel++;
         updateLevel();
-        Vector3 nextAreaPosition = _stage2Spawn.transform.position;
-        Instantiate(Player, nextAreaPosition, Quaternion.identity);
+        InstantiatePlayer();
+    }
+    private void InstantiatePlayer()
+    {
+        Vector3 spawnPosition = _stagesSpawns[_currentLevel-2].transform.position;
+        Instantiate(Player, spawnPosition, Quaternion.identity);
+        Debug.Log("Player Instantiated");
     }
     private void updateLevel()
     {
@@ -57,6 +62,15 @@ public class GameManager : MonoBehaviour
 
         _LevelTensRenderer.sprite = _numberSprites[tens];
         _LevelOnesRenderer.sprite = _numberSprites[ones];
+    }
+    public void TriggerPlayerDeath()
+    {
+         PlayerMovement player = FindFirstObjectByType<PlayerMovement>();
+        if (player != null)
+        {
+            player.TriggerDeath();
+            this.Invoke("InstantiatePlayer", 3f);
+        }
     }
 
 }

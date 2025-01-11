@@ -93,7 +93,7 @@ public class GroundedState : PlayerState
             player.GetAnimationConttroler().FallWhileWalking();
             Debug.Log("Falling");
         }
-        else if(isFalling&&(hitLeft.collider != null || hitRight.collider != null)&&firstMove){
+        else if(isFalling&&(hitLeft.collider != null || hitRight.collider != null)){
             isFalling=false;
             isStop=true;
             firstMove=false;

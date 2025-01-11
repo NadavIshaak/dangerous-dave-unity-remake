@@ -23,6 +23,7 @@ public class PlayerMovement : MonoBehaviour
     public GroundedState groundedState;
     public AirborneState airborneState;
     public VictoryWalkState victoryWalkState;
+    public DeathState deathState;
     private void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
@@ -31,6 +32,7 @@ public class PlayerMovement : MonoBehaviour
         groundedState = new GroundedState(this);
         airborneState = new AirborneState(this);
         victoryWalkState = new VictoryWalkState(this);
+        deathState = new DeathState(this);
         controls = new InputSystem_Actions();
     }
      private void Start()
@@ -68,6 +70,14 @@ public class PlayerMovement : MonoBehaviour
         currentState?.Exit();
         currentState = state;
         currentState.Enter();
+    }
+    public void TriggerDeath()
+    {
+        TransitionToState(deathState);
+    }
+     private void DestroyPlayer()
+    {
+        Destroy(gameObject);
     }
 
     private void StartVictoryWalk()
