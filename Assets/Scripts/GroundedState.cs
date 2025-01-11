@@ -99,6 +99,7 @@ public class GroundedState : PlayerState
             firstMove=false;
             SoundManager.Instance.stopSound();
             player.GetAnimationConttroler().HitGroundWithMovement();
+                Debug.Log("HitGroundWithMovement");
         }
     }
 }
