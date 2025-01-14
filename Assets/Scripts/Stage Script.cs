@@ -12,9 +12,30 @@ public class StageScript : MonoSingleton<StageScript>
     }
      private void OnEnable()
     {
+        if (GameManager.Instance != null)
+        {
+            GameManager.Instance.OnVictoryWalkStart += OnStartWalk;
+        }
     }
-    private void OnDestroy(){
+
+    private void OnDisable()
+    {
+        if (GameManager.Instance != null)
+        {
+            GameManager.Instance.OnVictoryWalkStart -= OnStartWalk;
+        }
+    }
+    public void Disable()
+    {
         GameManager.Instance.OnVictoryWalkStart -= OnStartWalk;
+    }
+
+    private void OnDestroy()
+    {
+        if (GameManager.Instance != null)
+        {
+            GameManager.Instance.OnVictoryWalkStart -= OnStartWalk;
+        }
     }
      public void OnStartWalk()
     {

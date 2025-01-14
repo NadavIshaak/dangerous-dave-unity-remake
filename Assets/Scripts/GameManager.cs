@@ -72,5 +72,8 @@ public class GameManager : MonoBehaviour
             this.Invoke("InstantiatePlayer", 3f);
         }
     }
-
+    private void OnDestroy()
+    {
+        StageScript.Instance.Disable();
+    }
 }
