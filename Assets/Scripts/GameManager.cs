@@ -51,7 +51,7 @@ public class GameManager : MonoBehaviour
     }
     private void InstantiatePlayer()
     {
-        Vector3 spawnPosition = _stagesSpawns[_currentLevel-2].transform.position;
+        Vector3 spawnPosition = _stagesSpawns[_currentLevel].transform.position;
         Instantiate(Player, spawnPosition, Quaternion.identity);
         Debug.Log("Player Instantiated");
     }

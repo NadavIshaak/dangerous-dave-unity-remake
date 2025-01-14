@@ -13,7 +13,7 @@ public class StageScript : MonoSingleton<StageScript>
      private void OnEnable()
     {
     }
-    void OnDisable(){
+    private void OnDestroy(){
         GameManager.Instance.OnVictoryWalkStart -= OnStartWalk;
     }
      public void OnStartWalk()
