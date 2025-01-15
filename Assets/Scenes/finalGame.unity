@@ -23586,7 +23586,7 @@ GameObject:
   - component: {fileID: 349637075}
   - component: {fileID: 349637077}
   - component: {fileID: 349637076}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: PurpleBlock (80)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -32691,7 +32691,7 @@ GameObject:
   - component: {fileID: 503954643}
   - component: {fileID: 503954645}
   - component: {fileID: 503954644}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: redTile_0 (131)
   m_TagString: Ground
   m_Icon: {fileID: 0}
@@ -39848,7 +39848,7 @@ GameObject:
   - component: {fileID: 641346847}
   - component: {fileID: 641346849}
   - component: {fileID: 641346848}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: PurpleBlock (27)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -40785,7 +40785,7 @@ GameObject:
   - component: {fileID: 650258094}
   - component: {fileID: 650258096}
   - component: {fileID: 650258095}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: PurpleBlock (155)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -51041,6 +51041,53 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!1 &814348042
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 814348044}
+  - component: {fileID: 814348043}
+  m_Layer: 0
+  m_Name: PlayerBulletPool
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &814348043
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 814348042}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5e7b7d42eb8f33645a744c937f392551, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _prefab: {fileID: 7109196183753466350, guid: 0667d1ec9ef77904780134b9d196a96c, type: 3}
+  _initialSize: 6
+  _parent: {fileID: 814348044}
+--- !u!4 &814348044
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 814348042}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.8966984, y: 0.23390031, z: -0.077700496}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &815782604
 GameObject:
   m_ObjectHideFlags: 0
@@ -61359,7 +61406,7 @@ GameObject:
   - component: {fileID: 1025099663}
   - component: {fileID: 1025099665}
   - component: {fileID: 1025099664}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: PurpleBlock (78)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -65489,7 +65536,7 @@ GameObject:
   - component: {fileID: 1110964927}
   - component: {fileID: 1110964929}
   - component: {fileID: 1110964928}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: PurpleBlock (49)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -86909,7 +86956,7 @@ GameObject:
   - component: {fileID: 1502299460}
   - component: {fileID: 1502299459}
   - component: {fileID: 1502299461}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: redTile_0 (39)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -105865,7 +105912,7 @@ GameObject:
   - component: {fileID: 1811967323}
   - component: {fileID: 1811967325}
   - component: {fileID: 1811967324}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: PurpleBlock (45)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -116325,6 +116372,67 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!1001 &2003383745
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 880331120945609406, guid: 42c6367256be5564dbb09ca5ac211abe, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -4.8871994
+      objectReference: {fileID: 0}
+    - target: {fileID: 880331120945609406, guid: 42c6367256be5564dbb09ca5ac211abe, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -2.4157534
+      objectReference: {fileID: 0}
+    - target: {fileID: 880331120945609406, guid: 42c6367256be5564dbb09ca5ac211abe, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 880331120945609406, guid: 42c6367256be5564dbb09ca5ac211abe, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 880331120945609406, guid: 42c6367256be5564dbb09ca5ac211abe, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 880331120945609406, guid: 42c6367256be5564dbb09ca5ac211abe, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 880331120945609406, guid: 42c6367256be5564dbb09ca5ac211abe, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 880331120945609406, guid: 42c6367256be5564dbb09ca5ac211abe, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 880331120945609406, guid: 42c6367256be5564dbb09ca5ac211abe, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 880331120945609406, guid: 42c6367256be5564dbb09ca5ac211abe, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5735427029511616820, guid: 42c6367256be5564dbb09ca5ac211abe, type: 3}
+      propertyPath: m_Name
+      value: gun_0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5735427029511616820, guid: 42c6367256be5564dbb09ca5ac211abe, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 42c6367256be5564dbb09ca5ac211abe, type: 3}
 --- !u!1 &2005744685
 GameObject:
   m_ObjectHideFlags: 0
@@ -123282,7 +123390,7 @@ GameObject:
   - component: {fileID: 2126769590}
   - component: {fileID: 2126769592}
   - component: {fileID: 2126769591}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: PurpleBlock (36)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -125579,3 +125687,5 @@ SceneRoots:
   - {fileID: 1259170125}
   - {fileID: 1636599777}
   - {fileID: 1015616147}
+  - {fileID: 814348044}
+  - {fileID: 2003383745}
