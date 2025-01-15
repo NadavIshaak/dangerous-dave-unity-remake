@@ -6,6 +6,7 @@ public class DeathState : PlayerState
 
     public override void Enter()
     {
+        player.SetCanShoot(false);
         // Trigger the death animation
         player.GetAnimationConttroler().Death();
         

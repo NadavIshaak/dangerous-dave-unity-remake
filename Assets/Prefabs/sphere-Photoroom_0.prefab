@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 4621928585317849424}
   - component: {fileID: 2912925781050921282}
   - component: {fileID: -2580226155416027603}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: sphere-Photoroom_0
   m_TagString: Untagged
   m_Icon: {fileID: 0}

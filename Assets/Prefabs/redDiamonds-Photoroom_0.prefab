@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 8742176402375619040}
   - component: {fileID: 3394956870532161155}
   - component: {fileID: 8989519817880438700}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: redDiamonds-Photoroom_0
   m_TagString: Untagged
   m_Icon: {fileID: 0}

@@ -17,6 +17,7 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private AudioClip WinSound;
     private Collider2D collide;
     private Rigidbody2D rb;
+    private bool canShoot = false;
     private PlayerAnimationConttroler animationConttroler;
     public event Action OnVictoryWalkEnd;
     public PlayerState currentState;
@@ -54,6 +55,7 @@ public class PlayerMovement : MonoBehaviour
         OnVictoryWalkEnd -= StageScript.Instance.OnEndWalk;
         controls.Player.Move.performed -= OnMove;
         controls.Player.Move.canceled -= OnMove;
+        Debug.Log("Disabled");
     }
     private void Update()
     {
@@ -111,5 +113,6 @@ public class PlayerMovement : MonoBehaviour
     public AudioClip GetFallingSound() => FallingSound;
     public AudioClip GetJumpSound() => jumpSound;
     public AudioClip GetWinSound() => WinSound;
-    
+    public void SetCanShoot(bool value) => canShoot=value;
+    public bool GetCanShoot() => canShoot;
 }

@@ -2,18 +2,15 @@ using UnityEngine;
 
 public class DangerousObject : MonoBehaviour
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-        
+    public virtual void OnCollisionEnter2D(Collision2D other) {
+        if (other.gameObject.CompareTag("Player"))
+        {
+            KillPlayer();
+        }
     }
 
-    // Update is called once per frame
-    void Update()
+    private void KillPlayer()
     {
-        
-    }
-    void OnCollisionEnter2D(Collision2D other) {
         LifeManager.Instance.RemoveLife();
         GameManager.Instance.TriggerPlayerDeath();
         Debug.Log("Player died");
