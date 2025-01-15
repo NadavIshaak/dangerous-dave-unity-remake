@@ -6,11 +6,12 @@ public class GameManager : MonoBehaviour
     public static GameManager Instance;
     [SerializeField] Sprite[] _numberSprites;
     [SerializeField] Image _trophyCollectedRenderer;
-    [SerializeField] private Canvas _canvas;
     [SerializeField] private Image _LevelOnesRenderer;
     [SerializeField] private Image _LevelTensRenderer;
     [SerializeField] private GameObject Player;
     [SerializeField] private GameObject[] _stagesSpawns;
+    [SerializeField] private SpriteRenderer _StageWinWalkRenderer;
+     [SerializeField] private Sprite[] _StageWinWalkSprite;
     bool _trophyCollected = false;
      public event Action OnVictoryWalkStart;
     private int _currentLevel = 1;
@@ -36,7 +37,7 @@ public class GameManager : MonoBehaviour
         if (_trophyCollected)
         {
             _trophyCollected = false;
-            _canvas.enabled = false;
+            _StageWinWalkRenderer.sprite = _StageWinWalkSprite[_currentLevel-1];
             OnVictoryWalkStart?.Invoke();
         }
     }
@@ -44,12 +45,12 @@ public class GameManager : MonoBehaviour
     {
         // Handle the end of the victory walk
         // Example: Spawn the player in the next area
-        _canvas.enabled = true;
+
         _currentLevel++;
         updateLevel();
         InstantiatePlayer();
     }
-    private void InstantiatePlayer()
+    public void InstantiatePlayer()
     {
         Vector3 spawnPosition = _stagesSpawns[_currentLevel].transform.position;
         Instantiate(Player, spawnPosition, Quaternion.identity);
@@ -72,8 +73,5 @@ public class GameManager : MonoBehaviour
             this.Invoke("InstantiatePlayer", 3f);
         }
     }
-    private void OnDestroy()
-    {
-        StageScript.Instance.Disable();
-    }
+   
 }

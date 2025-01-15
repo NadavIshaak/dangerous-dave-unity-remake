@@ -64,8 +64,8 @@ public class GroundedState : PlayerState
         Bounds bounds = collider.bounds;
          Vector2 bottomLeft = new Vector2(bounds.min.x, bounds.min.y + 0.1f); // Add a small buffer distance
         Vector2 bottomRight = new Vector2(bounds.max.x, bounds.min.y + 0.1f); // Add a small buffer distance
-        RaycastHit2D hitLeft = Physics2D.Raycast(bottomLeft, Vector2.down, 0.17f, player.GetWallLayerMask());
-        RaycastHit2D hitRight = Physics2D.Raycast(bottomRight, Vector2.down, 0.17f, player.GetWallLayerMask());
+        RaycastHit2D hitLeft = Physics2D.Raycast(bottomLeft, Vector2.down, 0.2f, player.GetWallLayerMask());
+        RaycastHit2D hitRight = Physics2D.Raycast(bottomRight, Vector2.down, 0.2f, player.GetWallLayerMask());
         player.GetRigidbody().linearVelocity = new Vector2(player.GetMoveInput().x * player.GetMoveSpeed(), player.GetRigidbody().linearVelocity.y);
         checkFirstMoveAndDirection();
         if(player.GetMoveInput().x>0&&!isRight&&firstMove){

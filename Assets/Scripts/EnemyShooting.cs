@@ -6,12 +6,11 @@ public class EnemyShooting : MonoBehaviour
     [SerializeField] float shootInterval = 2f; // Time interval between shots
     [SerializeField] float projectileSpeed = 3f; // Speed of the projectile
 
-    private Transform player;
+    [SerializeField] private Transform player;
     private float shootTimer;
 
     void Start()
     {
-        player = GameObject.FindGameObjectWithTag("Player").transform;
         shootTimer = shootInterval;
     }
 

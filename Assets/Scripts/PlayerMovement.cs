@@ -9,7 +9,7 @@ public class PlayerMovement : MonoBehaviour
     private Vector2 moveInput;
     [SerializeField] private float moveSpeed = 5f;
     [SerializeField] private float jumpForce = 8f;
-    [SerializeField] private Transform victoryWalkStart;
+    [SerializeField] private Vector3 victoryWalkStart;
     [SerializeField] private LayerMask wallLayerMask;
     [SerializeField] private AudioClip MoveSound;
     [SerializeField] private AudioClip FallingSound;
@@ -104,10 +104,10 @@ public class PlayerMovement : MonoBehaviour
     public float GetMoveSpeed() => moveSpeed;
     public float GetJumpForce() => jumpForce;
     public PlayerAnimationConttroler GetAnimationConttroler() => animationConttroler;
-    public Transform GetVictoryWalkStart() => victoryWalkStart;
+    public Vector3 GetVictoryWalkStart() => victoryWalkStart;
     public InputSystem_Actions GetControls() => controls;
     public Transform GetTransform() => transform;
-    public void SetTransform(Transform value) => transform.position = value.position;
+    public void SetTransform(Vector3 value) => transform.position = value;
     public Collider2D GetCollider() => collide;
     public AudioClip GetMoveSound() => MoveSound;
     public AudioClip GetFallingSound() => FallingSound;

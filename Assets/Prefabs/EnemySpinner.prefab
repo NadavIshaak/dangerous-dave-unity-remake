@@ -200,3 +200,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   shootInterval: 4
   projectileSpeed: 3.03
+  player: {fileID: 8593494453934553047, guid: 4ca3899366a8e3b45a01ae5d119fb8f0, type: 3}

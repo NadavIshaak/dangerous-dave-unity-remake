@@ -25,7 +25,7 @@ public class PlayerGun : MonoBehaviour
     void checkForShoot()
     {
         PlayerMovement player = Object.FindFirstObjectByType<PlayerMovement>();
-        if (player == null || !player.GetCanShoot()||!player.GetControls().Player.Jump.triggered) return;
+        if (player == null || !player.GetCanShoot()||!player.GetControls().Player.Attack.triggered) return;
 
         Vector3 direction = (player.transform.localScale.x > 0) ? Vector3.right : Vector3.left;
         shootPoint=transform;
