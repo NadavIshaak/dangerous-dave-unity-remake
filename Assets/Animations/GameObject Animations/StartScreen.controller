@@ -32,7 +32,7 @@ AnimatorController:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: "\u05E6\u05D9\u05DC\u05D5\u05DD \u05DE\u05E1\u05DA 2025-01-15 152651_0"
+  m_Name: StartScreen
   serializedVersion: 5
   m_AnimatorParameters: []
   m_AnimatorLayers:

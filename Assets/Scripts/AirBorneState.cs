@@ -72,14 +72,15 @@ public class AirborneState : PlayerState
          Vector2 bottomLeft = new Vector2(bounds.min.x-0.1f, bounds.min.y+0.1f ); // Add a small buffer distance
         Vector2 bottomRight = new Vector2(bounds.max.x+0.1f, bounds.min.y +0.1f); // Add a small buffer distance
 
-        RaycastHit2D hitLeft = Physics2D.Raycast(bottomLeft, Vector2.down, 0.12f, player.GetWallLayerMask());
-        RaycastHit2D hitRight = Physics2D.Raycast(bottomRight, Vector2.down, 0.12f, player.GetWallLayerMask());
+        RaycastHit2D hitLeft = Physics2D.Raycast(bottomLeft, Vector2.down, 0.145f, player.GetWallLayerMask());
+        RaycastHit2D hitRight = Physics2D.Raycast(bottomRight, Vector2.down, 0.145f, player.GetWallLayerMask());
         if(!isOffGround&&(hitLeft.collider == null || hitRight.collider == null))
         {
             isOffGround=true;
+            Debug.Log("Off Ground");
         }
-        Debug.DrawRay(bottomLeft, Vector2.down * 0.14f, Color.red);
-        Debug.DrawRay(bottomRight, Vector2.down * 0.14f, Color.red);
+        Debug.DrawRay(bottomLeft, Vector2.down * 0.145f, Color.red);
+        Debug.DrawRay(bottomRight, Vector2.down * 0.145f, Color.red);
         if(isOffGround==false){
             return false;
         }

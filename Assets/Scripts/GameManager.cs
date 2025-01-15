@@ -14,6 +14,7 @@ public class GameManager : MonoBehaviour
      [SerializeField] private Sprite[] _StageWinWalkSprite;
     bool _trophyCollected = false;
      public event Action OnVictoryWalkStart;
+     public event Action OnInstantiatedPlayer;
     private int _currentLevel = 1;
     private void Awake()
     {
@@ -54,6 +55,7 @@ public class GameManager : MonoBehaviour
     {
         Vector3 spawnPosition = _stagesSpawns[_currentLevel].transform.position;
         Instantiate(Player, spawnPosition, Quaternion.identity);
+        OnInstantiatedPlayer?.Invoke();
         Debug.Log("Player Instantiated");
     }
     private void updateLevel()

@@ -5,13 +5,13 @@ public class EnemyShooting : MonoBehaviour
     private Transform shootPoint; // The point from which the projectile will be shot
     [SerializeField] float shootInterval = 2f; // Time interval between shots
     [SerializeField] float projectileSpeed = 3f; // Speed of the projectile
-
-    [SerializeField] private Transform player;
-    private float shootTimer;
+    PlayerMovement player=null;
+      private float shootTimer;
 
     void Start()
     {
         shootTimer = shootInterval;
+        GameManager.Instance.OnInstantiatedPlayer+=SetNewPlayer;
     }
 
     void Update()
@@ -24,12 +24,19 @@ public class EnemyShooting : MonoBehaviour
             shootTimer = shootInterval;
         }
     }
+     private void OnDisable() {
+        GameManager.Instance.OnInstantiatedPlayer-=SetNewPlayer;
+    }
+
+    public void SetNewPlayer()
+    {
+        player = Object.FindFirstObjectByType<PlayerMovement>();
+    }
 
     void Shoot()
     {
         if (player == null) return;
-
-        Vector3 direction = (player.position.x > transform.position.x) ? Vector3.right : Vector3.left;
+        Vector3 direction = (player.transform.position.x > transform.position.x) ? Vector3.right : Vector3.left;
         shootPoint = transform;
         Bullet bullet = EnemyBulletPool.Instance.Get();
         bullet.transform.position = shootPoint.position;
