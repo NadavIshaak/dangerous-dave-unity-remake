@@ -133,8 +133,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moveSpeed: 3
-  jumpForce: 5.7
-  victoryWalkStart: {x: 14.87139, y: 1.057937, z: 0}
+  jumpForce: 6
+  victoryWalkStart: {x: 14.87139, y: 1, z: 0}
   wallLayerMask:
     serializedVersion: 2
     m_Bits: 64

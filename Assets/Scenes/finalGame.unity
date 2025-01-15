@@ -54849,6 +54849,7 @@ GameObject:
   m_Component:
   - component: {fileID: 901104965}
   - component: {fileID: 901104966}
+  - component: {fileID: 901104967}
   m_Layer: 6
   m_Name: Stage2Camera
   m_TagString: Untagged
@@ -54914,6 +54915,44 @@ MonoBehaviour:
       BarrelClipping: 0.25
       Anamorphism: 0
   BlendHint: 0
+--- !u!114 &901104967
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 901104964}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 90eebaab98e4b44b0ba8c79821e554e1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_SplineSettings:
+    Spline: {fileID: 0}
+    Position: 0
+    Units: 1
+  SplineOffset: {x: 0, y: 0, z: 0}
+  CameraRotation: 0
+  Damping:
+    Enabled: 0
+    Position: {x: 0, y: 0, z: 0}
+    Angular: 0
+  AutomaticDolly:
+    Enabled: 0
+    Method:
+      rid: 5969719573501182023
+  m_LegacyPosition: -1
+  m_LegacyUnits: 0
+  m_LegacySpline: {fileID: 0}
+  references:
+    version: 2
+    RefIds:
+    - rid: 5969719573501182023
+      type: {class: SplineAutoDolly/NearestPointToTarget, ns: Unity.Cinemachine, asm: Unity.Cinemachine}
+      data:
+        PositionOffset: 0
+        SearchResolution: 4
+        SearchIteration: 2
 --- !u!1 &901927331
 GameObject:
   m_ObjectHideFlags: 0
@@ -70322,7 +70361,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   shootInterval: 4
   projectileSpeed: 3
-  player: {fileID: 8593494453934553047, guid: 4ca3899366a8e3b45a01ae5d119fb8f0, type: 3}
 --- !u!1 &1192577438
 GameObject:
   m_ObjectHideFlags: 0
@@ -78594,7 +78632,7 @@ Transform:
   m_GameObject: {fileID: 1332586309}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 10.443001, y: 1.0749998, z: 0}
+  m_LocalPosition: {x: 10.443001, y: 0.7, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -125086,7 +125124,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9203276732364354205, guid: c1d73a9750c2f4141ac2f7fd4b67051d, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 1.075
+      value: 0.7
       objectReference: {fileID: 0}
     - target: {fileID: 9203276732364354205, guid: c1d73a9750c2f4141ac2f7fd4b67051d, type: 3}
       propertyPath: m_LocalPosition.z

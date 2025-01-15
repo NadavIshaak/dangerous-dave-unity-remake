@@ -69,15 +69,15 @@ public class AirborneState : PlayerState
         Bounds bounds = collider.bounds;
 
         // Perform two raycasts to check if the player is grounded
-         Vector2 bottomLeft = new Vector2(bounds.min.x-0.1f, bounds.min.y+0.1f ); // Add a small buffer distance
-        Vector2 bottomRight = new Vector2(bounds.max.x+0.1f, bounds.min.y +0.1f); // Add a small buffer distance
+         Vector2 bottomLeft = new Vector2(bounds.min.x, bounds.min.y+0.1f ); // Add a small buffer distance
+        Vector2 bottomRight = new Vector2(bounds.max.x, bounds.min.y +0.1f); // Add a small buffer distance
 
         RaycastHit2D hitLeft = Physics2D.Raycast(bottomLeft, Vector2.down, 0.145f, player.GetWallLayerMask());
         RaycastHit2D hitRight = Physics2D.Raycast(bottomRight, Vector2.down, 0.145f, player.GetWallLayerMask());
         if(!isOffGround&&(hitLeft.collider == null || hitRight.collider == null))
         {
             isOffGround=true;
-            Debug.Log("Off Ground");
+            return false;
         }
         Debug.DrawRay(bottomLeft, Vector2.down * 0.145f, Color.red);
         Debug.DrawRay(bottomRight, Vector2.down * 0.145f, Color.red);
