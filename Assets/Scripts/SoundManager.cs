@@ -5,7 +5,7 @@ public class SoundManager : MonoBehaviour
     //class to handle the sounds in the game
 public static SoundManager Instance;
 
-private SoundObject currentSoundObject;
+private SoundObject _currentSoundObject;
 
 
     private void Awake()
@@ -23,11 +23,11 @@ private SoundObject currentSoundObject;
 
     public void stopSound()
     {
-        if (currentSoundObject == null)
+        if (_currentSoundObject == null)
         {
             return;
         }
-        SoundPool.Instance.ImmediateReturn(currentSoundObject);
+        SoundPool.Instance.ImmediateReturn(_currentSoundObject);
     }
    
    
@@ -53,7 +53,7 @@ private SoundObject currentSoundObject;
             audioSource.loop=false;
         }
         if(shouldKeep){
-            currentSoundObject=soundObject;
+            _currentSoundObject=soundObject;
         }
         //return the audio source after the clip has finished playing
         SoundPool.Instance.Return(soundObject);

@@ -1,74 +1,87 @@
 using UnityEngine;
+using UnityEngine.Serialization;
 
-public class StageScript : MonoSingleton<StageScript>
+public class StageScript : MonoBehaviour
 {
-    private Animator animator;
-    [SerializeField] private Canvas _canvas;
-    private InputSystem_Actions controls;
-    private bool didStartGame=false;
+    public static StageScript Instance;
+    private static readonly int Game = Animator.StringToHash("StartGame");
+    private static readonly int StartWalk = Animator.StringToHash("StartWalk");
+    private static readonly int EndWalk = Animator.StringToHash("EndWalk");
+    
+    [FormerlySerializedAs("_canvas")] [SerializeField]
+    private Canvas canvas;
+
+    private Animator _animator;
+    private InputSystem_Actions _controls;
+    private bool _didStartGame;
+
+    private void Awake()
+    {
+        if (Instance == null)
+        {
+            Instance = this;
+            DontDestroyOnLoad(gameObject); 
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+        _controls = new InputSystem_Actions();
+    }
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    private void Start()
     {
-        animator = GetComponent<Animator>();
+        _animator = GetComponent<Animator>();
         GameManager.Instance.OnVictoryWalkStart += OnStartWalk;
-        _canvas.enabled = false;
+        canvas.enabled = false;
     }
-    protected override void Awake()
-    {
-        base.Awake();
-        controls = new InputSystem_Actions();
-    }
-     private void OnEnable()
-    {
-        if (GameManager.Instance != null)
-        {
-            GameManager.Instance.OnVictoryWalkStart += OnStartWalk;
-        }
-        controls.Enable();
-    }
+
     private void Update()
     {
-        if(!didStartGame&&controls.Player.Jump.triggered)
+        if (!_didStartGame && _controls.Player.Jump.triggered)
         {
-            didStartGame = true;
-            StartGame();   
+            _didStartGame = true;
+            StartGame();
         }
+    }
+
+    private void OnEnable()
+    {
+        if (GameManager.Instance != null) GameManager.Instance.OnVictoryWalkStart += OnStartWalk;
+        _controls.Enable();
     }
 
     private void OnDisable()
     {
-        if (GameManager.Instance != null)
-        {
-            GameManager.Instance.OnVictoryWalkStart -= OnStartWalk;
-        }
-        controls.Disable();
+        if (GameManager.Instance != null) GameManager.Instance.OnVictoryWalkStart -= OnStartWalk;
+        _controls.Disable();
     }
+
+    private void OnDestroy()
+    {
+        if (GameManager.Instance != null) GameManager.Instance.OnVictoryWalkStart -= OnStartWalk;
+    }
+
     private void StartGame()
     {
-        _canvas.enabled = true;
+        canvas.enabled = true;
         GameManager.Instance.InstantiatePlayer();
-        animator.SetTrigger("StartGame");
+        _animator.SetTrigger(Game);
     }
+
     public void Disable()
     {
         GameManager.Instance.OnVictoryWalkStart -= OnStartWalk;
     }
 
-    private void OnDestroy()
+    public void OnStartWalk()
     {
-        if (GameManager.Instance != null)
-        {
-            GameManager.Instance.OnVictoryWalkStart -= OnStartWalk;
-        }
-    }
-     public void OnStartWalk()
-    {
-        animator.SetTrigger("StartWalk");
+        _animator.SetTrigger(StartWalk);
     }
 
     public void OnEndWalk()
     {
-        animator.SetTrigger("EndWalk");
+        _animator.SetTrigger(EndWalk);
     }
 }

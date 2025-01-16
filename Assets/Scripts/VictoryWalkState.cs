@@ -8,11 +8,17 @@ public class VictoryWalkState : PlayerState
     public override void Enter()
     {
         // Enter victory walk state logic
+        player.SetCanShoot(false);
         player.SetTransform(player.GetVictoryWalkStart());
         WinSound=player.GetWinSound();
         SoundManager.Instance.PlaySound(WinSound,player.GetTransform(),1,false,false);
         player.GetAnimationConttroler().ChangeDirection(true);
          player.GetAnimationConttroler().Move();
+    }
+
+    public override bool GetIsRight()
+    {
+        return true;
     }
 
     public override void HandleInput()
@@ -28,7 +34,7 @@ public class VictoryWalkState : PlayerState
         RaycastHit2D hit = Physics2D.Raycast(player.GetTransform().position, Vector2.right, 0.5f, player.GetWallLayerMask());
         if (hit.collider != null)
         {
-            player.TransitionToState(player.groundedState);
+            player.TransitionToState(player.GroundedState);
             player.TriggerVictoryWalkEnd();
             player.Invoke("DestroyPlayer", 0f);
         }

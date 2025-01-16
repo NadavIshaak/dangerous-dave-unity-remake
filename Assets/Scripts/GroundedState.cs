@@ -14,11 +14,13 @@ public class GroundedState : PlayerState
         _rb=player.GetRigidbody();
         _wallLayerMask=player.GetWallLayerMask();
         _moveSpeed=player.GetMoveSpeed();
+        _wallHitSound = player.GetStuckSound();
     }
     private bool _isRight=false;
     private bool _isStop;
     private bool _isFalling=false;
     private bool _firstMove;
+    private bool _isStuck=false;
     private readonly AudioClip _moveSound;
     private readonly AudioClip _fallingSound;
     private readonly InputSystem_Actions _controls;
@@ -30,6 +32,7 @@ public class GroundedState : PlayerState
     private readonly LayerMask _wallLayerMask;
     private readonly float _jumpForce;
     private readonly float _moveSpeed;
+    private AudioClip _wallHitSound;
     
     public override void Enter()
     {
@@ -44,7 +47,7 @@ public class GroundedState : PlayerState
         JumpTransition();
     }
 
-    public bool GetIsRight()
+    public override bool GetIsRight()
     {
         return _isRight;
     }
@@ -91,7 +94,43 @@ public class GroundedState : PlayerState
     {
        _animationConttroler.Jump();
        _rb.AddForce(Vector2.up * _jumpForce, ForceMode2D.Impulse);
-        player.TransitionToState(player.airborneState);
+        player.TransitionToState(player.AirborneState);
+    }
+
+    private bool isStuck()
+    {
+        var bounds = _collider.bounds; 
+        var bottomLeft = new Vector2(bounds.min.x, bounds.min.y + 0.1f); // Add a small buffer distance
+        var bottomRight = new Vector2(bounds.max.x, bounds.min.y + 0.1f); // Add a small buffer distance
+        var topLeft = new Vector2(bounds.min.x, bounds.max.y - 0.1f);
+        var topRight = new Vector2(bounds.max.x, bounds.max.y - 0.1f);
+        var hitLeft = Physics2D.Raycast(bottomLeft, Vector2.left, 0.05f, _wallLayerMask);
+        var hitRight = Physics2D.Raycast(bottomRight, Vector2.right, 0.05f, _wallLayerMask);
+        var hitTopLeft = Physics2D.Raycast(topLeft, Vector2.left, 0.05f, _wallLayerMask);
+        var hitTopRight = Physics2D.Raycast(topRight, Vector2.right, 0.05f, _wallLayerMask);
+        Debug.DrawRay(bottomLeft, Vector2.left * 0.1f, Color.red);
+        Debug.DrawRay(bottomRight, Vector2.right * 0.1f, Color.red);
+        Debug.DrawRay(topLeft, Vector2.left * 0.1f, Color.red);
+        Debug.DrawRay(topRight, Vector2.right * 0.1f, Color.red);
+        if ((hitLeft.collider is not null || hitTopLeft.collider is not null) && player.GetMoveInput().x < 0)
+        {
+            _animationConttroler.StopInMovement();
+            if(!_isStuck)
+                PlaySound(true, true, _wallHitSound);
+            _isStuck=true;
+            return true;
+        } 
+        if ((hitRight.collider is not null || hitTopRight.collider is not null) && player.GetMoveInput().x > 0)
+        {
+            _animationConttroler.StopInMovement();
+            if(!_isStuck)
+                PlaySound(true, true, _wallHitSound);
+            _isStuck=true;
+            return true;
+        }
+        SoundManager.Instance.stopSound();
+        _isStuck=false;
+        return false;
     }
 
     private void CheckInputAndAnimate()
@@ -103,6 +142,7 @@ public class GroundedState : PlayerState
         var hitRight = Physics2D.Raycast(bottomRight, Vector2.down, 0.21f, _wallLayerMask);
         _rb.linearVelocity = new Vector2(player.GetMoveInput().x * _moveSpeed, _rb.linearVelocity.y);
         CheckFirstMoveAndDirection();
+        if(isStuck()) return;
         if(player.GetMoveInput().x>0&&!_isRight&&_firstMove){
            _animationConttroler.ChangeDirection(true);
             _isRight=true;
@@ -136,5 +176,10 @@ public class GroundedState : PlayerState
                _animationConttroler.HitGroundWithMovement();
                 break;
         }
+    }
+
+    public void SetIsRight(bool isRight)
+    {
+        _isRight = isRight;
     }
 }

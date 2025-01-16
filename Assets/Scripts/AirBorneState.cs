@@ -2,18 +2,28 @@ using UnityEngine;
 
 public class AirborneState : PlayerState
 {
-    bool isOffGround=false;
-    bool moveInAir=false;
-    private AudioClip jumpSound;
-    public AirborneState(PlayerMovement player) : base(player) { }
+    private bool _isOffGround;
+    private bool _isRight;
+    private AudioClip _jumpSound;
+    private bool _moveInAir;
+
+    public AirborneState(PlayerMovement player) : base(player)
+    {
+    }
 
     public override void Enter()
     {
-        jumpSound=player.GetJumpSound();
-        isOffGround=false;
-        moveInAir=false;
+        _jumpSound = player.GetJumpSound();
+        _isOffGround = false;
+        _moveInAir = false;
         SoundManager.Instance.stopSound();
-        SoundManager.Instance.PlaySound(jumpSound,player.GetTransform(),1,true,true);
+        PlaySound(true, true, _jumpSound);
+        _isRight = player.GroundedState.GetIsRight();
+    }
+
+    public override bool GetIsRight()
+    {
+        return _isRight;
     }
 
     public override void HandleInput()
@@ -26,64 +36,68 @@ public class AirborneState : PlayerState
         IfGrounded();
         InputAndAnimate();
     }
+
     private void IfGrounded()
     {
         if (IsGrounded())
         {
-            if(moveInAir){
+            if (_moveInAir)
                 player.GetAnimationConttroler().HitGroundWithMovement();
-            }
-            else{
+            else
                 player.GetAnimationConttroler().HitGroundWithoutMovement();
-            }
-            player.TransitionToState(player.groundedState);
-            
+            player.TransitionToState(player.GroundedState);
         }
     }
+
     private void InputAndAnimate()
     {
-        player.GetRigidbody().linearVelocity = new Vector2(player.GetMoveInput().x * player.GetMoveSpeed(), player.GetRigidbody().linearVelocity.y);
-        if(player.GetMoveInput().x!=0){
-            moveInAir=true;
-        }
-        if(player.GetMoveInput().x>0){
+        player.GetRigidbody().linearVelocity = new Vector2(player.GetMoveInput().x * player.GetMoveSpeed(),
+            player.GetRigidbody().linearVelocity.y);
+        if (player.GetMoveInput().x != 0) _moveInAir = true;
+        if (player.GetMoveInput().x > 0)
+        {
             player.GetAnimationConttroler().ChangeDirection(true);
+            _isRight = true;
         }
-        else if(player.GetMoveInput().x<0){
+        else if (player.GetMoveInput().x < 0)
+        {
             player.GetAnimationConttroler().ChangeDirection(false);
+            _isRight = false;
         }
     }
-    private void PlaySound(bool ShouldKeep,bool ShouldLoop,AudioClip clip)
+
+    private void PlaySound(bool ShouldKeep, bool ShouldLoop, AudioClip clip)
     {
-        SoundManager.Instance.PlaySound(clip,player.GetTransform(),1,ShouldLoop,ShouldKeep);
+        SoundManager.Instance.PlaySound(clip, player.GetTransform(), 1, ShouldLoop, ShouldKeep);
     }
 
     public override void Exit()
     {
         SoundManager.Instance.stopSound();
+        player.GroundedState.SetIsRight(_isRight);
     }
+
     private bool IsGrounded()
     {
         // Get the player's collider bounds
-        Collider2D collider = player.GetCollider();
-        Bounds bounds = collider.bounds;
+        var collider = player.GetCollider();
+        var bounds = collider.bounds;
 
         // Perform two raycasts to check if the player is grounded
-         Vector2 bottomLeft = new Vector2(bounds.min.x, bounds.min.y+0.1f ); // Add a small buffer distance
-        Vector2 bottomRight = new Vector2(bounds.max.x, bounds.min.y +0.1f); // Add a small buffer distance
+        var bottomLeft = new Vector2(bounds.min.x, bounds.min.y + 0.1f); // Add a small buffer distance
+        var bottomRight = new Vector2(bounds.max.x, bounds.min.y + 0.1f); // Add a small buffer distance
 
-        RaycastHit2D hitLeft = Physics2D.Raycast(bottomLeft, Vector2.down, 0.145f, player.GetWallLayerMask());
-        RaycastHit2D hitRight = Physics2D.Raycast(bottomRight, Vector2.down, 0.145f, player.GetWallLayerMask());
-        if(!isOffGround&&(hitLeft.collider == null || hitRight.collider == null))
+        var hitLeft = Physics2D.Raycast(bottomLeft, Vector2.down, 0.145f, player.GetWallLayerMask());
+        var hitRight = Physics2D.Raycast(bottomRight, Vector2.down, 0.145f, player.GetWallLayerMask());
+        if (!_isOffGround && (hitLeft.collider is null || hitRight.collider is null))
         {
-            isOffGround=true;
+            _isOffGround = true;
             return false;
         }
+
         Debug.DrawRay(bottomLeft, Vector2.down * 0.145f, Color.red);
         Debug.DrawRay(bottomRight, Vector2.down * 0.145f, Color.red);
-        if(isOffGround==false){
-            return false;
-        }
-        return hitLeft.collider != null || hitRight.collider != null;
+        if (_isOffGround == false) return false;
+        return hitLeft.collider is not null || hitRight.collider is not null;
     }
 }

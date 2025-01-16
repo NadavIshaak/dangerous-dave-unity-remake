@@ -12,7 +12,8 @@ public class GameManager : MonoBehaviour
     [SerializeField] private GameObject[] _stagesSpawns;
     [SerializeField] private SpriteRenderer _StageWinWalkRenderer;
      [SerializeField] private Sprite[] _StageWinWalkSprite;
-    bool _trophyCollected = false;
+     private bool _trophyCollected = false;
+    bool _hasGun = false;
      public event Action OnVictoryWalkStart;
      public event Action OnInstantiatedPlayer;
     private int _currentLevel = 1;
@@ -21,7 +22,7 @@ public class GameManager : MonoBehaviour
         if (Instance == null)
         {
             Instance = this;
-            DontDestroyOnLoad(gameObject); // Ensure the GameManager persists across scenes
+            DontDestroyOnLoad(gameObject); // Ensure the SoundManager persists across scenes
         }
         else
         {
@@ -35,12 +36,11 @@ public class GameManager : MonoBehaviour
     }
     public void DoorReached()
     {
-        if (_trophyCollected)
-        {
-            _trophyCollected = false;
-            _StageWinWalkRenderer.sprite = _StageWinWalkSprite[_currentLevel-1];
-            OnVictoryWalkStart?.Invoke();
-        }
+        if (!_trophyCollected) return;
+        _trophyCollected = false;
+        _StageWinWalkRenderer.sprite = _StageWinWalkSprite[_currentLevel-1];
+        _hasGun = false;
+        OnVictoryWalkStart?.Invoke();
     }
     public void OnVictoryWalkEnd()
     {
@@ -48,7 +48,7 @@ public class GameManager : MonoBehaviour
         // Example: Spawn the player in the next area
 
         _currentLevel++;
-        updateLevel();
+        UpdateLevel();
         InstantiatePlayer();
     }
     public void InstantiatePlayer()
@@ -58,7 +58,7 @@ public class GameManager : MonoBehaviour
         OnInstantiatedPlayer?.Invoke();
         Debug.Log("Player Instantiated");
     }
-    private void updateLevel()
+    private void UpdateLevel()
     {
         int tens = _currentLevel / 10;
         int ones = _currentLevel % 10;
@@ -72,8 +72,16 @@ public class GameManager : MonoBehaviour
         if (player != null)
         {
             player.TriggerDeath();
-            this.Invoke("InstantiatePlayer", 3f);
+            Invoke(nameof(InstantiatePlayer), 3f);
         }
     }
-   
+    public void SetHasGun(bool hasGun)
+    {
+        _hasGun = hasGun;
+    }
+
+    public bool GetCanShoot()
+    {
+        return _hasGun;
+    }
 }

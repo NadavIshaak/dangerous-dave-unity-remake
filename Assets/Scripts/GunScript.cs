@@ -9,6 +9,7 @@ public class GunScript :Collectible
         if (player != null)
         {
             player.SetCanShoot(true);
+            GameManager.Instance.SetHasGun(true);
         }
    }
 }

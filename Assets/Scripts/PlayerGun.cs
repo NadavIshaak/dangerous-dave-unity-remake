@@ -28,7 +28,7 @@ public class PlayerGun : MonoBehaviour
     {
         if (_player is null || !_player.GetCanShoot()||!_player.GetControls().Player.Attack.triggered) return;
 
-        var direction = (_player.currentState. > 0) ? Vector3.right : Vector3.left;
+        var direction = _player.CurrentState.GetIsRight() ? Vector3.right : Vector3.left;
         _shootPoint=transform;
         var bullet = PlayerBulletPool.Instance.Get();
         bullet.transform.position = _shootPoint.position;
