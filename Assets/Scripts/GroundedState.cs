@@ -2,104 +2,139 @@ using UnityEngine;
 
 public class GroundedState : PlayerState
 {
-    public GroundedState(PlayerMovement player) : base(player) { }
-    private bool isRight=false;
-    private bool isStop=true;
-    private bool isFalling=false;
-    private bool firstMove=false;
-    private AudioClip MoveSound;
-        private AudioClip FallingSound;
+    public GroundedState(PlayerMovement player) : base(player)
+    {
+        _moveSound=player.GetMoveSound();
+        _fallingSound=player.GetFallingSound();
+        _controls=player.GetControls();
+        _animationConttroler=player.GetAnimationConttroler();
+        _playerTransform=player.GetTransform();
+        _jumpForce=player.GetJumpForce();
+        _collider=player.GetCollider();
+        _rb=player.GetRigidbody();
+        _wallLayerMask=player.GetWallLayerMask();
+        _moveSpeed=player.GetMoveSpeed();
+    }
+    private bool _isRight=false;
+    private bool _isStop;
+    private bool _isFalling=false;
+    private bool _firstMove;
+    private readonly AudioClip _moveSound;
+    private readonly AudioClip _fallingSound;
+    private readonly InputSystem_Actions _controls;
+    private readonly Transform _playerTransform;
+    private readonly Rigidbody2D _rb;
+    private readonly Collider2D _collider;
+    private Vector2 _moveInput;
+    private readonly PlayerAnimationConttroler _animationConttroler;
+    private readonly LayerMask _wallLayerMask;
+    private readonly float _jumpForce;
+    private readonly float _moveSpeed;
     
     public override void Enter()
     {
-        isStop=true;
-        firstMove=false;
-        MoveSound=player.GetMoveSound();
-        FallingSound=player.GetFallingSound();
+        _isStop=true;
+        _firstMove=false;
     }
+    
 
     public override void HandleInput()
     {
-        if (player.GetControls().Player.Jump.triggered&&isFalling==false)
-        {
-            player.GetAnimationConttroler().Jump();
-            player.GetRigidbody().AddForce(Vector2.up * player.GetJumpForce(), ForceMode2D.Impulse);
-            player.TransitionToState(player.airborneState);
-        }
+        if (!_controls.Player.Jump.triggered || _isFalling != false) return;
+        JumpTransition();
+    }
+
+    public bool GetIsRight()
+    {
+        return _isRight;
     }
 
     public override void Update()
     {
-        checkFirstMoveAndDirection();
+        CheckFirstMoveAndDirection();
         CheckInputAndAnimate();
     }
 
     public override void Exit()
     {
-        player.GetAnimationConttroler().ResumeMovement();
+        _animationConttroler.ResumeMovement();
     }
-    private void PlaySound(bool ShouldKeep,bool ShouldLoop,AudioClip clip)
+    // ReSharper disable Unity.PerformanceAnalysis
+    private void PlaySound(bool shouldKeep,bool shouldLoop,AudioClip clip)
     {
-        SoundManager.Instance.PlaySound(clip,player.GetTransform(),1,ShouldLoop,ShouldKeep);
+        SoundManager.Instance.PlaySound(clip,_playerTransform,1,shouldLoop,shouldKeep);
     }
 
-    private void checkFirstMoveAndDirection(){
-        if(player.GetMoveInput().x!=0&&!firstMove)
+    // ReSharper disable Unity.PerformanceAnalysis
+    private void CheckFirstMoveAndDirection(){
+        if(player.GetMoveInput().x!=0&&!_firstMove)
         {
-            player.GetAnimationConttroler().Move();
-            PlaySound(true,true,MoveSound);
+            _animationConttroler.Move();
+            PlaySound(true,true,_moveSound);
             if(player.GetMoveInput().x>0){
-                player.GetAnimationConttroler().ChangeDirection(true);
-                isRight=true;
+                _animationConttroler.ChangeDirection(true);
+                _isRight=true;
             }
             else{
-                player.GetAnimationConttroler().ChangeDirection(false);
-                isRight=false;
+                _animationConttroler.ChangeDirection(false);
+                _isRight=false;
             }
-            firstMove=true;
+            _firstMove=true;
+        }
+        else if(_controls.Player.Jump.triggered&&!_firstMove)
+        {
+            JumpTransition();
         }
     }
-    private void CheckInputAndAnimate(){
-        Collider2D collider = player.GetCollider();
-        Bounds bounds = collider.bounds;
-         Vector2 bottomLeft = new Vector2(bounds.min.x, bounds.min.y + 0.1f); // Add a small buffer distance
-        Vector2 bottomRight = new Vector2(bounds.max.x, bounds.min.y + 0.1f); // Add a small buffer distance
-        RaycastHit2D hitLeft = Physics2D.Raycast(bottomLeft, Vector2.down, 0.2f, player.GetWallLayerMask());
-        RaycastHit2D hitRight = Physics2D.Raycast(bottomRight, Vector2.down, 0.2f, player.GetWallLayerMask());
-        player.GetRigidbody().linearVelocity = new Vector2(player.GetMoveInput().x * player.GetMoveSpeed(), player.GetRigidbody().linearVelocity.y);
-        checkFirstMoveAndDirection();
-        if(player.GetMoveInput().x>0&&!isRight&&firstMove){
-            player.GetAnimationConttroler().ChangeDirection(true);
-            isRight=true;
+
+    private void JumpTransition()
+    {
+       _animationConttroler.Jump();
+       _rb.AddForce(Vector2.up * _jumpForce, ForceMode2D.Impulse);
+        player.TransitionToState(player.airborneState);
+    }
+
+    private void CheckInputAndAnimate()
+    {
+        var bounds = _collider.bounds;
+         var bottomLeft = new Vector2(bounds.min.x, bounds.min.y + 0.1f); // Add a small buffer distance
+        var bottomRight = new Vector2(bounds.max.x, bounds.min.y + 0.1f); // Add a small buffer distance
+        var hitLeft = Physics2D.Raycast(bottomLeft, Vector2.down, 0.21f, _wallLayerMask);
+        var hitRight = Physics2D.Raycast(bottomRight, Vector2.down, 0.21f, _wallLayerMask);
+        _rb.linearVelocity = new Vector2(player.GetMoveInput().x * _moveSpeed, _rb.linearVelocity.y);
+        CheckFirstMoveAndDirection();
+        if(player.GetMoveInput().x>0&&!_isRight&&_firstMove){
+           _animationConttroler.ChangeDirection(true);
+            _isRight=true;
         }
-        else if(player.GetMoveInput().x<0&&isRight&&firstMove){
-            player.GetAnimationConttroler().ChangeDirection(false);
-            isRight=false;
+        else if(player.GetMoveInput().x<0&&_isRight&&_firstMove){
+           _animationConttroler.ChangeDirection(false);
+            _isRight=false;
         }
-        else if(player.GetMoveInput().x==0&&!isStop&&!isFalling&&firstMove){
-            player.GetAnimationConttroler().StopInMovement();
+        else if(player.GetMoveInput().x==0&&!_isStop&&!_isFalling&&_firstMove){
+            _animationConttroler.StopInMovement();
             SoundManager.Instance.stopSound();
-            isStop=true;
+            _isStop=true;
         }
-        else if(player.GetMoveInput().x!=0&&isStop&&!isFalling&&firstMove){
-            player.GetAnimationConttroler().ResumeMovement();
-            PlaySound(true,true,MoveSound);
-            isStop=false;
+        else if(player.GetMoveInput().x!=0&&_isStop&&!_isFalling&&_firstMove){
+            _animationConttroler.ResumeMovement();
+            PlaySound(true,true,_moveSound);
+            _isStop=false;
         }
-        else if(!isFalling&&(hitLeft.collider == null && hitRight.collider == null)&&firstMove)
+        else switch (_isFalling)
         {
-            PlaySound(true,true,FallingSound);
-            isFalling=true;
-            player.GetAnimationConttroler().FallWhileWalking();
-            Debug.Log("Falling");
-        }
-        else if(isFalling&&(hitLeft.collider != null || hitRight.collider != null)){
-            isFalling=false;
-            isStop=true;
-            firstMove=false;
-            SoundManager.Instance.stopSound();
-            player.GetAnimationConttroler().HitGroundWithMovement();
-                Debug.Log("HitGroundWithMovement");
+            case false when (hitLeft.collider is null && hitRight.collider is null) && _firstMove:
+                PlaySound(true,true,_fallingSound);
+                _isFalling=true;
+                _animationConttroler.FallWhileWalking();
+                break;
+            case true when (hitLeft.collider is not null || hitRight.collider is not null):
+                _isFalling=false;
+                _isStop=true;
+                _firstMove=false;
+                SoundManager.Instance.stopSound();
+               _animationConttroler.HitGroundWithMovement();
+                break;
         }
     }
 }

@@ -124,6 +124,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 41636dc98c7fa7543bb31d7d8001574d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  deathSound: {fileID: 8300000, guid: 58b46fbef90d64040a8f0ce142ba175f, type: 3}
 --- !u!61 &2308374263844729102
 BoxCollider2D:
   m_ObjectHideFlags: 0

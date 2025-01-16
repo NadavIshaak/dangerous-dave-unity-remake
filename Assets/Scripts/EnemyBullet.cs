@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class Bullet : DangerousObject,IPoolable
+public class EnemyBullet : DangerousObject,IPoolable
 {
     public override void OnCollisionEnter2D(Collision2D other) {
         base.OnCollisionEnter2D(other);

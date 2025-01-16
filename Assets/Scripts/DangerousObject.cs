@@ -2,6 +2,7 @@ using UnityEngine;
 
 public class DangerousObject : MonoBehaviour
 {
+    [SerializeField] private AudioClip deathSound;
     public virtual void OnCollisionEnter2D(Collision2D other) {
         if (other.gameObject.CompareTag("Player"))
         {
@@ -13,7 +14,7 @@ public class DangerousObject : MonoBehaviour
     {
         LifeManager.Instance.RemoveLife();
         GameManager.Instance.TriggerPlayerDeath();
-        Debug.Log("Player died");
-        Debug.Log("killed by: " + gameObject.name);
+        SoundManager.Instance.PlaySound(deathSound, transform, 1);
     }
+    
 }

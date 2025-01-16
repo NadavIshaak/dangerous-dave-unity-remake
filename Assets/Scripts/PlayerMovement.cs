@@ -90,7 +90,7 @@ public class PlayerMovement : MonoBehaviour
     {
         OnVictoryWalkEnd?.Invoke();
     }
-    private void OnMove(UnityEngine.InputSystem.InputAction.CallbackContext context)
+    private void OnMove(InputAction.CallbackContext context)
     {
         moveInput = context.ReadValue<Vector2>();
         if (currentState == null&&moveInput.x!=0)

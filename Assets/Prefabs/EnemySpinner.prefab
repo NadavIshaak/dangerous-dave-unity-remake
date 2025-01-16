@@ -15,6 +15,7 @@ GameObject:
   - component: {fileID: 6950096318077442535}
   - component: {fileID: -5757362308330100193}
   - component: {fileID: -8064524107008645360}
+  - component: {fileID: -8375040105225471769}
   m_Layer: 8
   m_Name: EnemySpinner
   m_TagString: Enemy
@@ -104,6 +105,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 41636dc98c7fa7543bb31d7d8001574d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  deathSound: {fileID: 8300000, guid: 58b46fbef90d64040a8f0ce142ba175f, type: 3}
 --- !u!95 &9149545015497252108
 Animator:
   serializedVersion: 7
@@ -200,3 +202,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   shootInterval: 4
   projectileSpeed: 3.03
+--- !u!114 &-8375040105225471769
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5398768960906750943}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4f8f13f7940a55a43b412e61eab6de50, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  timeToDestroy: 3
+  deathSound: {fileID: 8300000, guid: 7a46b3d9401e5a842b4063d06dc71961, type: 3}

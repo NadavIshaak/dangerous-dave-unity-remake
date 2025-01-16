@@ -2,6 +2,12 @@ using UnityEngine;
 
 public class PlayerAnimationConttroler : MonoBehaviour
 {
+    private static readonly int Move1 = Animator.StringToHash("Move");
+    private static readonly int Jump1 = Animator.StringToHash("Jump");
+    private static readonly int WhileWalking = Animator.StringToHash("FallWhileWalking");
+    private static readonly int GroundWithMovement = Animator.StringToHash("HitGroundWithMovement");
+    private static readonly int GroundWithoutMovement = Animator.StringToHash("HitGroundWithoutMovement");
+    private static readonly int Death1 = Animator.StringToHash("Death");
     private Animator animator;
     private AudioSource audioSource;
     private SpriteRenderer spriteRenderer;
@@ -14,7 +20,7 @@ public class PlayerAnimationConttroler : MonoBehaviour
 
     public void Move()
     {
-        animator.SetTrigger("Move");
+        animator.SetTrigger(Move1);
     }
     public void ChangeDirection(bool facingRight)
     {
@@ -30,22 +36,22 @@ public class PlayerAnimationConttroler : MonoBehaviour
     }
     public void Jump()
     {
-        animator.SetTrigger("Jump");
+        animator.SetTrigger(Jump1);
     }
     public void FallWhileWalking()
     {
-        animator.SetTrigger("FallWhileWalking");
+        animator.SetTrigger(WhileWalking);
     }
     public void HitGroundWithMovement()
     {
-        animator.SetTrigger("HitGroundWithMovement");
+        animator.SetTrigger(GroundWithMovement);
     }
     public void HitGroundWithoutMovement()
     {
-        animator.SetTrigger("HitGroundWithoutMovement");
+        animator.SetTrigger(GroundWithoutMovement);
     }
      public void Death()
     {
-        animator.SetTrigger("Death");
+        animator.SetTrigger(Death1);
     }
 }

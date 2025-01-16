@@ -2,44 +2,46 @@ using UnityEngine;
 
 public class PlayerGun : MonoBehaviour
 {
-    private Transform shootPoint; // The point from which the projectile will be shot
-    [SerializeField] float shootInterval = 2f; // Time interval between shots
-    [SerializeField] float projectileSpeed = 3f; // Speed of the projectile
-    private float shootTimer;
+    private Transform _shootPoint; // The point from which the projectile will be shot
+    [SerializeField] private float shootInterval = 2f; // Time interval between shots
+    [SerializeField] private float projectileSpeed = 3f; // Speed of the projectile
+    private PlayerMovement _player;
+    private float _shootTimer;
 
-    void Start()
+    private void Start()
     {
-        shootTimer = shootInterval;
+        _shootTimer = shootInterval;
+        _player = GetComponent<PlayerMovement>();
     }
 
-    void Update()
+    private void Update()
     {
-        shootTimer -= Time.deltaTime;
+        _shootTimer -= Time.deltaTime;
 
-        if (shootTimer <= 0f)
+        if (_shootTimer <= 0f)
         {
-            checkForShoot();
+            CheckForShoot();
         }
     }
 
-    void checkForShoot()
+    private void CheckForShoot()
     {
-        PlayerMovement player = Object.FindFirstObjectByType<PlayerMovement>();
-        if (player == null || !player.GetCanShoot()||!player.GetControls().Player.Attack.triggered) return;
+        if (_player is null || !_player.GetCanShoot()||!_player.GetControls().Player.Attack.triggered) return;
 
-        Vector3 direction = (player.transform.localScale.x > 0) ? Vector3.right : Vector3.left;
-        shootPoint=transform;
-        PlayerBullet bullet = PlayerBulletPool.Instance.Get();
-        bullet.transform.position = shootPoint.position;
+        var direction = (_player.currentState. > 0) ? Vector3.right : Vector3.left;
+        _shootPoint=transform;
+        var bullet = PlayerBulletPool.Instance.Get();
+        bullet.transform.position = _shootPoint.position;
 
         // Flip the bullet sprite based on the direction
-        SpriteRenderer spriteRenderer = bullet.GetComponent<SpriteRenderer>();
-        if (spriteRenderer != null)
+        var spriteRenderer = bullet.GetComponent<SpriteRenderer>();
+        if (spriteRenderer is not null)
         {
             spriteRenderer.flipX = (direction == Vector3.left);
         }
 
-        Rigidbody2D rb = bullet.GetComponent<Rigidbody2D>();
+        var rb = bullet.GetComponent<Rigidbody2D>();
         rb.linearVelocity = direction * projectileSpeed;
+        _shootTimer = shootInterval;
     }
 }

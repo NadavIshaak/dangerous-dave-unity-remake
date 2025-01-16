@@ -132,7 +132,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 52ee1e23800ec4842bcfe3ce9af87fa2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 3
+  moveSpeed: 2.5
   jumpForce: 6
   victoryWalkStart: {x: 14.87139, y: 0.9, z: 0}
   wallLayerMask:
@@ -235,4 +235,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   shootInterval: 2
-  projectileSpeed: 3
+  projectileSpeed: 5.1

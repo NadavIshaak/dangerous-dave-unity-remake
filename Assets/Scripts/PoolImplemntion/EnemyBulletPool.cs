@@ -1,18 +1,18 @@
 using UnityEngine;
 using System.Collections;
-public class EnemyBulletPool : MonoPool<Bullet>
+public class EnemyBulletPool : MonoPool<EnemyBullet>
 {
 
 
-    public override void Return(Bullet bullet)
+    public override void Return(EnemyBullet enemyBullet)
     {
-         StartCoroutine(WaitThenReturn(bullet, 1f));
+         StartCoroutine(WaitThenReturn(enemyBullet, 1f));
     }
     
 
-    private IEnumerator WaitThenReturn(Bullet bullet, float delay)
+    private IEnumerator WaitThenReturn(EnemyBullet enemyBullet, float delay)
     {
         yield return new WaitForSeconds(delay);
-        base.Return(bullet); // Now run the actual return logic
+        base.Return(enemyBullet); // Now run the actual return logic
     }
 }

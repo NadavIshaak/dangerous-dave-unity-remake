@@ -2,52 +2,52 @@ using UnityEngine;
 
 public class EnemyShooting : MonoBehaviour
 {
-    private Transform shootPoint; // The point from which the projectile will be shot
-    [SerializeField] float shootInterval = 2f; // Time interval between shots
-    [SerializeField] float projectileSpeed = 3f; // Speed of the projectile
-    PlayerMovement player=null;
-      private float shootTimer;
+    private Transform _shootPoint; // The point from which the projectile will be shot
+    [SerializeField] private float shootInterval = 2f; // Time interval between shots
+    [SerializeField] private float projectileSpeed = 3f; // Speed of the projectile
+    private PlayerMovement _player=null;
+      private float _shootTimer;
 
-    void Start()
+      private void Start()
     {
-        shootTimer = shootInterval;
+        _shootTimer = shootInterval;
         GameManager.Instance.OnInstantiatedPlayer+=SetNewPlayer;
     }
 
-    void Update()
+    private void Update()
     {
-        shootTimer -= Time.deltaTime;
+        _shootTimer -= Time.deltaTime;
 
-        if (shootTimer <= 0f)
+        if (_shootTimer <= 0f)
         {
             Shoot();
-            shootTimer = shootInterval;
+            _shootTimer = shootInterval;
         }
     }
      private void OnDisable() {
         GameManager.Instance.OnInstantiatedPlayer-=SetNewPlayer;
     }
 
-    public void SetNewPlayer()
+    private void SetNewPlayer()
     {
-        player = Object.FindFirstObjectByType<PlayerMovement>();
+        _player = Object.FindFirstObjectByType<PlayerMovement>();
     }
 
-    void Shoot()
+    private void Shoot()
     {
-        if (player == null) return;
-        Vector3 direction = (player.transform.position.x > transform.position.x) ? Vector3.right : Vector3.left;
-        shootPoint = transform;
-        Bullet bullet = EnemyBulletPool.Instance.Get();
-        bullet.transform.position = shootPoint.position;
+        if (_player is null) return;
+        var direction = (_player.transform.position.x > transform.position.x) ? Vector3.right : Vector3.left;
+        _shootPoint = transform;
+        var enemyBullet = EnemyBulletPool.Instance.Get();
+        enemyBullet.transform.position = _shootPoint.position;
 
          // Flip the bullet sprite based on the direction
-        SpriteRenderer spriteRenderer = bullet.GetComponent<SpriteRenderer>();
-        if (spriteRenderer != null)
+        var spriteRenderer = enemyBullet.GetComponent<SpriteRenderer>();
+        if (spriteRenderer is not null)
         {
             spriteRenderer.flipX = (direction == Vector3.right);
         }
-        Rigidbody2D rb = bullet.GetComponent<Rigidbody2D>();
+        Rigidbody2D rb = enemyBullet.GetComponent<Rigidbody2D>();
         rb.linearVelocity = direction * projectileSpeed;
     }
 }
