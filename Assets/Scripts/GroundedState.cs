@@ -97,7 +97,7 @@ public class GroundedState : PlayerState
         player.TransitionToState(player.AirborneState);
     }
 
-    private bool isStuck()
+    private bool IsStuck()
     {
         var bounds = _collider.bounds; 
         var bottomLeft = new Vector2(bounds.min.x, bounds.min.y + 0.1f); // Add a small buffer distance
@@ -128,6 +128,7 @@ public class GroundedState : PlayerState
             _isStuck=true;
             return true;
         }
+        if(!_isStuck) return false;
         SoundManager.Instance.stopSound();
         _isStuck=false;
         return false;
@@ -142,7 +143,7 @@ public class GroundedState : PlayerState
         var hitRight = Physics2D.Raycast(bottomRight, Vector2.down, 0.21f, _wallLayerMask);
         _rb.linearVelocity = new Vector2(player.GetMoveInput().x * _moveSpeed, _rb.linearVelocity.y);
         CheckFirstMoveAndDirection();
-        if(isStuck()) return;
+        if(IsStuck()) return;
         if(player.GetMoveInput().x>0&&!_isRight&&_firstMove){
            _animationConttroler.ChangeDirection(true);
             _isRight=true;

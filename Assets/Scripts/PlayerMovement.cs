@@ -16,6 +16,7 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private AudioClip jumpSound;
     [SerializeField] private AudioClip WinSound;
     [SerializeField] private AudioClip StuckSound;
+    [SerializeField] private AudioClip jetpackSound;
     private Collider2D _collide;
     private Rigidbody2D _rb;
     private bool _canShoot = false;
@@ -117,5 +118,6 @@ public class PlayerMovement : MonoBehaviour
     public void SetCanShoot(bool value) => _canShoot=value;
     public bool GetCanShoot() => _canShoot;
     public AudioClip GetStuckSound() => StuckSound;
+    public  AudioClip GetJetpackSound() => jetpackSound;
     
 }

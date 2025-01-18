@@ -8,6 +8,7 @@ public class PlayerAnimationConttroler : MonoBehaviour
     private static readonly int GroundWithMovement = Animator.StringToHash("HitGroundWithMovement");
     private static readonly int GroundWithoutMovement = Animator.StringToHash("HitGroundWithoutMovement");
     private static readonly int Death1 = Animator.StringToHash("Death");
+    private static readonly int Pack = Animator.StringToHash("JetPack");
     private Animator animator;
     private AudioSource audioSource;
     private SpriteRenderer spriteRenderer;
@@ -53,5 +54,10 @@ public class PlayerAnimationConttroler : MonoBehaviour
      public void Death()
     {
         animator.SetTrigger(Death1);
+    }
+
+    public void JetPack()
+    {
+        animator.SetTrigger(Pack);
     }
 }
