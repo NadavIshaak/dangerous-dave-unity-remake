@@ -25,4 +25,21 @@ public class ScreenBoundary : MonoBehaviour
             dollyCart.SplinePosition = currentScreenIndex + 1;
         }
     }
+    private void OnTriggerExit2D(Collider2D other)
+    {
+        if (!other.CompareTag("Player")) return;
+        var playerX = other.transform.position.x;
+        boundaryX = transform.position.x;
+        if (playerX > boundaryX)
+        {
+            // The player crossed this boundary from left to right, so go to the NEXT screen
+            dollyCart.SplinePosition = currentScreenIndex+1;
+        }
+        else
+        {
+            // The player crossed from right to left, so go to the PREVIOUS screen
+            dollyCart.SplinePosition = currentScreenIndex;
+        }
+    }
+    
 }

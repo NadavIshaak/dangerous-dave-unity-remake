@@ -36,7 +36,7 @@ public class JetPackState : PlayerState
 
     public override void HandleInput()
     {
-        if (_controls.Player.Jetpack.canceled)
+        if (_controls.Player.JetPack.IsPressed()==false)
         {
             _isFlying = false;
             player.TransitionToState(player.GroundedState); // Transition back to the previous state

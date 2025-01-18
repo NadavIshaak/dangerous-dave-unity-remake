@@ -162,6 +162,10 @@ public class GroundedState : PlayerState
             PlaySound(true,true,_moveSound);
             _isStop=false;
         }
+        else if(_controls.Player.JetPack.IsPressed())
+        {
+            player.TransitionToState(player.JetPackState);
+        }
         else switch (_isFalling)
         {
             case false when (hitLeft.collider is null && hitRight.collider is null) && _firstMove:

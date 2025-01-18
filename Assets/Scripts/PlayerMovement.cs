@@ -27,6 +27,7 @@ public class PlayerMovement : MonoBehaviour
     public AirborneState AirborneState;
     public VictoryWalkState VictoryWalkState;
     public DeathState DeathState;
+    public JetPackState JetPackState;
     private void Awake()
     {
         _rb = GetComponent<Rigidbody2D>();
@@ -37,6 +38,8 @@ public class PlayerMovement : MonoBehaviour
         AirborneState = new AirborneState(this);
         VictoryWalkState = new VictoryWalkState(this);
         DeathState = new DeathState(this);
+        JetPackState = new JetPackState(this);
+        
     }
      private void Start()
     {
