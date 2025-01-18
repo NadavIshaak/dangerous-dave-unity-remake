@@ -12,11 +12,17 @@ public class GameManager : MonoBehaviour
     [SerializeField] private GameObject[] _stagesSpawns;
     [SerializeField] private SpriteRenderer _StageWinWalkRenderer;
      [SerializeField] private Sprite[] _StageWinWalkSprite;
+     [SerializeField] private Image _GunSymbolRenderer;
+     [SerializeField] private Image _GunTextRenderer;
+     [SerializeField] private Image _JetPackTextRenderer;
      private bool _trophyCollected = false;
-    bool _hasGun = false;
+    private bool _hasGun = false;
      public event Action OnVictoryWalkStart;
      public event Action OnInstantiatedPlayer;
+     public event Action OnGameOver;
     private int _currentLevel = 1;
+    private bool _hasJetPack;
+
     private void Awake()
     {
         if (Instance == null)
@@ -40,14 +46,22 @@ public class GameManager : MonoBehaviour
         _trophyCollected = false;
         _StageWinWalkRenderer.sprite = _StageWinWalkSprite[_currentLevel-1];
         _hasGun = false;
+        _hasJetPack = false;
+        _trophyCollectedRenderer.enabled = false;
         OnVictoryWalkStart?.Invoke();
     }
     public void OnVictoryWalkEnd()
     {
         // Handle the end of the victory walk
         // Example: Spawn the player in the next area
-
+        SetHasGun(false);
+        SetHasJetPack(false);
         _currentLevel++;
+        if (_currentLevel == 4)
+        {
+            OnGameOver?.Invoke();
+            return;
+        }
         UpdateLevel();
         InstantiatePlayer();
     }
@@ -56,7 +70,6 @@ public class GameManager : MonoBehaviour
         Vector3 spawnPosition = _stagesSpawns[_currentLevel].transform.position;
         Instantiate(Player, spawnPosition, Quaternion.identity);
         OnInstantiatedPlayer?.Invoke();
-        Debug.Log("Player Instantiated");
     }
     private void UpdateLevel()
     {
@@ -78,6 +91,13 @@ public class GameManager : MonoBehaviour
     public void SetHasGun(bool hasGun)
     {
         _hasGun = hasGun;
+        _GunSymbolRenderer.enabled = hasGun;
+        _GunTextRenderer.enabled = hasGun;
+    }
+    public void SetHasJetPack(bool hasJetPack)
+    {
+        _hasJetPack = hasJetPack;
+        _JetPackTextRenderer.enabled = hasJetPack;
     }
 
     public bool GetCanShoot()

@@ -33,8 +33,11 @@ private SoundObject _currentSoundObject;
    
    
 
-    public void PlaySound(AudioClip clip, Transform spawnPosition, float volume,bool loop=false,bool shouldKeep=false){
-        stopSound();
+    public void PlaySound(AudioClip clip, Transform spawnPosition, float volume,bool loop=false,bool shouldKeep=false,bool shouldStop=true){
+        if(shouldStop)
+        {
+            stopSound();
+        }
         SoundObject soundObject = SoundPool.Instance.Get();
         //Create an instance of the audio source
         AudioSource audioSource= soundObject.GetComponent<AudioSource>();

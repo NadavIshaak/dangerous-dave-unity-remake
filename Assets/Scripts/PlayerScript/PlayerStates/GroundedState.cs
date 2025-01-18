@@ -136,6 +136,10 @@ public class GroundedState : PlayerState
 
     private void CheckInputAndAnimate()
     {
+        if(_controls.Player.JetPack.IsPressed())
+        {
+            player.TransitionToState(player.JetPackState);
+        }
         var bounds = _collider.bounds;
          var bottomLeft = new Vector2(bounds.min.x, bounds.min.y + 0.1f); // Add a small buffer distance
         var bottomRight = new Vector2(bounds.max.x, bounds.min.y + 0.1f); // Add a small buffer distance
@@ -161,10 +165,6 @@ public class GroundedState : PlayerState
             _animationConttroler.ResumeMovement();
             PlaySound(true,true,_moveSound);
             _isStop=false;
-        }
-        else if(_controls.Player.JetPack.IsPressed())
-        {
-            player.TransitionToState(player.JetPackState);
         }
         else switch (_isFalling)
         {

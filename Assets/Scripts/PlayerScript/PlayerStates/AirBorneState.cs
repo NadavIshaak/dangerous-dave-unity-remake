@@ -6,9 +6,11 @@ public class AirborneState : PlayerState
     private bool _isRight;
     private AudioClip _jumpSound;
     private bool _moveInAir;
+    private readonly InputSystem_Actions _controls;
 
     public AirborneState(PlayerMovement player) : base(player)
     {
+        _controls=player.GetControls();
     }
 
     public override void Enter()
@@ -16,7 +18,6 @@ public class AirborneState : PlayerState
         _jumpSound = player.GetJumpSound();
         _isOffGround = false;
         _moveInAir = false;
-        SoundManager.Instance.stopSound();
         PlaySound(true, true, _jumpSound);
         _isRight = player.GroundedState.GetIsRight();
     }
@@ -51,6 +52,10 @@ public class AirborneState : PlayerState
 
     private void InputAndAnimate()
     {
+        if(_controls.Player.JetPack.IsPressed())
+        {
+            player.TransitionToState(player.JetPackState);
+        }
         player.GetRigidbody().linearVelocity = new Vector2(player.GetMoveInput().x * player.GetMoveSpeed(),
             player.GetRigidbody().linearVelocity.y);
         if (player.GetMoveInput().x != 0) _moveInAir = true;

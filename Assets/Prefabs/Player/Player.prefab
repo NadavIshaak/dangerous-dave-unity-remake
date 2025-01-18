@@ -133,7 +133,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moveSpeed: 2.5
-  jumpForce: 6
+  jumpForce: 5.7
   victoryWalkStart: {x: 14.87139, y: 0.9, z: 0}
   wallLayerMask:
     serializedVersion: 2
@@ -143,6 +143,7 @@ MonoBehaviour:
   jumpSound: {fileID: 8300000, guid: b6e0ce0f06be78342ba6dd39e3a6b87c, type: 3}
   WinSound: {fileID: 8300000, guid: 5e346900097ab2645bb7b63f3c0408c9, type: 3}
   StuckSound: {fileID: 8300000, guid: da5fc9bdfc52f154a886895efb34629d, type: 3}
+  jetpackSound: {fileID: 8300000, guid: 4564f6b03fbe93a49b13f336eba2d281, type: 3}
 --- !u!95 &1579755278963955509
 Animator:
   serializedVersion: 7
@@ -211,7 +212,7 @@ BoxCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: -0.0007992536, y: -0.0076572895}
+  m_Offset: {x: -0.018433623, y: -0.010213494}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
@@ -221,8 +222,8 @@ BoxCollider2D:
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Size: {x: 0.30685392, y: 0.566064}
-  m_EdgeRadius: 0.02
+  m_Size: {x: 0.30244535, y: 0.6069633}
+  m_EdgeRadius: 0
 --- !u!114 &5771291178217211787
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -11,8 +11,8 @@ GameObject:
   - component: {fileID: 2497611008810485646}
   - component: {fileID: 6873189854174713869}
   - component: {fileID: 6591408450352935558}
-  - component: {fileID: -4612144557616327587}
   - component: {fileID: -3287163137615661496}
+  - component: {fileID: 1951156813719754051}
   m_Layer: 9
   m_Name: cup1_0
   m_TagString: Untagged
@@ -30,7 +30,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -10.504956, y: -3.0535564, z: 0}
-  m_LocalScale: {x: 3.6, y: 3.6, z: 1}
+  m_LocalScale: {x: 0.792, y: 0.765, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -79,7 +79,7 @@ SpriteRenderer:
   m_SortingLayerID: 1034446009
   m_SortingLayer: 2
   m_SortingOrder: 0
-  m_Sprite: {fileID: -1585212524929455113, guid: c85cf0d5a7578fb4f8be0fae06c26742, type: 3}
+  m_Sprite: {fileID: 9043483359101549952, guid: a12bc8cc23de3f24d97292104a42bb33, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -112,8 +112,22 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!60 &-4612144557616327587
-PolygonCollider2D:
+--- !u!114 &-3287163137615661496
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1787943871526738723}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0ae8e7c5bd1016242b7be6a39a7ebb82, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _value: 1000
+  _collectSound: {fileID: 8300000, guid: 03f9c4fe8f7143144b11508718a2770f, type: 3}
+--- !u!61 &1951156813719754051
+BoxCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -142,7 +156,7 @@ PolygonCollider2D:
   m_CallbackLayers:
     serializedVersion: 2
     m_Bits: 4294967295
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
@@ -150,32 +164,11 @@ PolygonCollider2D:
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 0.24, y: 0.24}
+    oldSize: {x: 0.96, y: 0.82}
     newSize: {x: 0.24, y: 0.24}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Points:
-    m_Paths:
-    - - {x: -0.12, y: 0.12}
-      - {x: -0.12, y: -0.089999996}
-      - {x: -0.099999994, y: -0.12}
-      - {x: 0.12, y: -0.12}
-      - {x: 0.12, y: 0.099999994}
-      - {x: 0.049999997, y: 0.12}
-  m_UseDelaunayMesh: 0
---- !u!114 &-3287163137615661496
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1787943871526738723}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0ae8e7c5bd1016242b7be6a39a7ebb82, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _value: 1000
-  _collectSound: {fileID: 8300000, guid: 03f9c4fe8f7143144b11508718a2770f, type: 3}
+  m_Size: {x: 0.96, y: 0.82}
+  m_EdgeRadius: 0
