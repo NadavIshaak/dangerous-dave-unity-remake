@@ -6,6 +6,7 @@ public class AirborneState : PlayerState
     private bool _isRight;
     private AudioClip _jumpSound;
     private bool _moveInAir;
+    private bool _hasJetPack;
     private readonly InputSystem_Actions _controls;
 
     public AirborneState(PlayerMovement player) : base(player)
@@ -20,6 +21,7 @@ public class AirborneState : PlayerState
         _moveInAir = false;
         PlaySound(true, true, _jumpSound);
         _isRight = player.GroundedState.GetIsRight();
+        _hasJetPack = player.GetHasJetPack();
     }
 
     public override bool GetIsRight()
@@ -52,7 +54,7 @@ public class AirborneState : PlayerState
 
     private void InputAndAnimate()
     {
-        if(_controls.Player.JetPack.IsPressed())
+        if(_controls.Player.JetPack.IsPressed()&&_hasJetPack)
         {
             player.TransitionToState(player.JetPackState);
         }
@@ -78,7 +80,7 @@ public class AirborneState : PlayerState
 
     public override void Exit()
     {
-        SoundManager.Instance.stopSound();
+        SoundManager.Instance.StopSound();
         player.GroundedState.SetIsRight(_isRight);
     }
 
@@ -104,5 +106,10 @@ public class AirborneState : PlayerState
         Debug.DrawRay(bottomRight, Vector2.down * 0.145f, Color.red);
         if (_isOffGround == false) return false;
         return hitLeft.collider is not null || hitRight.collider is not null;
+    }
+
+    public void SetHasJetPack(bool value)
+    {
+        _hasJetPack = value;
     }
 }

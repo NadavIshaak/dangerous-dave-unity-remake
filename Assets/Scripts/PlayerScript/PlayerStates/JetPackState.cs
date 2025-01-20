@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 
 public class JetPackState : PlayerState
 {
@@ -10,6 +11,11 @@ public class JetPackState : PlayerState
     private readonly AudioClip _jetpackSound;
     private bool _isFlying;
     private bool _isRight;
+    private bool _hasJetPack;
+    private readonly Image _fuelBar; // The full fuel bar
+    private readonly Image _blackBox; // The black box that indicates fuel depletion
+    private readonly float _maxFuel;// Maximum fuel
+    private static float _currentFuel;
 
     public JetPackState(PlayerMovement player) : base(player)
     {
@@ -19,14 +25,28 @@ public class JetPackState : PlayerState
         _animationConttroler = player.GetAnimationConttroler();
         _moveSpeed = player.GetMoveSpeed();
         _jetpackSound = player.GetJetpackSound();
+        _fuelBar = player.GetFuelBar();
+        _blackBox = player.GetBlackBox();
+        _maxFuel = player.GetMaxFuel();
+        _currentFuel = _maxFuel;
+        UpdateFuelBar();
+    }
+    private void UpdateFuelBar()
+    {
+        float fuelPercentage = _currentFuel / _maxFuel;
+        float blackBoxWidth = _fuelBar.rectTransform.rect.width * (1 - fuelPercentage);
+        _blackBox.rectTransform.sizeDelta = new Vector2(blackBoxWidth, _blackBox.rectTransform.sizeDelta.y);
     }
 
     public override void Enter()
     {
-        _isFlying = true;
-        _rb.gravityScale = 0; // Disable gravity
-        _isRight = true;
-        PlaySound(true, true, _jetpackSound);
+        if (_currentFuel > 0)
+        {
+            PlaySound(true, true, _jetpackSound);
+            _rb.gravityScale = 0; // Disable gravity
+            _isFlying = true;
+            _isRight = true;
+        }
     }
 
     public override bool GetIsRight()
@@ -36,10 +56,14 @@ public class JetPackState : PlayerState
 
     public override void HandleInput()
     {
-        if (_controls.Player.JetPack.IsPressed()==false)
+        if (_controls.Player.JetPack.IsPressed()==false||_currentFuel<=0)
         {
-            _isFlying = false;
             player.TransitionToState(player.GroundedState); // Transition back to the previous state
+        }
+        else
+        {
+            _currentFuel -= Time.deltaTime * 10; // Decrease fuel
+            UpdateFuelBar();
         }
     }
 
@@ -48,11 +72,21 @@ public class JetPackState : PlayerState
         HandleInput();
         CheckInputAndAnimate();
     }
+    
 
     public override void Exit()
     {
-        SoundManager.Instance.stopSound();
-        _rb.gravityScale = 1; // Re-enable gravity
+        if (_isFlying)
+        {
+            SoundManager.Instance.StopSound();
+            _rb.gravityScale = 1; // Re-enable gravity
+            _animationConttroler.HitGroundWithoutMovement();
+        }
+    }
+    
+    public static float GetCurrentFuel()
+    {
+        return _currentFuel;
     }
 
     private void PlaySound(bool shouldKeep, bool shouldLoop, AudioClip clip)

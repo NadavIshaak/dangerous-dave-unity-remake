@@ -7,6 +7,7 @@ public class JetPackScript :Collectible
         base.OnTriggerEnter2D(other);
         var player = Object.FindFirstObjectByType<PlayerMovement>();
         if (player == null) return;
-        GameManager.Instance.SetHasJetPack(true);
+        GameManager.instance.SetHasJetPack(true);
+        player.SetHasJetPack(true);
     }
 }

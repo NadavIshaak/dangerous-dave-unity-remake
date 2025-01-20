@@ -21,13 +21,14 @@ private SoundObject _currentSoundObject;
         }
     }
 
-    public void stopSound()
+    public void StopSound()
     {
-        if (_currentSoundObject == null)
+        if (_currentSoundObject is null)
         {
             return;
         }
         SoundPool.Instance.ImmediateReturn(_currentSoundObject);
+        _currentSoundObject = null;
     }
    
    
@@ -36,7 +37,7 @@ private SoundObject _currentSoundObject;
     public void PlaySound(AudioClip clip, Transform spawnPosition, float volume,bool loop=false,bool shouldKeep=false,bool shouldStop=true){
         if(shouldStop)
         {
-            stopSound();
+            StopSound();
         }
         SoundObject soundObject = SoundPool.Instance.Get();
         //Create an instance of the audio source
@@ -47,14 +48,9 @@ private SoundObject _currentSoundObject;
         audioSource.clip = clip;
         //set the volume of the audio source
         audioSource.volume =volume;
+        audioSource.loop = loop;
         //Play the audio clip
         audioSource.Play();
-        if(loop){
-            audioSource.loop=true;
-        }
-        else{
-            audioSource.loop=false;
-        }
         if(shouldKeep){
             _currentSoundObject=soundObject;
         }

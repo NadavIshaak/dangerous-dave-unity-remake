@@ -21,6 +21,7 @@ public class GroundedState : PlayerState
     private bool _isFalling=false;
     private bool _firstMove;
     private bool _isStuck=false;
+    private bool _hasJetPack;
     private readonly AudioClip _moveSound;
     private readonly AudioClip _fallingSound;
     private readonly InputSystem_Actions _controls;
@@ -32,12 +33,13 @@ public class GroundedState : PlayerState
     private readonly LayerMask _wallLayerMask;
     private readonly float _jumpForce;
     private readonly float _moveSpeed;
-    private AudioClip _wallHitSound;
+    private readonly AudioClip _wallHitSound;
     
     public override void Enter()
     {
         _isStop=true;
         _firstMove=false;
+        _hasJetPack=player.GetHasJetPack();
     }
     
 
@@ -129,16 +131,17 @@ public class GroundedState : PlayerState
             return true;
         }
         if(!_isStuck) return false;
-        SoundManager.Instance.stopSound();
+        SoundManager.Instance.StopSound();
         _isStuck=false;
         return false;
     }
 
     private void CheckInputAndAnimate()
     {
-        if(_controls.Player.JetPack.IsPressed())
+        if(_controls.Player.JetPack.IsPressed()&&_hasJetPack)
         {
-            player.TransitionToState(player.JetPackState);
+            if(JetPackState.GetCurrentFuel()>0)
+                 player.TransitionToState(player.JetPackState);
         }
         var bounds = _collider.bounds;
          var bottomLeft = new Vector2(bounds.min.x, bounds.min.y + 0.1f); // Add a small buffer distance
@@ -158,7 +161,7 @@ public class GroundedState : PlayerState
         }
         else if(player.GetMoveInput().x==0&&!_isStop&&!_isFalling&&_firstMove){
             _animationConttroler.StopInMovement();
-            SoundManager.Instance.stopSound();
+            SoundManager.Instance.StopSound();
             _isStop=true;
         }
         else if(player.GetMoveInput().x!=0&&_isStop&&!_isFalling&&_firstMove){
@@ -177,7 +180,7 @@ public class GroundedState : PlayerState
                 _isFalling=false;
                 _isStop=true;
                 _firstMove=false;
-                SoundManager.Instance.stopSound();
+                SoundManager.Instance.StopSound();
                _animationConttroler.HitGroundWithMovement();
                 break;
         }
@@ -186,5 +189,10 @@ public class GroundedState : PlayerState
     public void SetIsRight(bool isRight)
     {
         _isRight = isRight;
+    }
+
+    public void SetHasJetPack(bool value)
+    {
+        _hasJetPack = value;
     }
 }

@@ -1,7 +1,8 @@
 
 using UnityEngine;
 using UnityEngine.InputSystem;
-using System; 
+using System;
+using UnityEngine.UI;
 
 public class PlayerMovement : MonoBehaviour
 {
@@ -17,6 +18,9 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private AudioClip WinSound;
     [SerializeField] private AudioClip StuckSound;
     [SerializeField] private AudioClip jetpackSound;
+    [SerializeField] private Image fuelBar; // The full fuel bar
+    [SerializeField] private Image blackBox; // The black box that indicates fuel depletion
+    [SerializeField] private float maxFuel = 100f; // Maximum fuel
     private Collider2D _collide;
     private Rigidbody2D _rb;
     private bool _canShoot = false;
@@ -28,6 +32,8 @@ public class PlayerMovement : MonoBehaviour
     public VictoryWalkState VictoryWalkState;
     public DeathState DeathState;
     public JetPackState JetPackState;
+    private bool _hasJetPack;
+
     private void Awake()
     {
         _rb = GetComponent<Rigidbody2D>();
@@ -43,10 +49,10 @@ public class PlayerMovement : MonoBehaviour
     }
      private void Start()
     {
-        GameManager.Instance.OnVictoryWalkStart += StartVictoryWalk;
-        OnVictoryWalkEnd += GameManager.Instance.OnVictoryWalkEnd;
+        GameManager.instance.OnVictoryWalkStart += StartVictoryWalk;
+        OnVictoryWalkEnd += GameManager.instance.OnVictoryWalkEnd;
         OnVictoryWalkEnd += StageScript.Instance.OnEndWalk;
-        _canShoot= GameManager.Instance.GetCanShoot();
+        _canShoot= GameManager.instance.GetCanShoot();
     }
     private void OnEnable()
     {
@@ -56,8 +62,8 @@ public class PlayerMovement : MonoBehaviour
     }
     private void OnDisable()
     {
-        GameManager.Instance.OnVictoryWalkStart -= StartVictoryWalk;
-        OnVictoryWalkEnd -= GameManager.Instance.OnVictoryWalkEnd;
+        GameManager.instance.OnVictoryWalkStart -= StartVictoryWalk;
+        OnVictoryWalkEnd -= GameManager.instance.OnVictoryWalkEnd;
         OnVictoryWalkEnd -= StageScript.Instance.OnEndWalk;
         _controls.Player.Move.performed -= OnMove;
         _controls.Player.Move.canceled -= OnMove;
@@ -122,5 +128,18 @@ public class PlayerMovement : MonoBehaviour
     public bool GetCanShoot() => _canShoot;
     public AudioClip GetStuckSound() => StuckSound;
     public  AudioClip GetJetpackSound() => jetpackSound;
+    public bool GetHasJetPack() => _hasJetPack;
+
+    public void SetHasJetPack(bool value)
+    {
+        blackBox.enabled = value;
+        fuelBar.enabled = value;
+        _hasJetPack = value;
+        GroundedState.SetHasJetPack(value);
+        AirborneState.SetHasJetPack(value);
+    }
+    public Image GetFuelBar() => fuelBar;
+    public Image GetBlackBox() => blackBox;
+    public float GetMaxFuel() => maxFuel;
     
 }

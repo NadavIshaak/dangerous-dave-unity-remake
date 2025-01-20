@@ -32,7 +32,7 @@ public class StageScript : MonoBehaviour
     private void Start()
     {
         _animator = GetComponent<Animator>();
-        GameManager.Instance.OnVictoryWalkStart += OnStartWalk;
+        GameManager.instance.OnVictoryWalkStart += OnStartWalk;
         canvas.enabled = false;
     }
     private void Update()
@@ -52,30 +52,30 @@ public class StageScript : MonoBehaviour
     }
     private void OnEnable()
     {
-        if (GameManager.Instance != null)
+        if (GameManager.instance != null)
         {
-            GameManager.Instance.OnVictoryWalkStart += OnStartWalk;
-            GameManager.Instance.OnGameOver += OnGameOver;
+            GameManager.instance.OnVictoryWalkStart += OnStartWalk;
+            GameManager.instance.OnGameOver += OnGameOver;
         }
         _controls.Enable();
     }
     private void OnDisable()
     {
-        if (GameManager.Instance != null)
+        if (GameManager.instance != null)
         {
-            GameManager.Instance.OnVictoryWalkStart -= OnStartWalk;
-            GameManager.Instance.OnGameOver -= OnGameOver;
+            GameManager.instance.OnVictoryWalkStart -= OnStartWalk;
+            GameManager.instance.OnGameOver -= OnGameOver;
         }
         _controls.Disable();
     }
     private void OnDestroy()
     {
-        if (GameManager.Instance != null) GameManager.Instance.OnVictoryWalkStart -= OnStartWalk;
+        if (GameManager.instance != null) GameManager.instance.OnVictoryWalkStart -= OnStartWalk;
     }
     private void StartGame()
     {
         canvas.enabled = true;
-        GameManager.Instance.InstantiatePlayer();
+        GameManager.instance.InstantiatePlayer();
         _animator.SetTrigger(Game);
     }
     private void OnStartWalk()

@@ -1,9 +1,11 @@
 using UnityEngine;
 using UnityEngine.UI;
-using System; 
+using System;
+using Unity.Cinemachine;
+
 public class GameManager : MonoBehaviour
 {
-    public static GameManager Instance;
+    public static GameManager instance;
     [SerializeField] Sprite[] _numberSprites;
     [SerializeField] Image _trophyCollectedRenderer;
     [SerializeField] private Image _LevelOnesRenderer;
@@ -15,6 +17,7 @@ public class GameManager : MonoBehaviour
      [SerializeField] private Image _GunSymbolRenderer;
      [SerializeField] private Image _GunTextRenderer;
      [SerializeField] private Image _JetPackTextRenderer;
+     [SerializeField] private CinemachineSplineCart[] dollyCart;
      private bool _trophyCollected = false;
     private bool _hasGun = false;
      public event Action OnVictoryWalkStart;
@@ -25,9 +28,9 @@ public class GameManager : MonoBehaviour
 
     private void Awake()
     {
-        if (Instance == null)
+        if (instance == null)
         {
-            Instance = this;
+            instance = this;
             DontDestroyOnLoad(gameObject); // Ensure the SoundManager persists across scenes
         }
         else
@@ -67,7 +70,11 @@ public class GameManager : MonoBehaviour
     }
     public void InstantiatePlayer()
     {
-        Vector3 spawnPosition = _stagesSpawns[_currentLevel].transform.position;
+        var spawnPosition = _stagesSpawns[_currentLevel].transform.position;
+        if (_currentLevel is 2 or 3)
+        {
+            dollyCart[_currentLevel - 2].SplinePosition = 0;
+        }
         Instantiate(Player, spawnPosition, Quaternion.identity);
         OnInstantiatedPlayer?.Invoke();
     }

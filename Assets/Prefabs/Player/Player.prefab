@@ -133,7 +133,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moveSpeed: 2.5
-  jumpForce: 5.7
+  jumpForce: 5.73
   victoryWalkStart: {x: 14.87139, y: 0.9, z: 0}
   wallLayerMask:
     serializedVersion: 2
@@ -144,6 +144,9 @@ MonoBehaviour:
   WinSound: {fileID: 8300000, guid: 5e346900097ab2645bb7b63f3c0408c9, type: 3}
   StuckSound: {fileID: 8300000, guid: da5fc9bdfc52f154a886895efb34629d, type: 3}
   jetpackSound: {fileID: 8300000, guid: 4564f6b03fbe93a49b13f336eba2d281, type: 3}
+  fuelBar: {fileID: 1752136998336601286, guid: c48d2e17c4297444ab0a4c30025c3d7e, type: 3}
+  blackBox: {fileID: 7985305471718499732, guid: 1d925d08821f2c14e93405b536287296, type: 3}
+  maxFuel: 100
 --- !u!95 &1579755278963955509
 Animator:
   serializedVersion: 7
