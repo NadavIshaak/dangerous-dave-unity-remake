@@ -56,7 +56,12 @@ public class AirborneState : PlayerState
     {
         if(_controls.Player.JetPack.IsPressed()&&_hasJetPack)
         {
-            player.TransitionToState(player.JetPackState);
+            if (JetPackState.GetCurrentFuel() > 0)
+            {
+                Debug.Log("JetPack");
+                player.TransitionToState(player.JetPackState);
+                
+            }
         }
         player.GetRigidbody().linearVelocity = new Vector2(player.GetMoveInput().x * player.GetMoveSpeed(),
             player.GetRigidbody().linearVelocity.y);
@@ -96,18 +101,17 @@ public class AirborneState : PlayerState
 
         var hitLeft = Physics2D.Raycast(bottomLeft, Vector2.down, 0.145f, player.GetWallLayerMask());
         var hitRight = Physics2D.Raycast(bottomRight, Vector2.down, 0.145f, player.GetWallLayerMask());
-        if (!_isOffGround && (hitLeft.collider is null || hitRight.collider is null))
+        switch (_isOffGround)
         {
-            _isOffGround = true;
-            return false;
+            case false when (hitLeft.collider is null || hitRight.collider is null):
+                _isOffGround = true;
+                return false;
+            case false:
+                return false;
+            default:
+                return hitLeft.collider is not null || hitRight.collider is not null;
         }
-
-        Debug.DrawRay(bottomLeft, Vector2.down * 0.145f, Color.red);
-        Debug.DrawRay(bottomRight, Vector2.down * 0.145f, Color.red);
-        if (_isOffGround == false) return false;
-        return hitLeft.collider is not null || hitRight.collider is not null;
     }
-
     public void SetHasJetPack(bool value)
     {
         _hasJetPack = value;

@@ -12,8 +12,6 @@ public class JetPackState : PlayerState
     private bool _isFlying;
     private bool _isRight;
     private bool _hasJetPack;
-    private readonly Image _fuelBar; // The full fuel bar
-    private readonly Image _blackBox; // The black box that indicates fuel depletion
     private readonly float _maxFuel;// Maximum fuel
     private static float _currentFuel;
 
@@ -25,18 +23,15 @@ public class JetPackState : PlayerState
         _animationConttroler = player.GetAnimationConttroler();
         _moveSpeed = player.GetMoveSpeed();
         _jetpackSound = player.GetJetpackSound();
-        _fuelBar = player.GetFuelBar();
-        _blackBox = player.GetBlackBox();
         _maxFuel = player.GetMaxFuel();
         _currentFuel = _maxFuel;
         UpdateFuelBar();
     }
     private void UpdateFuelBar()
     {
-        float fuelPercentage = _currentFuel / _maxFuel;
-        float blackBoxWidth = _fuelBar.rectTransform.rect.width * (1 - fuelPercentage);
-        _blackBox.rectTransform.sizeDelta = new Vector2(blackBoxWidth, _blackBox.rectTransform.sizeDelta.y);
+        GameManager.instance.UpdateFuelBar(_currentFuel, _maxFuel);
     }
+    
 
     public override void Enter()
     {
@@ -62,7 +57,7 @@ public class JetPackState : PlayerState
         }
         else
         {
-            _currentFuel -= Time.deltaTime * 10; // Decrease fuel
+            _currentFuel -= Time.deltaTime * 5; // Decrease fuel
             UpdateFuelBar();
         }
     }
@@ -80,8 +75,9 @@ public class JetPackState : PlayerState
         {
             SoundManager.Instance.StopSound();
             _rb.gravityScale = 1; // Re-enable gravity
-            _animationConttroler.HitGroundWithoutMovement();
         }
+        Debug.Log("Exit JetPackState");
+        _animationConttroler.HitGroundWithoutMovement();
     }
     
     public static float GetCurrentFuel()

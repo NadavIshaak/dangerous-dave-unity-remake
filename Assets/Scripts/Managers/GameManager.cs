@@ -18,6 +18,8 @@ public class GameManager : MonoBehaviour
      [SerializeField] private Image _GunTextRenderer;
      [SerializeField] private Image _JetPackTextRenderer;
      [SerializeField] private CinemachineSplineCart[] dollyCart;
+     [SerializeField] private Image fuelBar; // The full fuel bar
+     [SerializeField] private Image blackBox; // The black box that indicates fuel depletion
      private bool _trophyCollected = false;
     private bool _hasGun = false;
      public event Action OnVictoryWalkStart;
@@ -42,6 +44,13 @@ public class GameManager : MonoBehaviour
     {
         _trophyCollectedRenderer.enabled = true;
         _trophyCollected = true;
+    }
+    public void UpdateFuelBar(float currentFuel, float maxFuel)
+    {
+        var fuelPercentage = currentFuel / maxFuel;
+        var blackBoxWidth = fuelBar.rectTransform.rect.width * (1 - fuelPercentage);
+        blackBox.rectTransform.pivot = new Vector2(1, 0.5f); // Set pivot to the right
+        blackBox.rectTransform.sizeDelta = new Vector2(blackBoxWidth, blackBox.rectTransform.sizeDelta.y);
     }
     public void DoorReached()
     {
@@ -76,6 +85,7 @@ public class GameManager : MonoBehaviour
             dollyCart[_currentLevel - 2].SplinePosition = 0;
         }
         Instantiate(Player, spawnPosition, Quaternion.identity);
+        Debug.Log(("revivad"));
         OnInstantiatedPlayer?.Invoke();
     }
     private void UpdateLevel()
@@ -88,12 +98,10 @@ public class GameManager : MonoBehaviour
     }
     public void TriggerPlayerDeath()
     {
-         PlayerMovement player = FindFirstObjectByType<PlayerMovement>();
-        if (player != null)
-        {
-            player.TriggerDeath();
-            Invoke(nameof(InstantiatePlayer), 3f);
-        }
+         var player = FindFirstObjectByType<PlayerMovement>();
+         if (player == null) return;
+         player.TriggerDeath();
+        Invoke(nameof(InstantiatePlayer), 3.1f);
     }
     public void SetHasGun(bool hasGun)
     {
@@ -105,6 +113,8 @@ public class GameManager : MonoBehaviour
     {
         _hasJetPack = hasJetPack;
         _JetPackTextRenderer.enabled = hasJetPack;
+        blackBox.enabled = hasJetPack;
+        fuelBar.enabled = hasJetPack;
     }
 
     public bool GetCanShoot()

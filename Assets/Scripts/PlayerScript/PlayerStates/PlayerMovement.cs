@@ -18,8 +18,6 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private AudioClip WinSound;
     [SerializeField] private AudioClip StuckSound;
     [SerializeField] private AudioClip jetpackSound;
-    [SerializeField] private Image fuelBar; // The full fuel bar
-    [SerializeField] private Image blackBox; // The black box that indicates fuel depletion
     [SerializeField] private float maxFuel = 100f; // Maximum fuel
     private Collider2D _collide;
     private Rigidbody2D _rb;
@@ -67,6 +65,7 @@ public class PlayerMovement : MonoBehaviour
         OnVictoryWalkEnd -= StageScript.Instance.OnEndWalk;
         _controls.Player.Move.performed -= OnMove;
         _controls.Player.Move.canceled -= OnMove;
+        _controls.Disable();
     }
     private void Update()
     {
@@ -132,14 +131,10 @@ public class PlayerMovement : MonoBehaviour
 
     public void SetHasJetPack(bool value)
     {
-        blackBox.enabled = value;
-        fuelBar.enabled = value;
         _hasJetPack = value;
         GroundedState.SetHasJetPack(value);
         AirborneState.SetHasJetPack(value);
     }
-    public Image GetFuelBar() => fuelBar;
-    public Image GetBlackBox() => blackBox;
     public float GetMaxFuel() => maxFuel;
     
 }

@@ -108,7 +108,7 @@ Rigidbody2D:
   m_Mass: 1
   m_LinearDamping: 0
   m_AngularDamping: 0
-  m_GravityScale: 1
+  m_GravityScale: 0.95
   m_Material: {fileID: 6200000, guid: 925d96f343b041947b49f0999d162ac5, type: 2}
   m_IncludeLayers:
     serializedVersion: 2
@@ -133,7 +133,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moveSpeed: 2.5
-  jumpForce: 5.73
+  jumpForce: 5.6
   victoryWalkStart: {x: 14.87139, y: 0.9, z: 0}
   wallLayerMask:
     serializedVersion: 2
@@ -144,8 +144,6 @@ MonoBehaviour:
   WinSound: {fileID: 8300000, guid: 5e346900097ab2645bb7b63f3c0408c9, type: 3}
   StuckSound: {fileID: 8300000, guid: da5fc9bdfc52f154a886895efb34629d, type: 3}
   jetpackSound: {fileID: 8300000, guid: 4564f6b03fbe93a49b13f336eba2d281, type: 3}
-  fuelBar: {fileID: 1752136998336601286, guid: c48d2e17c4297444ab0a4c30025c3d7e, type: 3}
-  blackBox: {fileID: 7985305471718499732, guid: 1d925d08821f2c14e93405b536287296, type: 3}
   maxFuel: 100
 --- !u!95 &1579755278963955509
 Animator:
@@ -215,7 +213,7 @@ BoxCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: -0.018433623, y: -0.010213494}
+  m_Offset: {x: 0.0013239458, y: -0.010213494}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
@@ -225,7 +223,7 @@ BoxCollider2D:
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Size: {x: 0.30244535, y: 0.6069633}
+  m_Size: {x: 0.3419605, y: 0.6069633}
   m_EdgeRadius: 0
 --- !u!114 &5771291178217211787
 MonoBehaviour:
