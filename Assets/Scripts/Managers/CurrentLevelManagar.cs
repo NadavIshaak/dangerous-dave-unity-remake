@@ -1,4 +1,5 @@
 using System;
+using Triggers;
 using Unity.Cinemachine;
 using UnityEngine;
 using UnityEngine.UI;
@@ -32,7 +33,47 @@ public class CurrentLevelManagar : MonoBehaviour
     public event Action OnVictoryWalkStart;
     public event Action OnInstantiatedPlayer;
     public event Action OnGameOver;
+    public static event Action<string, TriggerRequirements> OnShowTriggerTextWithReq;
+    public static event Action OnHideTriggerText;
+    
+    private void OnEnable()
+    {
+        // Subscribe to both events
+        OnShowTriggerTextWithReq += ShowTextWithRequirement;
+        OnHideTriggerText        += HideText;
+    }
 
+    private void OnDisable()
+    {
+        OnShowTriggerTextWithReq -= ShowTextWithRequirement;
+        OnHideTriggerText        -= HideText;
+    }
+    private void ShowTextWithRequirement(string message, TriggerRequirements requirement)
+    {
+        if (requirement.HasGun==_hasGun && 
+            requirement.HasJetPack==_hasJetPack &&
+            requirement.RequiredScore<ScoreManager.Instance.GetScore() && 
+            requirement.RequiredLevel==_currentLevel)
+        {
+            UIManager.Instance.SetText(message,true);
+        }
+    }
+    public static void HideTriggerText()
+    {
+        OnHideTriggerText?.Invoke();
+    }
+    public static void ShowTriggerText(string message,TriggerRequirements requirement)
+    {
+        OnShowTriggerTextWithReq?.Invoke(message,requirement);
+    }
+
+    /// <summary>
+    /// Called by OnHideTriggerText. We simply clear or hide the text.
+    /// </summary>
+    private void HideText()
+    {
+        UIManager.Instance.SetText("",false);
+    }
     public void ThrophyCollected()
     {
         UIManager.Instance.UpdateThrophy(true);

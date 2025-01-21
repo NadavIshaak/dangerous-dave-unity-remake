@@ -9,4 +9,8 @@ public class ScoreManager : MonoSingleton<ScoreManager>
         _score += value;
         UIManager.Instance.UpdateScore(_score);
     }
+    public int GetScore()
+    {
+        return _score;
+    }
 }

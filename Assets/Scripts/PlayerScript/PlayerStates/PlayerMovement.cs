@@ -30,7 +30,6 @@ public class PlayerMovement : MonoBehaviour
     public GroundedState GroundedState;
     public JetPackState JetPackState;
     public VictoryWalkState VictoryWalkState;
-
     private void Awake()
     {
         _rb = GetComponent<Rigidbody2D>();

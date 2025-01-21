@@ -1,3 +1,5 @@
+using DG.Tweening;
+using TMPro;
 using UnityEngine;
 using UnityEngine.Serialization;
 using UnityEngine.UI;
@@ -6,23 +8,25 @@ public class UIManager : MonoSingleton<UIManager>
 {
     [FormerlySerializedAs("_numberSprites")] [SerializeField] private Sprite[] numberSprites;
 
-    [FormerlySerializedAs("_tenOfThousandsRenderer")] [SerializeField] private Image tenOfThousandsRenderer;
-    [FormerlySerializedAs("_thousandsRenderer")] [SerializeField] private Image thousandsRenderer;
-    [FormerlySerializedAs("_hundredsRenderer")] [SerializeField] private Image hundredsRenderer;
-    [FormerlySerializedAs("_tensRenderer")] [SerializeField] private Image tensRenderer;
-    [FormerlySerializedAs("_onesRenderer")] [SerializeField] private Image onesRenderer;
-    [FormerlySerializedAs("_oneLifeRenderer")] [SerializeField] private Image oneLifeRenderer;
-    [FormerlySerializedAs("_twoLifeRenderer")] [SerializeField] private Image twoLifeRenderer;
-    [FormerlySerializedAs("_threeLifeRenderer")] [SerializeField] private Image threeLifeRenderer;
-    [FormerlySerializedAs("_DeadRenderer")] [SerializeField] private Image deadRenderer;
+    [SerializeField] private Image tenOfThousandsRenderer;
+   [SerializeField] private Image thousandsRenderer;
+   [SerializeField] private Image hundredsRenderer;
+    [SerializeField] private Image tensRenderer;
+   [SerializeField] private Image onesRenderer;
+   [SerializeField] private Image oneLifeRenderer;
+     [SerializeField] private Image twoLifeRenderer;
+   [SerializeField] private Image threeLifeRenderer;
+    [SerializeField] private Image deadRenderer;
     [SerializeField] private Image fuelBar; // The full fuel bar
     [SerializeField] private Image blackBox; // The black box that indicates fuel depletion
-    [FormerlySerializedAs("_GunSymbolRenderer")] [SerializeField] private Image gunSymbolRenderer;
-    [FormerlySerializedAs("_GunTextRenderer")] [SerializeField] private Image gunTextRenderer;
-    [FormerlySerializedAs("_JetPackTextRenderer")] [SerializeField] private Image jetPackTextRenderer;
-    [FormerlySerializedAs("_trophyCollectedRenderer")] [SerializeField] private Image trophyCollectedRenderer;
-    [FormerlySerializedAs("_LevelOnesRenderer")] [SerializeField] private Image levelOnesRenderer;
-    [FormerlySerializedAs("_LevelTensRenderer")] [SerializeField] private Image levelTensRenderer;
+  [SerializeField] private Image gunSymbolRenderer;
+    [SerializeField] private Image gunTextRenderer;
+    [SerializeField] private Image jetPackTextRenderer;
+  [SerializeField] private Image trophyCollectedRenderer;
+ [SerializeField] private Image levelOnesRenderer;
+   [SerializeField] private Image levelTensRenderer;
+    [SerializeField] private TextMeshProUGUI messageText;
+    [SerializeField] private Image talkingDave; 
 
     public void UpdateThrophy(bool trophyCollected)
     {
@@ -93,5 +97,13 @@ public class UIManager : MonoSingleton<UIManager>
         tensRenderer.sprite = numberSprites[tens];
         onesRenderer.sprite = numberSprites[ones];
     }
-    
+    public void SetText(string text,bool active)
+    {
+        messageText.text = text;
+        messageText.gameObject.SetActive(active);
+        talkingDave.rectTransform.DOShakePosition(1f, new Vector3(1f, 0, 0), 10, 90, false, true);
+        if (active)
+            messageText.rectTransform.DOShakePosition(1f, new Vector3(1f, 0, 0), 10, 90, false, true);
+    }
+   
 }
