@@ -3,6 +3,9 @@ using UnityEngine;
 public class AirborneState : PlayerState
 {
     private readonly InputSystem_Actions _controls;
+    private readonly Collider2D _collider;
+    private readonly AudioClip _fallingSound;
+    private readonly LayerMask _wallLayerMask;
     private bool _hasJetPack;
     private bool _isOffGround;
     private readonly AudioClip _jumpSound;
@@ -17,6 +20,9 @@ public class AirborneState : PlayerState
         _controls = player.GetControls();
         _animationConttroler = player.GetAnimationConttroler();
         _jumpSound = player.GetJumpSound();
+        _collider = player.GetCollider();
+        _fallingSound = player.GetFallingSound();
+        _wallLayerMask = player.GetWallLayerMask();
     }
 
     public override void Enter()
@@ -41,9 +47,9 @@ public class AirborneState : PlayerState
         if (IsGrounded())
         {
             if (_moveInAir)
-                player.GetAnimationConttroler().HitGroundWithMovement();
+               _animationConttroler.HitGroundWithMovement();
             else
-                player.GetAnimationConttroler().HitGroundWithoutMovement();
+              _animationConttroler.HitGroundWithoutMovement();
             player.TransitionToState(player.GroundedState);
         }
     }
@@ -61,10 +67,11 @@ public class AirborneState : PlayerState
 
     private void InputAndAnimate()
     {
+        var moveInput = player.GetMoveInput();
         if (_isFalling)
         {
             if(_justTransitioned)
-                player.PlaySound(true, true, player.GetFallingSound());
+                player.PlaySound(true, true, _fallingSound);
             if (player.GetMoveInput().x != 0)
             {
                 _animationConttroler.ResumeMovement();
@@ -81,15 +88,15 @@ public class AirborneState : PlayerState
         }
         CheckForNoFuel();
         player.MovePlayer();
-        if (player.GetMoveInput().x != 0) _moveInAir = true;
-        if (player.GetMoveInput().x > 0)
+        if (moveInput.x != 0) _moveInAir = true;
+        if (moveInput.x > 0)
         {
-            player.GetAnimationConttroler().ChangeDirection(true);
+           _animationConttroler.ChangeDirection(true);
             player.SetIsRight(true);
         }
-        else if (player.GetMoveInput().x < 0)
+        else if (moveInput.x < 0)
         {
-            player.GetAnimationConttroler().ChangeDirection(false);
+           _animationConttroler.ChangeDirection(false);
             player.SetIsRight(false);
         }
     }
@@ -101,15 +108,15 @@ public class AirborneState : PlayerState
     private bool IsGrounded()
     {
         // Get the player's collider bounds
-        var collider = player.GetCollider();
-        var bounds = collider.bounds;
+        
+        var bounds = _collider.bounds;
 
         // Perform two raycasts to check if the player is grounded
         var bottomLeft = new Vector2(bounds.min.x, bounds.min.y + 0.1f); // Add a small buffer distance
         var bottomRight = new Vector2(bounds.max.x, bounds.min.y + 0.1f); // Add a small buffer distance
 
-        var hitLeft = Physics2D.Raycast(bottomLeft, Vector2.down, 0.145f, player.GetWallLayerMask());
-        var hitRight = Physics2D.Raycast(bottomRight, Vector2.down, 0.145f, player.GetWallLayerMask());
+        var hitLeft = Physics2D.Raycast(bottomLeft, Vector2.down, 0.145f, _wallLayerMask);
+        var hitRight = Physics2D.Raycast(bottomRight, Vector2.down, 0.145f, _wallLayerMask);
         switch (_isOffGround)
         {
             case false when hitLeft.collider is null || hitRight.collider is null:

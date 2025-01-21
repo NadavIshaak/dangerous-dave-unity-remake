@@ -5,10 +5,8 @@ public class GroundedState : PlayerState
     private readonly PlayerAnimationConttroler _animationConttroler;
     private readonly Collider2D _collider;
     private readonly InputSystem_Actions _controls;
-    private readonly AudioClip _fallingSound;
     private readonly float _jumpForce;
     private readonly AudioClip _moveSound;
-    private readonly float _moveSpeed;
     private readonly Transform _playerTransform;
     private readonly Rigidbody2D _rb;
     private readonly AudioClip _wallHitSound;
@@ -23,15 +21,12 @@ public class GroundedState : PlayerState
     public GroundedState(PlayerMovement player) : base(player)
     {
         _moveSound = player.GetMoveSound();
-        _fallingSound = player.GetFallingSound();
         _controls = player.GetControls();
         _animationConttroler = player.GetAnimationConttroler();
-        _playerTransform = player.GetTransform();
         _jumpForce = player.GetJumpForce();
         _collider = player.GetCollider();
         _rb = player.GetRigidbody();
         _wallLayerMask = player.GetWallLayerMask();
-        _moveSpeed = player.GetMoveSpeed();
         _wallHitSound = player.GetStuckSound();
     }
 
