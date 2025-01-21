@@ -46,10 +46,10 @@ public class PlayerMovement : MonoBehaviour
 
     private void Start()
     {
-        GameManager.instance.OnVictoryWalkStart += StartVictoryWalk;
-        OnVictoryWalkEnd += GameManager.instance.OnVictoryWalkEnd;
+        CurrentLevelManagar.instance.OnVictoryWalkStart += StartVictoryWalk;
+        OnVictoryWalkEnd += CurrentLevelManagar.instance.OnVictoryWalkEnd;
         OnVictoryWalkEnd += StageScript.Instance.OnEndWalk;
-        _canShoot = GameManager.instance.GetCanShoot();
+        _canShoot = CurrentLevelManagar.instance.GetCanShoot();
         _rb.simulated = false;
     }
 
@@ -70,8 +70,8 @@ public class PlayerMovement : MonoBehaviour
 
     private void OnDisable()
     {
-        GameManager.instance.OnVictoryWalkStart -= StartVictoryWalk;
-        OnVictoryWalkEnd -= GameManager.instance.OnVictoryWalkEnd;
+        CurrentLevelManagar.instance.OnVictoryWalkStart -= StartVictoryWalk;
+        OnVictoryWalkEnd -= CurrentLevelManagar.instance.OnVictoryWalkEnd;
         OnVictoryWalkEnd -= StageScript.Instance.OnEndWalk;
         _controls.Player.Move.performed -= OnMove;
         _controls.Player.Jump.performed -= OnJump;

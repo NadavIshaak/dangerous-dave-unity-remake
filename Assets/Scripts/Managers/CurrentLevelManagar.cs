@@ -3,23 +3,14 @@ using Unity.Cinemachine;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class GameManager : MonoBehaviour
+public class CurrentLevelManagar : MonoBehaviour
 {
-    public static GameManager instance;
-    [SerializeField] private Sprite[] _numberSprites;
-    [SerializeField] private Image _trophyCollectedRenderer;
-    [SerializeField] private Image _LevelOnesRenderer;
-    [SerializeField] private Image _LevelTensRenderer;
+    public static CurrentLevelManagar instance;
     [SerializeField] private GameObject Player;
     [SerializeField] private GameObject[] _stagesSpawns;
     [SerializeField] private SpriteRenderer _StageWinWalkRenderer;
     [SerializeField] private Sprite[] _StageWinWalkSprite;
-    [SerializeField] private Image _GunSymbolRenderer;
-    [SerializeField] private Image _GunTextRenderer;
-    [SerializeField] private Image _JetPackTextRenderer;
     [SerializeField] private CinemachineSplineCart[] dollyCart;
-    [SerializeField] private Image fuelBar; // The full fuel bar
-    [SerializeField] private Image blackBox; // The black box that indicates fuel depletion
     private int _currentLevel = 1;
     private bool _hasGun;
     private bool _hasJetPack;
@@ -44,16 +35,13 @@ public class GameManager : MonoBehaviour
 
     public void ThrophyCollected()
     {
-        _trophyCollectedRenderer.enabled = true;
+        UIManager.Instance.UpdateThrophy(true);
         _trophyCollected = true;
     }
 
     public void UpdateFuelBar(float currentFuel, float maxFuel)
     {
-        var fuelPercentage = currentFuel / maxFuel;
-        var blackBoxWidth = fuelBar.rectTransform.rect.width * (1 - fuelPercentage);
-        blackBox.rectTransform.pivot = new Vector2(1, 0.5f); // Set pivot to the right
-        blackBox.rectTransform.sizeDelta = new Vector2(blackBoxWidth, blackBox.rectTransform.sizeDelta.y);
+        UIManager.Instance.UpdateFuelBar(currentFuel, maxFuel);
     }
 
     public void DoorReached()
@@ -63,7 +51,7 @@ public class GameManager : MonoBehaviour
         _StageWinWalkRenderer.sprite = _StageWinWalkSprite[_currentLevel - 1];
         _hasGun = false;
         _hasJetPack = false;
-        _trophyCollectedRenderer.enabled = false;
+        UIManager.Instance.UpdateThrophy(false);
         OnVictoryWalkStart?.Invoke();
     }
 
@@ -88,12 +76,7 @@ public class GameManager : MonoBehaviour
     {
         if (LifeManager.Instance.GetLife() == 0)
         {
-            _GunSymbolRenderer.enabled = false;
-            _GunTextRenderer.enabled = false;
-            _JetPackTextRenderer.enabled = false;
-            _trophyCollectedRenderer.enabled = false;
-            blackBox.enabled = false;
-            fuelBar.enabled = false;
+            UIManager.Instance.OnPlayerFinalDeath();
             return;
         }
 
@@ -106,11 +89,7 @@ public class GameManager : MonoBehaviour
 
     private void UpdateLevel()
     {
-        var tens = _currentLevel / 10;
-        var ones = _currentLevel % 10;
-
-        _LevelTensRenderer.sprite = _numberSprites[tens];
-        _LevelOnesRenderer.sprite = _numberSprites[ones];
+        UIManager.Instance.UpdateLevel(_currentLevel);
     }
 
     public void TriggerPlayerDeath()
@@ -124,20 +103,15 @@ public class GameManager : MonoBehaviour
     public void SetHasGun(bool hasGun)
     {
         _hasGun = hasGun;
-        _GunSymbolRenderer.enabled = hasGun;
-        _GunTextRenderer.enabled = hasGun;
+        UIManager.Instance.GotGun(hasGun);
     }
 
     public void SetHasJetPack(bool hasJetPack)
     {
         _hasJetPack = hasJetPack;
-        _JetPackTextRenderer.enabled = hasJetPack;
-        blackBox.enabled = hasJetPack;
-        fuelBar.enabled = hasJetPack;
+        UIManager.Instance.GotJetPack(hasJetPack);
     }
 
-    public bool GetCanShoot()
-    {
-        return _hasGun;
-    }
+    public bool GetCanShoot() { return _hasGun; }
+    public bool GetCanFly() { return _hasJetPack; }
 }

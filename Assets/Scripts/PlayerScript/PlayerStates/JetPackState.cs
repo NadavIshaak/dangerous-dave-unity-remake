@@ -28,7 +28,7 @@ public class JetPackState : PlayerState
 
     private void UpdateFuelBar()
     {
-        GameManager.instance.UpdateFuelBar(_currentFuel, _maxFuel);
+        CurrentLevelManagar.instance.UpdateFuelBar(_currentFuel, _maxFuel);
     }
 
 

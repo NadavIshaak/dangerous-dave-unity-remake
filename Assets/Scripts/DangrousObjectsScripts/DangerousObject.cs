@@ -12,7 +12,7 @@ public class DangerousObject : MonoBehaviour
     private void KillPlayer()
     {
         LifeManager.Instance.RemoveLife();
-        GameManager.instance.TriggerPlayerDeath();
+        CurrentLevelManagar.instance.TriggerPlayerDeath();
         SoundManager.Instance.PlaySound(deathSound, transform, 1);
     }
 }
