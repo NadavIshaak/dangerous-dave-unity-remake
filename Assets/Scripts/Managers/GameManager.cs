@@ -79,13 +79,14 @@ public class GameManager : MonoBehaviour
     }
     public void InstantiatePlayer()
     {
+        if(LifeManager.Instance.GetLife() == 0) return;
         var spawnPosition = _stagesSpawns[_currentLevel].transform.position;
         if (_currentLevel is 2 or 3)
         {
             dollyCart[_currentLevel - 2].SplinePosition = 0;
         }
         Instantiate(Player, spawnPosition, Quaternion.identity);
-        Debug.Log(("revivad"));
+        Debug.Log(("revived"));
         OnInstantiatedPlayer?.Invoke();
     }
     private void UpdateLevel()

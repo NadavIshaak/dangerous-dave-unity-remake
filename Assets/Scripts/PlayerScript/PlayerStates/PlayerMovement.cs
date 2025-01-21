@@ -31,6 +31,7 @@ public class PlayerMovement : MonoBehaviour
     public DeathState DeathState;
     public JetPackState JetPackState;
     private bool _hasJetPack;
+    private bool _hasStarted = false;
 
     private void Awake()
     {
@@ -56,6 +57,7 @@ public class PlayerMovement : MonoBehaviour
     {
         _controls.Enable();
         _controls.Player.Move.performed += OnMove;
+        _controls.Player.Jump.performed += OnJump;
         _controls.Player.Move.canceled += OnMove;
     }
     private void OnDisable()
@@ -64,6 +66,7 @@ public class PlayerMovement : MonoBehaviour
         OnVictoryWalkEnd -= GameManager.instance.OnVictoryWalkEnd;
         OnVictoryWalkEnd -= StageScript.Instance.OnEndWalk;
         _controls.Player.Move.performed -= OnMove;
+        _controls.Player.Jump.performed -= OnJump;
         _controls.Player.Move.canceled -= OnMove;
         _controls.Disable();
     }
@@ -103,7 +106,23 @@ public class PlayerMovement : MonoBehaviour
     private void OnMove(InputAction.CallbackContext context)
     {
         _moveInput = context.ReadValue<Vector2>();
-        if (CurrentState == null&&_moveInput.x!=0)
+        CheckForStart();
+    }
+    private void OnJump(InputAction.CallbackContext context)
+    {
+        CheckForStart();
+    }
+
+    private void CheckForStart()
+    {
+        if (CurrentState == null&&!_hasStarted)
+        {
+            _hasStarted = true;
+            _animationConttroler.HitGroundWithoutMovement();
+            return;
+        }
+
+        if (_hasStarted&&CurrentState==null)
         {
             TransitionToState(GroundedState);
         }

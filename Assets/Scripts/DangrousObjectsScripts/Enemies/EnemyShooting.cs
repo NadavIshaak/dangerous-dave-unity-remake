@@ -30,12 +30,12 @@ public class EnemyShooting : MonoBehaviour
 
     private void SetNewPlayer()
     {
-        _player = Object.FindFirstObjectByType<PlayerMovement>();
+        _player = FindFirstObjectByType<PlayerMovement>();
     }
 
     private void Shoot()
     {
-        if (_player is null) return;
+        if (!_player) return;
         var direction = (_player.transform.position.x > transform.position.x) ? Vector3.right : Vector3.left;
         _shootPoint = transform;
         var enemyBullet = EnemyBulletPool.Instance.Get();

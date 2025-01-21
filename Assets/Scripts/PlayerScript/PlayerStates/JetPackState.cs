@@ -51,7 +51,7 @@ public class JetPackState : PlayerState
 
     public override void HandleInput()
     {
-        if (_controls.Player.JetPack.IsPressed()==false||_currentFuel<=0)
+        if (_controls.Player.JetPack.triggered||_currentFuel<=0)
         {
             player.TransitionToState(player.GroundedState); // Transition back to the previous state
         }

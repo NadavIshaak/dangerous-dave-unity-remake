@@ -110,10 +110,10 @@ public class GroundedState : PlayerState
         var bottomRight = new Vector2(bounds.max.x, bounds.min.y + 0.1f); // Add a small buffer distance
         var topLeft = new Vector2(bounds.min.x, bounds.max.y - 0.1f);
         var topRight = new Vector2(bounds.max.x, bounds.max.y - 0.1f);
-        var hitLeft = Physics2D.Raycast(bottomLeft, Vector2.left, 0.05f, _wallLayerMask);
-        var hitRight = Physics2D.Raycast(bottomRight, Vector2.right, 0.05f, _wallLayerMask);
-        var hitTopLeft = Physics2D.Raycast(topLeft, Vector2.left, 0.05f, _wallLayerMask);
-        var hitTopRight = Physics2D.Raycast(topRight, Vector2.right, 0.05f, _wallLayerMask);
+        var hitLeft = Physics2D.Raycast(bottomLeft, Vector2.left, 0.04f, _wallLayerMask);
+        var hitRight = Physics2D.Raycast(bottomRight, Vector2.right, 0.04f, _wallLayerMask);
+        var hitTopLeft = Physics2D.Raycast(topLeft, Vector2.left, 0.04f, _wallLayerMask);
+        var hitTopRight = Physics2D.Raycast(topRight, Vector2.right, 0.04f, _wallLayerMask);
         if ((hitLeft.collider is not null || hitTopLeft.collider is not null) && player.GetMoveInput().x < 0)
         {
             _animationConttroler.StopMovement();
@@ -150,8 +150,8 @@ public class GroundedState : PlayerState
         var bounds = _collider.bounds;
          var bottomLeft = new Vector2(bounds.min.x, bounds.min.y + 0.1f); // Add a small buffer distance
         var bottomRight = new Vector2(bounds.max.x, bounds.min.y + 0.1f); // Add a small buffer distance
-        var hitLeft = Physics2D.Raycast(bottomLeft, Vector2.down, 0.21f, _wallLayerMask);
-        var hitRight = Physics2D.Raycast(bottomRight, Vector2.down, 0.21f, _wallLayerMask);
+        var hitLeft = Physics2D.Raycast(bottomLeft, Vector2.down, 0.20f, _wallLayerMask);
+        var hitRight = Physics2D.Raycast(bottomRight, Vector2.down, 0.20f, _wallLayerMask);
         _rb.linearVelocity = new Vector2(player.GetMoveInput().x * _moveSpeed, _rb.linearVelocity.y);
         CheckFirstMoveAndDirection();
         if(IsStuck()) return;
