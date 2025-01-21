@@ -12,6 +12,7 @@ public class AirborneState : PlayerState
     private bool _moveInAir;
     private bool _justTransitioned=true;
     private bool _isFalling=true;
+    private bool _didMoveFromIdle;
     private readonly PlayerAnimationConttroler _animationConttroler;
 
 
@@ -30,6 +31,7 @@ public class AirborneState : PlayerState
         _isOffGround = false;
         _moveInAir = false;
         _justTransitioned = true;
+        _didMoveFromIdle = false;
     }
     public override void HandleInput()
     {
@@ -50,6 +52,7 @@ public class AirborneState : PlayerState
                _animationConttroler.HitGroundWithMovement();
             else
               _animationConttroler.HitGroundWithoutMovement();
+            
             player.TransitionToState(player.GroundedState);
         }
     }
@@ -72,10 +75,11 @@ public class AirborneState : PlayerState
         {
             if(_justTransitioned)
                 player.PlaySound(true, true, _fallingSound);
-            if (player.GetMoveInput().x != 0)
+            if (player.GetMoveInput().x != 0&&!_didMoveFromIdle)
             {
                 _animationConttroler.ResumeMovement();
                 _animationConttroler.FallWhileWalking();
+                _didMoveFromIdle = true;
             }
         }
         else

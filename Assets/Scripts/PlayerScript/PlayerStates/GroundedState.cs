@@ -41,8 +41,6 @@ public class GroundedState : PlayerState
 
     public override void HandleInput()
     {
-        if (!_controls.Player.Jump.triggered) return;
-        JumpTransition();
     }
     public override void Update() { CheckInputAndAnimate(); }
 
@@ -108,19 +106,32 @@ public class GroundedState : PlayerState
             FallTransition();
         }
     }
+    
+    private void CheckForJump()
+    {
+        if (_controls.Player.Jump.triggered)
+        {
+            JumpTransition();
+        }
+    }
     private void CheckInputAndAnimate()
     {
+        CheckForJump();
         CheckForFall();
         CheckForNoFuel();
         player.MovePlayer();
         if (IsStuck()) return;
         if (player.GetMoveInput().x != 0) ChangeDirectionOfMovement();
-        
+
         if (player.GetMoveInput().x == 0 && !_isStop && _firstMove)
+        {
             StopMovement();
+            Debug.Log("Stop");
+        }
         else if (player.GetMoveInput().x != 0 && _isStop && _firstMove)
+        {
             ContinueMovementAfterStop();
-        
+        }
     }
     private void ChangeDirectionOfMovement()
     {
@@ -129,8 +140,8 @@ public class GroundedState : PlayerState
             _animationConttroler.ResumeMovement();
             _animationConttroler.Move();
             player.PlaySound(true, true, _moveSound);
+            Debug.Log("Move");
         }
-
         _firstMove = true;
         _animationConttroler.ChangeDirection(player.GetMoveInput().x > 0);
         player.SetIsRight(player.GetMoveInput().x > 0);

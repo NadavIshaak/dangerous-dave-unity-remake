@@ -118,7 +118,9 @@ public class PlayerMovement : MonoBehaviour
     private void OnMove(InputAction.CallbackContext context)
     {
         _moveInput = context.ReadValue<Vector2>();
-        CheckForStart();
+        Debug.Log(_moveInput.x);
+        if(_moveInput.x!=0)
+           CheckForStart();
     }
     public void PlaySound(bool shouldKeep, bool shouldLoop, AudioClip clip)
     {
