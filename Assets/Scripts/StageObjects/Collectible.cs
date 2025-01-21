@@ -4,6 +4,7 @@ public class Collectible : MonoBehaviour
 {
     [SerializeField] private int _value = 100;
     [SerializeField] private AudioClip _collectSound;
+
     protected virtual void OnTriggerEnter2D(Collider2D other)
     {
         if (!other.gameObject.CompareTag("Player")) return;

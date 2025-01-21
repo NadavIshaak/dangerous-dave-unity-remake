@@ -1,3 +1,9 @@
-﻿namespace PathCreation {
-	public enum PathSpace {xyz, xy, xz};
+﻿namespace PathCreation
+{
+    public enum PathSpace
+    {
+        xyz,
+        xy,
+        xz
+    }
 }

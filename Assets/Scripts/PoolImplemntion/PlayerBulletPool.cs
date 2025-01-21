@@ -1,14 +1,13 @@
-using UnityEngine;
 using System.Collections;
+using UnityEngine;
+
 public class PlayerBulletPool : MonoPool<PlayerBullet>
 {
-
-
     public override void Return(PlayerBullet bullet)
     {
-         StartCoroutine(WaitThenReturn(bullet, 1f));
+        StartCoroutine(WaitThenReturn(bullet, 1f));
     }
-    
+
 
     private IEnumerator WaitThenReturn(PlayerBullet bullet, float delay)
     {

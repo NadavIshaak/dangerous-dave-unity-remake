@@ -2,14 +2,16 @@ using UnityEngine;
 
 public class DeathState : PlayerState
 {
-    public DeathState(PlayerMovement player) : base(player) { }
+    public DeathState(PlayerMovement player) : base(player)
+    {
+    }
 
     public override void Enter()
     {
         player.SetCanShoot(false);
         // Trigger the death animation
         player.GetAnimationConttroler().Death();
-        
+
         // Stop the player's movement
         player.GetRigidbody().linearVelocity = Vector2.zero;
         // Schedule the player to be destroyed after a few seconds
@@ -33,6 +35,5 @@ public class DeathState : PlayerState
 
     public override void Exit()
     {
-        
     }
 }

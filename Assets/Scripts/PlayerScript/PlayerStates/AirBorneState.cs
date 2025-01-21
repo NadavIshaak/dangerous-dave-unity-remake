@@ -2,16 +2,16 @@ using UnityEngine;
 
 public class AirborneState : PlayerState
 {
+    private readonly InputSystem_Actions _controls;
+    private bool _hasJetPack;
     private bool _isOffGround;
     private bool _isRight;
     private AudioClip _jumpSound;
     private bool _moveInAir;
-    private bool _hasJetPack;
-    private readonly InputSystem_Actions _controls;
 
     public AirborneState(PlayerMovement player) : base(player)
     {
-        _controls=player.GetControls();
+        _controls = player.GetControls();
     }
 
     public override void Enter()
@@ -54,15 +54,13 @@ public class AirborneState : PlayerState
 
     private void InputAndAnimate()
     {
-        if(_controls.Player.JetPack.IsPressed()&&_hasJetPack)
-        {
+        if (_controls.Player.JetPack.IsPressed() && _hasJetPack)
             if (JetPackState.GetCurrentFuel() > 0)
             {
                 Debug.Log("JetPack");
                 player.TransitionToState(player.JetPackState);
-                
             }
-        }
+
         player.GetRigidbody().linearVelocity = new Vector2(player.GetMoveInput().x * player.GetMoveSpeed(),
             player.GetRigidbody().linearVelocity.y);
         if (player.GetMoveInput().x != 0) _moveInAir = true;
@@ -103,7 +101,7 @@ public class AirborneState : PlayerState
         var hitRight = Physics2D.Raycast(bottomRight, Vector2.down, 0.145f, player.GetWallLayerMask());
         switch (_isOffGround)
         {
-            case false when (hitLeft.collider is null || hitRight.collider is null):
+            case false when hitLeft.collider is null || hitRight.collider is null:
                 _isOffGround = true;
                 return false;
             case false:
@@ -112,6 +110,7 @@ public class AirborneState : PlayerState
                 return hitLeft.collider is not null || hitRight.collider is not null;
         }
     }
+
     public void SetHasJetPack(bool value)
     {
         _hasJetPack = value;

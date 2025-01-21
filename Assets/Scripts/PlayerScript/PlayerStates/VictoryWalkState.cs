@@ -2,18 +2,21 @@ using UnityEngine;
 
 public class VictoryWalkState : PlayerState
 {
-    public VictoryWalkState(PlayerMovement player) : base(player) { }
     private AudioClip WinSound;
+
+    public VictoryWalkState(PlayerMovement player) : base(player)
+    {
+    }
 
     public override void Enter()
     {
         // Enter victory walk state logic
         player.SetCanShoot(false);
         player.SetTransform(player.GetVictoryWalkStart());
-        WinSound=player.GetWinSound();
-        SoundManager.Instance.PlaySound(WinSound,player.GetTransform(),1,false,false);
+        WinSound = player.GetWinSound();
+        SoundManager.Instance.PlaySound(WinSound, player.GetTransform(), 1);
         player.GetAnimationConttroler().ChangeDirection(true);
-         player.GetAnimationConttroler().Move();
+        player.GetAnimationConttroler().Move();
     }
 
     public override bool GetIsRight()
@@ -29,9 +32,9 @@ public class VictoryWalkState : PlayerState
     public override void Update()
     {
         // Auto walk logic
-        player.GetRigidbody().linearVelocity = new Vector2(player.GetMoveSpeed()*1.1f, 0);
+        player.GetRigidbody().linearVelocity = new Vector2(player.GetMoveSpeed() * 1.1f, 0);
         // Raycast to detect walls
-        RaycastHit2D hit = Physics2D.Raycast(player.GetTransform().position, Vector2.right, 0.5f, player.GetWallLayerMask());
+        var hit = Physics2D.Raycast(player.GetTransform().position, Vector2.right, 0.5f, player.GetWallLayerMask());
         if (hit.collider != null)
         {
             player.TransitionToState(player.GroundedState);

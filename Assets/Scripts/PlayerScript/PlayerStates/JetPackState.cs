@@ -1,19 +1,18 @@
 ﻿using UnityEngine;
-using UnityEngine.UI;
 
 public class JetPackState : PlayerState
 {
+    private static float _currentFuel;
+    private readonly PlayerAnimationConttroler _animationConttroler;
     private readonly InputSystem_Actions _controls;
+    private readonly AudioClip _jetpackSound;
+    private readonly float _maxFuel; // Maximum fuel
+    private readonly float _moveSpeed;
     private readonly Transform _playerTransform;
     private readonly Rigidbody2D _rb;
-    private readonly PlayerAnimationConttroler _animationConttroler;
-    private readonly float _moveSpeed;
-    private readonly AudioClip _jetpackSound;
+    private bool _hasJetPack;
     private bool _isFlying;
     private bool _isRight;
-    private bool _hasJetPack;
-    private readonly float _maxFuel;// Maximum fuel
-    private static float _currentFuel;
 
     public JetPackState(PlayerMovement player) : base(player)
     {
@@ -27,11 +26,12 @@ public class JetPackState : PlayerState
         _currentFuel = _maxFuel;
         UpdateFuelBar();
     }
+
     private void UpdateFuelBar()
     {
         GameManager.instance.UpdateFuelBar(_currentFuel, _maxFuel);
     }
-    
+
 
     public override void Enter()
     {
@@ -51,7 +51,7 @@ public class JetPackState : PlayerState
 
     public override void HandleInput()
     {
-        if (_controls.Player.JetPack.triggered||_currentFuel<=0)
+        if (_controls.Player.JetPack.WasPressedThisFrame() || _currentFuel <= 0)
         {
             player.TransitionToState(player.GroundedState); // Transition back to the previous state
         }
@@ -67,7 +67,7 @@ public class JetPackState : PlayerState
         HandleInput();
         CheckInputAndAnimate();
     }
-    
+
 
     public override void Exit()
     {
@@ -76,10 +76,11 @@ public class JetPackState : PlayerState
             SoundManager.Instance.StopSound();
             _rb.gravityScale = 1; // Re-enable gravity
         }
+
         Debug.Log("Exit JetPackState");
         _animationConttroler.HitGroundWithoutMovement();
     }
-    
+
     public static float GetCurrentFuel()
     {
         return _currentFuel;
@@ -95,10 +96,7 @@ public class JetPackState : PlayerState
         var moveInput = player.GetMoveInput();
         _rb.linearVelocity = new Vector2(moveInput.x * _moveSpeed, moveInput.y * _moveSpeed);
 
-        if (_isFlying)
-        {
-            _animationConttroler.JetPack();
-        }
+        if (_isFlying) _animationConttroler.JetPack();
         switch (moveInput.x)
         {
             case > 0:

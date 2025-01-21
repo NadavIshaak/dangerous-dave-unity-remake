@@ -1,13 +1,9 @@
-
+using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using System;
-using UnityEngine.UI;
 
 public class PlayerMovement : MonoBehaviour
 {
-    private InputSystem_Actions _controls;
-    private Vector2 _moveInput;
     [SerializeField] private float moveSpeed = 5f;
     [SerializeField] private float jumpForce = 8f;
     [SerializeField] private Vector3 victoryWalkStart;
@@ -19,19 +15,20 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private AudioClip StuckSound;
     [SerializeField] private AudioClip jetpackSound;
     [SerializeField] private float maxFuel = 100f; // Maximum fuel
-    private Collider2D _collide;
-    private Rigidbody2D _rb;
-    private bool _canShoot = false;
     private PlayerAnimationConttroler _animationConttroler;
-    public event Action OnVictoryWalkEnd;
-    public PlayerState CurrentState;
-    public GroundedState GroundedState;
-    public AirborneState AirborneState;
-    public VictoryWalkState VictoryWalkState;
-    public DeathState DeathState;
-    public JetPackState JetPackState;
+    private bool _canShoot;
+    private Collider2D _collide;
+    private InputSystem_Actions _controls;
     private bool _hasJetPack;
-    private bool _hasStarted = false;
+    private bool _hasStarted;
+    private Vector2 _moveInput;
+    private Rigidbody2D _rb;
+    public AirborneState AirborneState;
+    public PlayerState CurrentState;
+    public DeathState DeathState;
+    public GroundedState GroundedState;
+    public JetPackState JetPackState;
+    public VictoryWalkState VictoryWalkState;
 
     private void Awake()
     {
@@ -44,15 +41,24 @@ public class PlayerMovement : MonoBehaviour
         VictoryWalkState = new VictoryWalkState(this);
         DeathState = new DeathState(this);
         JetPackState = new JetPackState(this);
-        
     }
-     private void Start()
+
+    private void Start()
     {
         GameManager.instance.OnVictoryWalkStart += StartVictoryWalk;
         OnVictoryWalkEnd += GameManager.instance.OnVictoryWalkEnd;
         OnVictoryWalkEnd += StageScript.Instance.OnEndWalk;
-        _canShoot= GameManager.instance.GetCanShoot();
+        _canShoot = GameManager.instance.GetCanShoot();
+        _rb.simulated = false;
     }
+
+    private void Update()
+    {
+        if (CurrentState == null) return;
+        CurrentState.HandleInput();
+        CurrentState.Update();
+    }
+
     private void OnEnable()
     {
         _controls.Enable();
@@ -60,6 +66,7 @@ public class PlayerMovement : MonoBehaviour
         _controls.Player.Jump.performed += OnJump;
         _controls.Player.Move.canceled += OnMove;
     }
+
     private void OnDisable()
     {
         GameManager.instance.OnVictoryWalkStart -= StartVictoryWalk;
@@ -70,15 +77,8 @@ public class PlayerMovement : MonoBehaviour
         _controls.Player.Move.canceled -= OnMove;
         _controls.Disable();
     }
-    private void Update()
-    {
-        if (CurrentState == null)
-        {
-            return;
-        }
-        CurrentState.HandleInput();
-        CurrentState.Update();
-    }
+
+    public event Action OnVictoryWalkEnd;
 
     public void TransitionToState(PlayerState state)
     {
@@ -86,11 +86,14 @@ public class PlayerMovement : MonoBehaviour
         CurrentState = state;
         CurrentState.Enter();
     }
+
     public void TriggerDeath()
     {
+        _rb.gravityScale = 0.4f;
         TransitionToState(DeathState);
     }
-     private void DestroyPlayer()
+
+    private void DestroyPlayer()
     {
         Destroy(gameObject);
     }
@@ -99,15 +102,18 @@ public class PlayerMovement : MonoBehaviour
     {
         TransitionToState(VictoryWalkState);
     }
-     public void TriggerVictoryWalkEnd()
+
+    public void TriggerVictoryWalkEnd()
     {
         OnVictoryWalkEnd?.Invoke();
     }
+
     private void OnMove(InputAction.CallbackContext context)
     {
         _moveInput = context.ReadValue<Vector2>();
         CheckForStart();
     }
+
     private void OnJump(InputAction.CallbackContext context)
     {
         CheckForStart();
@@ -115,38 +121,116 @@ public class PlayerMovement : MonoBehaviour
 
     private void CheckForStart()
     {
-        if (CurrentState == null&&!_hasStarted)
+        if (CurrentState == null && !_hasStarted)
         {
+            _rb.simulated = true;
             _hasStarted = true;
             _animationConttroler.HitGroundWithoutMovement();
             return;
         }
 
-        if (_hasStarted&&CurrentState==null)
-        {
-            TransitionToState(GroundedState);
-        }
+        if (_hasStarted && CurrentState == null) TransitionToState(GroundedState);
     }
-    public LayerMask GetWallLayerMask() => wallLayerMask;
-    public Rigidbody2D GetRigidbody() => _rb;
-    public Vector2 GetMoveInput() => _moveInput;
-    public float GetMoveSpeed() => moveSpeed;
-    public float GetJumpForce() => jumpForce;
-    public PlayerAnimationConttroler GetAnimationConttroler() => _animationConttroler;
-    public Vector3 GetVictoryWalkStart() => victoryWalkStart;
-    public InputSystem_Actions GetControls() => _controls;
-    public Transform GetTransform() => transform;
-    public void SetTransform(Vector3 value) => transform.position = value;
-    public Collider2D GetCollider() => _collide;
-    public AudioClip GetMoveSound() => MoveSound;
-    public AudioClip GetFallingSound() => FallingSound;
-    public AudioClip GetJumpSound() => jumpSound;
-    public AudioClip GetWinSound() => WinSound;
-    public void SetCanShoot(bool value) => _canShoot=value;
-    public bool GetCanShoot() => _canShoot;
-    public AudioClip GetStuckSound() => StuckSound;
-    public  AudioClip GetJetpackSound() => jetpackSound;
-    public bool GetHasJetPack() => _hasJetPack;
+
+    public LayerMask GetWallLayerMask()
+    {
+        return wallLayerMask;
+    }
+
+    public Rigidbody2D GetRigidbody()
+    {
+        return _rb;
+    }
+
+    public Vector2 GetMoveInput()
+    {
+        return _moveInput;
+    }
+
+    public float GetMoveSpeed()
+    {
+        return moveSpeed;
+    }
+
+    public float GetJumpForce()
+    {
+        return jumpForce;
+    }
+
+    public PlayerAnimationConttroler GetAnimationConttroler()
+    {
+        return _animationConttroler;
+    }
+
+    public Vector3 GetVictoryWalkStart()
+    {
+        return victoryWalkStart;
+    }
+
+    public InputSystem_Actions GetControls()
+    {
+        return _controls;
+    }
+
+    public Transform GetTransform()
+    {
+        return transform;
+    }
+
+    public void SetTransform(Vector3 value)
+    {
+        transform.position = value;
+    }
+
+    public Collider2D GetCollider()
+    {
+        return _collide;
+    }
+
+    public AudioClip GetMoveSound()
+    {
+        return MoveSound;
+    }
+
+    public AudioClip GetFallingSound()
+    {
+        return FallingSound;
+    }
+
+    public AudioClip GetJumpSound()
+    {
+        return jumpSound;
+    }
+
+    public AudioClip GetWinSound()
+    {
+        return WinSound;
+    }
+
+    public void SetCanShoot(bool value)
+    {
+        _canShoot = value;
+    }
+
+    public bool GetCanShoot()
+    {
+        return _canShoot;
+    }
+
+    public AudioClip GetStuckSound()
+    {
+        return StuckSound;
+    }
+
+    public AudioClip GetJetpackSound()
+    {
+        return jetpackSound;
+    }
+
+    public bool GetHasJetPack()
+    {
+        return _hasJetPack;
+    }
 
     public void SetHasJetPack(bool value)
     {
@@ -154,6 +238,9 @@ public class PlayerMovement : MonoBehaviour
         GroundedState.SetHasJetPack(value);
         AirborneState.SetHasJetPack(value);
     }
-    public float GetMaxFuel() => maxFuel;
-    
+
+    public float GetMaxFuel()
+    {
+        return maxFuel;
+    }
 }

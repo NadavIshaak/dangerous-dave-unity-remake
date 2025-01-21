@@ -23,40 +23,48 @@ public class PlayerAnimationConttroler : MonoBehaviour
     {
         animator.SetTrigger(Move1);
     }
+
     public void ChangeDirection(bool facingRight)
     {
         spriteRenderer.flipX = !facingRight;
     }
+
     public void StopInMovement()
     {
         animator.speed = 0;
     }
+
     public void StopMovement()
     {
         Invoke(nameof(StopInMovement), 0.175f);
     }
-    
+
     public void ResumeMovement()
     {
         animator.speed = 1;
     }
+
     public void Jump()
     {
         animator.SetTrigger(Jump1);
     }
+
     public void FallWhileWalking()
     {
         animator.SetTrigger(WhileWalking);
     }
+
     public void HitGroundWithMovement()
     {
         animator.SetTrigger(GroundWithMovement);
     }
+
     public void HitGroundWithoutMovement()
     {
         animator.SetTrigger(GroundWithoutMovement);
     }
-     public void Death()
+
+    public void Death()
     {
         animator.SetTrigger(Death1);
     }

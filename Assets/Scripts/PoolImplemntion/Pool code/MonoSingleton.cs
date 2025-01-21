@@ -14,10 +14,11 @@ public class MonoSingleton<T> : MonoBehaviour where T : MonoBehaviour
 
                 if (_instance == null)
                 {
-                    GameObject singletonObject = new GameObject(typeof(T).Name);
+                    var singletonObject = new GameObject(typeof(T).Name);
                     _instance = singletonObject.AddComponent<T>();
                 }
             }
+
             return _instance;
         }
     }

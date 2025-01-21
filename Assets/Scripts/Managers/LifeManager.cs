@@ -1,19 +1,25 @@
-using System;
 using UnityEngine;
 using UnityEngine.UI;
+
 public class LifeManager : MonoSingleton<LifeManager>
 {
     // Start is called once before the first execution of Update after the MonoBehaviour is created
-    [SerializeField] Image _oneLifeRenderer;
-    [SerializeField] Image _twoLifeRenderer;
-    [SerializeField] Image _threeLifeRenderer;
-    [SerializeField] Image _DeadRenderer;
+    [SerializeField] private Image _oneLifeRenderer;
+    [SerializeField] private Image _twoLifeRenderer;
+    [SerializeField] private Image _threeLifeRenderer;
+    [SerializeField] private Image _DeadRenderer;
     private InputSystem_Actions _controls;
+    private bool _isDead;
     private int _lives = 4;
-    private bool _isDead = false;
-     public void RemoveLife()
+
+    private void Update()
     {
-        
+        if (!_isDead) return;
+        if (_controls.Player.Jump.triggered) Application.Quit();
+    }
+
+    public void RemoveLife()
+    {
         _lives--;
         if (_lives == 0)
         {
@@ -22,22 +28,15 @@ public class LifeManager : MonoSingleton<LifeManager>
             _controls = new InputSystem_Actions();
             return;
         }
-        UpdateLifeDisplay();
-    }
 
-    private void Update()
-    {
-        if (!_isDead) return;
-        if (_controls.Player.Jump.triggered)
-        {
-            Application.Quit();
-        }
+        UpdateLifeDisplay();
     }
 
     public int GetLife()
     {
         return _lives;
     }
+
     private void UpdateLifeDisplay()
     {
         switch (_lives)
@@ -50,5 +49,4 @@ public class LifeManager : MonoSingleton<LifeManager>
                 _oneLifeRenderer.enabled = false; break;
         }
     }
-    
 }

@@ -7,34 +7,37 @@ public class StageScript : MonoBehaviour
     private static readonly int Game = Animator.StringToHash("StartGame");
     private static readonly int StartWalk = Animator.StringToHash("StartWalk");
     private static readonly int EndWalk = Animator.StringToHash("EndWalk");
-    
+
     [FormerlySerializedAs("_canvas")] [SerializeField]
     private Canvas canvas;
 
     private Animator _animator;
     private InputSystem_Actions _controls;
-    private bool _didStartGame;
     private bool _didEndGame;
+    private bool _didStartGame;
 
     private void Awake()
     {
         if (Instance == null)
         {
             Instance = this;
-            DontDestroyOnLoad(gameObject); 
+            DontDestroyOnLoad(gameObject);
         }
         else
         {
             Destroy(gameObject);
         }
+
         _controls = new InputSystem_Actions();
     }
+
     private void Start()
     {
         _animator = GetComponent<Animator>();
         GameManager.instance.OnVictoryWalkStart += OnStartWalk;
         canvas.enabled = false;
     }
+
     private void Update()
     {
         if (!_didStartGame && _controls.Player.Jump.triggered)
@@ -43,13 +46,11 @@ public class StageScript : MonoBehaviour
             StartGame();
         }
         else if (_didEndGame && _controls.Player.Jump.triggered)
+        {
             GameOver();
+        }
     }
-    private static void GameOver()
-    {
-        //ends the game,quits the game and closes it
-        Application.Quit();
-    }
+
     private void OnEnable()
     {
         if (GameManager.instance != null)
@@ -57,8 +58,10 @@ public class StageScript : MonoBehaviour
             GameManager.instance.OnVictoryWalkStart += OnStartWalk;
             GameManager.instance.OnGameOver += OnGameOver;
         }
+
         _controls.Enable();
     }
+
     private void OnDisable()
     {
         if (GameManager.instance != null)
@@ -66,18 +69,28 @@ public class StageScript : MonoBehaviour
             GameManager.instance.OnVictoryWalkStart -= OnStartWalk;
             GameManager.instance.OnGameOver -= OnGameOver;
         }
+
         _controls.Disable();
     }
+
     private void OnDestroy()
     {
         if (GameManager.instance != null) GameManager.instance.OnVictoryWalkStart -= OnStartWalk;
     }
+
+    private static void GameOver()
+    {
+        //ends the game,quits the game and closes it
+        Application.Quit();
+    }
+
     private void StartGame()
     {
         canvas.enabled = true;
         GameManager.instance.InstantiatePlayer();
         _animator.SetTrigger(Game);
     }
+
     private void OnStartWalk()
     {
         _animator.SetTrigger(StartWalk);
