@@ -18,11 +18,6 @@ public class DeathState : PlayerState
         player.Invoke("DestroyPlayer", 3f); // Adjust the delay as needed
     }
 
-    public override bool GetIsRight()
-    {
-        return true;
-    }
-
     public override void HandleInput()
     {
         // No input handling in death state

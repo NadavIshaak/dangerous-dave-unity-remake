@@ -40,20 +40,15 @@ public class JetPackState : PlayerState
             PlaySound(true, true, _jetpackSound);
             _rb.gravityScale = 0; // Disable gravity
             _isFlying = true;
-            _isRight = true;
         }
     }
-
-    public override bool GetIsRight()
-    {
-        return _isRight;
-    }
+    
 
     public override void HandleInput()
     {
         if (_controls.Player.JetPack.WasPressedThisFrame() || _currentFuel <= 0)
         {
-            player.TransitionToState(player.GroundedState); // Transition back to the previous state
+            player.TransitionToState(player.AirborneState); // Transition back to the previous state
         }
         else
         {
@@ -64,7 +59,6 @@ public class JetPackState : PlayerState
 
     public override void Update()
     {
-        HandleInput();
         CheckInputAndAnimate();
     }
 
@@ -78,7 +72,7 @@ public class JetPackState : PlayerState
         }
 
         Debug.Log("Exit JetPackState");
-        _animationConttroler.HitGroundWithoutMovement();
+      
     }
 
     public static float GetCurrentFuel()
@@ -101,11 +95,11 @@ public class JetPackState : PlayerState
         {
             case > 0:
                 _animationConttroler.ChangeDirection(true);
-                _isRight = true;
+                player.SetIsRight(true);
                 break;
             case < 0:
                 _animationConttroler.ChangeDirection(false);
-                _isRight = false;
+                player.SetIsRight(false);
                 break;
         }
     }

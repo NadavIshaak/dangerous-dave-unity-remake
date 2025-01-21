@@ -18,11 +18,7 @@ public class VictoryWalkState : PlayerState
         player.GetAnimationConttroler().ChangeDirection(true);
         player.GetAnimationConttroler().Move();
     }
-
-    public override bool GetIsRight()
-    {
-        return true;
-    }
+    
 
     public override void HandleInput()
     {
@@ -35,12 +31,10 @@ public class VictoryWalkState : PlayerState
         player.GetRigidbody().linearVelocity = new Vector2(player.GetMoveSpeed() * 1.1f, 0);
         // Raycast to detect walls
         var hit = Physics2D.Raycast(player.GetTransform().position, Vector2.right, 0.5f, player.GetWallLayerMask());
-        if (hit.collider != null)
-        {
-            player.TransitionToState(player.GroundedState);
-            player.TriggerVictoryWalkEnd();
-            player.Invoke("DestroyPlayer", 0f);
-        }
+        if (hit.collider is null) return;
+        player.TransitionToState(player.GroundedState);
+        player.TriggerVictoryWalkEnd();
+        player.Invoke("DestroyPlayer", 0f);
     }
 
     public override void Exit()

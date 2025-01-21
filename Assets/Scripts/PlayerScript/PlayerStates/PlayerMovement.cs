@@ -21,6 +21,7 @@ public class PlayerMovement : MonoBehaviour
     private InputSystem_Actions _controls;
     private bool _hasJetPack;
     private bool _hasStarted;
+    private bool _isRight;
     private Vector2 _moveInput;
     private Rigidbody2D _rb;
     public AirborneState AirborneState;
@@ -106,6 +107,12 @@ public class PlayerMovement : MonoBehaviour
     public void TriggerVictoryWalkEnd()
     {
         OnVictoryWalkEnd?.Invoke();
+    }
+
+    public void MovePlayer()
+    {
+        _rb.linearVelocity = new Vector2(_moveInput.x * moveSpeed,
+            _rb.linearVelocity.y);
     }
 
     private void OnMove(InputAction.CallbackContext context)
@@ -231,12 +238,18 @@ public class PlayerMovement : MonoBehaviour
     {
         return _hasJetPack;
     }
+    public void SetIsRight(bool value)
+    {
+        _isRight = value;
+    }
+    public bool GetIsRight()
+    {
+        return _isRight;
+    }
 
     public void SetHasJetPack(bool value)
     {
         _hasJetPack = value;
-        GroundedState.SetHasJetPack(value);
-        AirborneState.SetHasJetPack(value);
     }
 
     public float GetMaxFuel()

@@ -10,6 +10,5 @@ public abstract class PlayerState
     public abstract void Enter();
     public abstract void HandleInput();
     public abstract void Update();
-    public abstract bool GetIsRight();
     public abstract void Exit();
 }

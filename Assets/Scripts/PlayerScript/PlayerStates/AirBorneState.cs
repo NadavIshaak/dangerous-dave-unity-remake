@@ -8,6 +8,7 @@ public class AirborneState : PlayerState
     private bool _isRight;
     private AudioClip _jumpSound;
     private bool _moveInAir;
+    private bool _justTransitioned=true;
 
     public AirborneState(PlayerMovement player) : base(player)
     {
@@ -16,19 +17,11 @@ public class AirborneState : PlayerState
 
     public override void Enter()
     {
-        _jumpSound = player.GetJumpSound();
         _isOffGround = false;
         _moveInAir = false;
-        PlaySound(true, true, _jumpSound);
-        _isRight = player.GroundedState.GetIsRight();
+        _justTransitioned = true;
         _hasJetPack = player.GetHasJetPack();
     }
-
-    public override bool GetIsRight()
-    {
-        return _isRight;
-    }
-
     public override void HandleInput()
     {
     }
@@ -52,39 +45,36 @@ public class AirborneState : PlayerState
         }
     }
 
+    private void CheckForNoFuel()
+    {
+        _hasJetPack = player.GetHasJetPack();
+        if (_controls.Player.JetPack.WasPressedThisFrame() && _hasJetPack&&!_justTransitioned)
+            if (JetPackState.GetCurrentFuel() > 0)
+                player.TransitionToState(player.JetPackState);
+        _justTransitioned = false;
+    }
+    
+    
+
     private void InputAndAnimate()
     {
-        if (_controls.Player.JetPack.IsPressed() && _hasJetPack)
-            if (JetPackState.GetCurrentFuel() > 0)
-            {
-                Debug.Log("JetPack");
-                player.TransitionToState(player.JetPackState);
-            }
-
-        player.GetRigidbody().linearVelocity = new Vector2(player.GetMoveInput().x * player.GetMoveSpeed(),
-            player.GetRigidbody().linearVelocity.y);
+        CheckForNoFuel();
+        player.MovePlayer();
         if (player.GetMoveInput().x != 0) _moveInAir = true;
         if (player.GetMoveInput().x > 0)
         {
             player.GetAnimationConttroler().ChangeDirection(true);
-            _isRight = true;
+            player.SetIsRight(true);
         }
         else if (player.GetMoveInput().x < 0)
         {
             player.GetAnimationConttroler().ChangeDirection(false);
-            _isRight = false;
+            player.SetIsRight(false);
         }
     }
-
-    private void PlaySound(bool ShouldKeep, bool ShouldLoop, AudioClip clip)
-    {
-        SoundManager.Instance.PlaySound(clip, player.GetTransform(), 1, ShouldLoop, ShouldKeep);
-    }
-
     public override void Exit()
     {
         SoundManager.Instance.StopSound();
-        player.GroundedState.SetIsRight(_isRight);
     }
 
     private bool IsGrounded()
@@ -109,10 +99,5 @@ public class AirborneState : PlayerState
             default:
                 return hitLeft.collider is not null || hitRight.collider is not null;
         }
-    }
-
-    public void SetHasJetPack(bool value)
-    {
-        _hasJetPack = value;
     }
 }
