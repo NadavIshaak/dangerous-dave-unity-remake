@@ -52,24 +52,17 @@ public class GroundedState : PlayerState
     public override void Update() { CheckInputAndAnimate(); }
 
     public override void Exit() { _animationConttroler.ResumeMovement();}
-
-    private void PlaySound(bool shouldKeep, bool shouldLoop, AudioClip clip)
-    {
-        SoundManager.Instance.PlaySound(clip, _playerTransform, 1, shouldLoop, shouldKeep);
-    } 
+    
     private void JumpTransition()
     {
-        _animationConttroler.Jump();
-        PlaySound(true, true,player.GetJumpSound());
+        player.AirborneState.SetIsFalling(false);
         _rb.AddForce(Vector2.up * _jumpForce, ForceMode2D.Impulse);
         player.TransitionToState(player.AirborneState);
     }
 
     private void FallTransition()
     {
-        _animationConttroler.ResumeMovement();
-        _animationConttroler.FallWhileWalking();
-        PlaySound(true, true, _fallingSound);
+        player.AirborneState.SetIsFalling(true);
         player.TransitionToState(player.AirborneState);
     }
 
@@ -90,12 +83,13 @@ public class GroundedState : PlayerState
             _animationConttroler.StopMovement();
             Debug.Log("Stuck");
             if (!_isStuck)
-                PlaySound(true, true, _wallHitSound);
+                player.PlaySound(true, true, _wallHitSound);
             _isStuck = true;
             return true;
         }
         if (!_isStuck) return false;
         SoundManager.Instance.StopSound();
+        _animationConttroler.ResumeMovement();
         _isStuck = false;
         return false;
     }
@@ -137,8 +131,9 @@ public class GroundedState : PlayerState
     {
         if (!_firstMove)
         {
+            _animationConttroler.ResumeMovement();
             _animationConttroler.Move();
-            PlaySound(true, true, _moveSound);
+            player.PlaySound(true, true, _moveSound);
         }
 
         _firstMove = true;
@@ -156,7 +151,7 @@ public class GroundedState : PlayerState
     private void ContinueMovementAfterStop()
     {
         _animationConttroler.ResumeMovement();
-        PlaySound(true, true, _moveSound);
+        player.PlaySound(true, true, _moveSound);
         _isStop = false;
     }
 }

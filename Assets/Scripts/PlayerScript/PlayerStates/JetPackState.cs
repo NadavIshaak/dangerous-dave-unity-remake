@@ -10,9 +10,8 @@ public class JetPackState : PlayerState
     private readonly float _moveSpeed;
     private readonly Transform _playerTransform;
     private readonly Rigidbody2D _rb;
-    private bool _hasJetPack;
     private bool _isFlying;
-    private bool _isRight;
+    
 
     public JetPackState(PlayerMovement player) : base(player)
     {
@@ -37,7 +36,7 @@ public class JetPackState : PlayerState
     {
         if (_currentFuel > 0)
         {
-            PlaySound(true, true, _jetpackSound);
+            player.PlaySound(true, true, _jetpackSound);
             _rb.gravityScale = 0; // Disable gravity
             _isFlying = true;
         }
@@ -48,6 +47,7 @@ public class JetPackState : PlayerState
     {
         if (_controls.Player.JetPack.WasPressedThisFrame() || _currentFuel <= 0)
         {
+            player.AirborneState.SetIsFalling(true);
             player.TransitionToState(player.AirborneState); // Transition back to the previous state
         }
         else
@@ -68,7 +68,8 @@ public class JetPackState : PlayerState
         if (_isFlying)
         {
             SoundManager.Instance.StopSound();
-            _rb.gravityScale = 1; // Re-enable gravity
+            _rb.gravityScale = 0.95f; // Re-enable gravity
+            _animationConttroler.HitGroundWithoutMovement();
         }
 
         Debug.Log("Exit JetPackState");
@@ -80,10 +81,7 @@ public class JetPackState : PlayerState
         return _currentFuel;
     }
 
-    private void PlaySound(bool shouldKeep, bool shouldLoop, AudioClip clip)
-    {
-        SoundManager.Instance.PlaySound(clip, _playerTransform, 1, shouldLoop, shouldKeep);
-    }
+
 
     private void CheckInputAndAnimate()
     {

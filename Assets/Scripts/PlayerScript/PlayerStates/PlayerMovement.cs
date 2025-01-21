@@ -16,10 +16,10 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private AudioClip jetpackSound;
     [SerializeField] private float maxFuel = 100f; // Maximum fuel
     private PlayerAnimationConttroler _animationConttroler;
-    private bool _canShoot;
-    private Collider2D _collide;
-    private InputSystem_Actions _controls;
-    private bool _hasJetPack;
+    private bool CanShoot { get; set; }
+    private Collider2D Collide { get; set; }
+    private InputSystem_Actions Controls{ get; set; }
+    private bool _hasJetPack
     private bool _hasStarted;
     private bool _isRight;
     private Vector2 _moveInput;
@@ -34,8 +34,8 @@ public class PlayerMovement : MonoBehaviour
     private void Awake()
     {
         _rb = GetComponent<Rigidbody2D>();
-        _collide = GetComponent<Collider2D>();
-        _controls = new InputSystem_Actions();
+        Collide = GetComponent<Collider2D>();
+        Controls = new InputSystem_Actions();
         _animationConttroler = GetComponent<PlayerAnimationConttroler>();
         GroundedState = new GroundedState(this);
         AirborneState = new AirborneState(this);
@@ -49,7 +49,7 @@ public class PlayerMovement : MonoBehaviour
         GameManager.instance.OnVictoryWalkStart += StartVictoryWalk;
         OnVictoryWalkEnd += GameManager.instance.OnVictoryWalkEnd;
         OnVictoryWalkEnd += StageScript.Instance.OnEndWalk;
-        _canShoot = GameManager.instance.GetCanShoot();
+        CanShoot = GameManager.instance.GetCanShoot();
         _rb.simulated = false;
     }
 
@@ -62,10 +62,10 @@ public class PlayerMovement : MonoBehaviour
 
     private void OnEnable()
     {
-        _controls.Enable();
-        _controls.Player.Move.performed += OnMove;
-        _controls.Player.Jump.performed += OnJump;
-        _controls.Player.Move.canceled += OnMove;
+        Controls.Enable();
+        Controls.Player.Move.performed += OnMove;
+        Controls.Player.Jump.performed += OnJump;
+        Controls.Player.Move.canceled += OnMove;
     }
 
     private void OnDisable()
@@ -73,10 +73,10 @@ public class PlayerMovement : MonoBehaviour
         GameManager.instance.OnVictoryWalkStart -= StartVictoryWalk;
         OnVictoryWalkEnd -= GameManager.instance.OnVictoryWalkEnd;
         OnVictoryWalkEnd -= StageScript.Instance.OnEndWalk;
-        _controls.Player.Move.performed -= OnMove;
-        _controls.Player.Jump.performed -= OnJump;
-        _controls.Player.Move.canceled -= OnMove;
-        _controls.Disable();
+        Controls.Player.Move.performed -= OnMove;
+        Controls.Player.Jump.performed -= OnJump;
+        Controls.Player.Move.canceled -= OnMove;
+        Controls.Disable();
     }
 
     public event Action OnVictoryWalkEnd;
@@ -120,6 +120,10 @@ public class PlayerMovement : MonoBehaviour
         _moveInput = context.ReadValue<Vector2>();
         CheckForStart();
     }
+    public void PlaySound(bool shouldKeep, bool shouldLoop, AudioClip clip)
+    {
+        SoundManager.Instance.PlaySound(clip, transform, 1, shouldLoop, shouldKeep);
+    } 
 
     private void OnJump(InputAction.CallbackContext context)
     {
@@ -176,7 +180,7 @@ public class PlayerMovement : MonoBehaviour
 
     public InputSystem_Actions GetControls()
     {
-        return _controls;
+        return Controls;
     }
 
     public Transform GetTransform()
@@ -191,7 +195,7 @@ public class PlayerMovement : MonoBehaviour
 
     public Collider2D GetCollider()
     {
-        return _collide;
+        return Collide;
     }
 
     public AudioClip GetMoveSound()
@@ -216,12 +220,12 @@ public class PlayerMovement : MonoBehaviour
 
     public void SetCanShoot(bool value)
     {
-        _canShoot = value;
+        CanShoot = value;
     }
 
     public bool GetCanShoot()
     {
-        return _canShoot;
+        return CanShoot;
     }
 
     public AudioClip GetStuckSound()

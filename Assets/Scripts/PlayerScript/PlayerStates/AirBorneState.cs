@@ -5,14 +5,18 @@ public class AirborneState : PlayerState
     private readonly InputSystem_Actions _controls;
     private bool _hasJetPack;
     private bool _isOffGround;
-    private bool _isRight;
-    private AudioClip _jumpSound;
+    private readonly AudioClip _jumpSound;
     private bool _moveInAir;
     private bool _justTransitioned=true;
+    private bool _isFalling=true;
+    private readonly PlayerAnimationConttroler _animationConttroler;
+
 
     public AirborneState(PlayerMovement player) : base(player)
     {
         _controls = player.GetControls();
+        _animationConttroler = player.GetAnimationConttroler();
+        _jumpSound = player.GetJumpSound();
     }
 
     public override void Enter()
@@ -20,7 +24,6 @@ public class AirborneState : PlayerState
         _isOffGround = false;
         _moveInAir = false;
         _justTransitioned = true;
-        _hasJetPack = player.GetHasJetPack();
     }
     public override void HandleInput()
     {
@@ -58,6 +61,24 @@ public class AirborneState : PlayerState
 
     private void InputAndAnimate()
     {
+        if (_isFalling)
+        {
+            if(_justTransitioned)
+                player.PlaySound(true, true, player.GetFallingSound());
+            if (player.GetMoveInput().x != 0)
+            {
+                _animationConttroler.ResumeMovement();
+                _animationConttroler.FallWhileWalking();
+            }
+        }
+        else
+        {
+            if (_justTransitioned)
+            {
+                player.PlaySound(true, true, _jumpSound);
+                _animationConttroler.Jump();
+            }
+        }
         CheckForNoFuel();
         player.MovePlayer();
         if (player.GetMoveInput().x != 0) _moveInAir = true;
@@ -99,5 +120,9 @@ public class AirborneState : PlayerState
             default:
                 return hitLeft.collider is not null || hitRight.collider is not null;
         }
+    }
+    public void SetIsFalling(bool isFalling)
+    {
+        _isFalling = isFalling;
     }
 }
