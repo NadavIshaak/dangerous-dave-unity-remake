@@ -139,7 +139,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 64
   MoveSound: {fileID: 8300000, guid: 9426cc38719eb2d4fa778276cdbabdc4, type: 3}
-  FallingSound: {fileID: 8300000, guid: 6edd8f3dc2eec0044919c8dacfda928e, type: 3}
+  FallingSound: {fileID: 8300000, guid: f51972a9561469343bf2f91fab71118d, type: 3}
   jumpSound: {fileID: 8300000, guid: b6e0ce0f06be78342ba6dd39e3a6b87c, type: 3}
   WinSound: {fileID: 8300000, guid: 5e346900097ab2645bb7b63f3c0408c9, type: 3}
   StuckSound: {fileID: 8300000, guid: da5fc9bdfc52f154a886895efb34629d, type: 3}

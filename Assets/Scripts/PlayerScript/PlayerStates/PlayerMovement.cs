@@ -90,6 +90,7 @@ public class PlayerMovement : MonoBehaviour
     public void TriggerDeath()
     {
         _rb.gravityScale = 0.4f;
+        _collide.enabled = false;
         TransitionToState(DeathState);
     }
 
