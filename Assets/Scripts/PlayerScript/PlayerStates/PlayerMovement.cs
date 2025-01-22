@@ -50,6 +50,7 @@ public class PlayerMovement : MonoBehaviour
         OnVictoryWalkEnd += StageScript.Instance.OnEndWalk;
         _canShoot = CurrentLevelManagar.instance.GetCanShoot();
         _rb.simulated = false;
+        maxFuel=CurrentLevelManagar.instance.GetMaxFuel();
     }
 
     private void Update()
@@ -118,7 +119,6 @@ public class PlayerMovement : MonoBehaviour
     private void OnMove(InputAction.CallbackContext context)
     {
         _moveInput = context.ReadValue<Vector2>();
-        Debug.Log(_moveInput.x);
         if(_moveInput.x!=0)
            CheckForStart();
     }

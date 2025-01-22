@@ -18,6 +18,11 @@ public class EnemyOnHit : MonoBehaviour
     private void OnCollisionEnter2D(Collision2D other)
     {
         if (!other.gameObject.CompareTag("PlayerBullet")) return;
+        OnDeath();
+    }
+
+    private void OnDeath()
+    {
         var enemyShooting = GetComponent<EnemyShooting>();
         if (enemyShooting is not null) enemyShooting.enabled = false;
         var enemySpinnerMovement = GetComponent<EnemySpinnerMovement>();

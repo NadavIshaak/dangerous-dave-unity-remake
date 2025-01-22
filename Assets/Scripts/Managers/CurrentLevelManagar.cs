@@ -2,7 +2,6 @@ using System;
 using Triggers;
 using Unity.Cinemachine;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class CurrentLevelManagar : MonoBehaviour
 {
@@ -15,6 +14,7 @@ public class CurrentLevelManagar : MonoBehaviour
     private int _currentLevel = 1;
     private bool _hasGun;
     private bool _hasJetPack;
+    private float _currentJetPackFuel;
     private bool _trophyCollected;
 
     private void Awake()
@@ -71,7 +71,7 @@ public class CurrentLevelManagar : MonoBehaviour
     /// <summary>
     /// Called by OnHideTriggerText. We simply clear or hide the text.
     /// </summary>
-    private void HideText()
+    private static void HideText()
     {
         UIManager.Instance.SetText("",false);
     }
@@ -156,4 +156,14 @@ public class CurrentLevelManagar : MonoBehaviour
 
     public bool GetCanShoot() { return _hasGun; }
     public bool GetCanFly() { return _hasJetPack; }
+    
+    public void SetCurrentJetPackFuel(float fuel)
+    {
+        _currentJetPackFuel = fuel;
+    }
+
+    public float GetMaxFuel()
+    {
+        return _currentJetPackFuel;
+    }
 }

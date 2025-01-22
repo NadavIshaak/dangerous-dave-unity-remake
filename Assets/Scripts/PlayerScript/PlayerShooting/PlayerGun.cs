@@ -25,6 +25,11 @@ public class PlayerGun : MonoBehaviour
     {
         if (_player is null || !_player.GetCanShoot() || !_player.GetControls().Player.Attack.triggered) return;
 
+        SetBullet();
+    }
+
+    private void SetBullet()
+    {
         var direction = _player.GetIsRight() ? Vector3.right : Vector3.left;
         _shootPoint = transform;
         var bullet = PlayerBulletPool.Instance.Get();
