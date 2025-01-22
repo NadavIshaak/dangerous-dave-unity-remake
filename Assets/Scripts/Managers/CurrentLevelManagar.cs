@@ -53,7 +53,8 @@ public class CurrentLevelManagar : MonoBehaviour
         if (requirement.HasGun==_hasGun && 
             requirement.HasJetPack==_hasJetPack &&
             requirement.RequiredScore<ScoreManager.Instance.GetScore() && 
-            requirement.RequiredLevel==_currentLevel)
+            requirement.RequiredLevel==_currentLevel
+            && requirement.HasTrophy==_trophyCollected)
         {
             UIManager.Instance.SetText(message,true);
         }

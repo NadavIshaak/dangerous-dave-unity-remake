@@ -9,17 +9,11 @@ public class LevelTrigger : MonoBehaviour
     [SerializeField] private string messageToShow;
     [SerializeField] private bool hasGun;
     [SerializeField] private bool hasJetPack;
+    [SerializeField] private bool hasTrophy;
     [SerializeField] private int requiredScore;
     [SerializeField] private int requiredLevel;
-     private TriggerRequirements RequirementToShow=> new (messageToShow, hasGun, hasJetPack, requiredScore, requiredLevel);
+     private TriggerRequirements RequirementToShow=> new (messageToShow, hasGun, hasJetPack, requiredScore, requiredLevel, hasTrophy);
     [SerializeField] private bool hideOnExit = true; // if true, hide text on exit
-
-    private void Awake()
-    {
-     
-       
-    }
-
     private void OnTriggerEnter2D(Collider2D other)
     {
         // Check if 'other' is the player
@@ -30,7 +24,6 @@ public class LevelTrigger : MonoBehaviour
             CurrentLevelManagar.ShowTriggerText(messageToShow, RequirementToShow);
         }
     }
-
     private void OnTriggerExit2D(Collider2D other)
     {
         if (hideOnExit && other.CompareTag("Player"))

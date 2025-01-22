@@ -101,9 +101,9 @@ public class UIManager : MonoSingleton<UIManager>
     {
         messageText.text = text;
         messageText.gameObject.SetActive(active);
-        talkingDave.rectTransform.DOShakePosition(1f, new Vector3(1f, 0, 0), 10, 90, false, true);
+        talkingDave.rectTransform.DOShakePosition(1f, new Vector3(0.5f, 0, 0), 5, 90, false, true);
         if (active)
-            messageText.rectTransform.DOShakePosition(1f, new Vector3(1f, 0, 0), 10, 90, false, true);
+            messageText.rectTransform.DOShakePosition(1f, new Vector3(0.5f, 0, 0), 5, 90, false, true);
     }
    
 }
