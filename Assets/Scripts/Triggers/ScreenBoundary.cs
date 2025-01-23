@@ -5,14 +5,14 @@ public class ScreenBoundary : MonoBehaviour
 {
     [SerializeField] private int currentScreenIndex;
     [SerializeField] private CinemachineSplineCart dollyCart;
-    private float boundaryX; // The X position of this boundary in world space
+    private float _boundaryX; // The X position of this boundary in world space
 
     private void OnTriggerEnter2D(Collider2D other)
     {
         if (!other.CompareTag("Player")) return;
         var playerX = other.transform.position.x;
-        boundaryX = transform.position.x;
-        if (playerX > boundaryX)
+        _boundaryX = transform.position.x;
+        if (playerX > _boundaryX)
             // The player crossed this boundary from left to right, so go to the NEXT screen
             dollyCart.SplinePosition = currentScreenIndex;
         else
@@ -24,8 +24,8 @@ public class ScreenBoundary : MonoBehaviour
     {
         if (!other.CompareTag("Player")) return;
         var playerX = other.transform.position.x;
-        boundaryX = transform.position.x;
-        if (playerX > boundaryX)
+        _boundaryX = transform.position.x;
+        if (playerX > _boundaryX)
             // The player crossed this boundary from left to right, so go to the NEXT screen
             dollyCart.SplinePosition = currentScreenIndex + 1;
         else

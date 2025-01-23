@@ -4,29 +4,33 @@
 
     public class FuelManager
     {
-        private readonly CurrentLevelManagar _currentLevelManager;
+        public bool HasJetPack;
         private float _currentJetPackFuel;
+        public event Action<bool> OnJetPackChange;
+        public event Action<float,float> OnFuelChange;
 
-        public event Action<float, float> OnFuelChange;
-
-        public FuelManager(CurrentLevelManagar currentLevelManager)
+        public FuelManager(float fuel)
         {
-            _currentLevelManager = currentLevelManager;
+            _currentJetPackFuel = fuel;
+            HasJetPack = false;
         }
-
-        public void UpdateFuelBar(float currentFuel, float maxFuel)
+        public void SetHasJetPack(bool hasJetPack)
         {
-            OnFuelChange?.Invoke(currentFuel, maxFuel);
+            HasJetPack = hasJetPack;
+            OnJetPackChange?.Invoke(hasJetPack);
         }
-
+        public bool GetCanFly() { return HasJetPack; }
         public void SetCurrentJetPackFuel(float fuel)
         {
             _currentJetPackFuel = fuel;
         }
-
         public float GetMaxFuel()
         {
             return _currentJetPackFuel;
         }
-    }
+        public void UpdateFuelBar(float currentFuel, float maxFuel)
+        {
+            OnFuelChange?.Invoke(currentFuel,maxFuel);
+        }
+        }
 }

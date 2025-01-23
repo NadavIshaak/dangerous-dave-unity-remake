@@ -92,6 +92,10 @@ public class JetPackState : PlayerState
         _rb.linearVelocity = new Vector2(moveInput.x * _moveSpeed, moveInput.y * _moveSpeed);
 
         if (_isFlying) _animationConttroler.JetPack();
+        ChangeDirection(moveInput);
+    }
+    private void ChangeDirection(Vector2 moveInput)
+    {
         switch (moveInput.x)
         {
             case > 0:

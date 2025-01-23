@@ -8,7 +8,6 @@ public class GroundedState : PlayerState
     private readonly float _jumpForce;
     private readonly AudioClip _moveSound;
     private readonly Transform _playerTransform;
-    private readonly Rigidbody2D _rb;
     private readonly AudioClip _wallHitSound;
     private readonly LayerMask _wallLayerMask;
     private bool _firstMove;
@@ -24,7 +23,6 @@ public class GroundedState : PlayerState
         _controls = player.GetControls();
         _animationConttroler = player.GetAnimationConttroler();
         _collider = player.GetCollider();
-        _rb = player.GetRigidbody();
         _wallLayerMask = player.GetWallLayerMask();
         _wallHitSound = player.GetStuckSound();
     }
@@ -33,7 +31,6 @@ public class GroundedState : PlayerState
     {
         _isStop = true;
         _firstMove = false;
-        _hasJetPack = player.GetHasJetPack();
         _justTransitioned = true;
     }
 
@@ -72,7 +69,6 @@ public class GroundedState : PlayerState
             ||((hitRight.collider is not null || hitTopRight.collider is not null) && player.GetMoveInput().x > 0))
         {
             _animationConttroler.StopMovement();
-            Debug.Log("Stuck");
             if (!_isStuck)
                 player.PlaySound(true, true, _wallHitSound);
             _isStuck = true;
@@ -123,7 +119,6 @@ public class GroundedState : PlayerState
         {
             return;
         }
-
         if (player.GetMoveInput().x != 0) ChangeDirectionOfMovement();
 
         if (player.GetMoveInput().x == 0 && !_isStop && _firstMove)

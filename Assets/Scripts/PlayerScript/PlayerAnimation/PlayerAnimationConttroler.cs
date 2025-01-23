@@ -9,29 +9,29 @@ public class PlayerAnimationConttroler : MonoBehaviour
     private static readonly int GroundWithoutMovement = Animator.StringToHash("HitGroundWithoutMovement");
     private static readonly int Death1 = Animator.StringToHash("Death");
     private static readonly int Pack = Animator.StringToHash("JetPack");
-    private Animator animator;
-    private AudioSource audioSource;
-    private SpriteRenderer spriteRenderer;
+    private Animator _animator;
+    private AudioSource _audioSource;
+    private SpriteRenderer _spriteRenderer;
 
     private void Awake()
     {
-        animator = GetComponent<Animator>();
-        spriteRenderer = GetComponent<SpriteRenderer>();
+        _animator = GetComponent<Animator>();
+        _spriteRenderer = GetComponent<SpriteRenderer>();
     }
 
     public void Move()
     {
-        animator.SetTrigger(Move1);
+        _animator.SetTrigger(Move1);
     }
 
     public void ChangeDirection(bool facingRight)
     {
-        spriteRenderer.flipX = !facingRight;
+        _spriteRenderer.flipX = !facingRight;
     }
 
     public void StopInMovement()
     {
-        animator.speed = 0;
+        _animator.speed = 0;
     }
 
     public void StopMovement()
@@ -42,36 +42,36 @@ public class PlayerAnimationConttroler : MonoBehaviour
     public void ResumeMovement()
     {
         CancelInvoke();
-        animator.speed = 1;
+        _animator.speed = 1;
     }
 
     public void Jump()
     {
-        animator.SetTrigger(Jump1);
+        _animator.SetTrigger(Jump1);
     }
 
     public void FallWhileWalking()
     {
-        animator.SetTrigger(WhileWalking);
+        _animator.SetTrigger(WhileWalking);
     }
 
     public void HitGroundWithMovement()
     {
-        animator.SetTrigger(GroundWithMovement);
+        _animator.SetTrigger(GroundWithMovement);
     }
 
     public void HitGroundWithoutMovement()
     {
-        animator.SetTrigger(GroundWithoutMovement);
+        _animator.SetTrigger(GroundWithoutMovement);
     }
 
     public void Death()
     {
-        animator.SetTrigger(Death1);
+        _animator.SetTrigger(Death1);
     }
 
     public void JetPack()
     {
-        animator.SetTrigger(Pack);
+        _animator.SetTrigger(Pack);
     }
 }

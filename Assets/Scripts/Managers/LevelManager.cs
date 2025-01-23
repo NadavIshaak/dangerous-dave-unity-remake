@@ -5,40 +5,50 @@
 
     public class LevelManager
     {
+        private readonly CurrentLevelManagar _currentLevelManagar;
+        public int CurrentLevel = 1;
+        public bool _trophyCollected;
         private readonly SpriteRenderer _stageWinWalkRenderer;
-        private readonly Sprite[] _stageWinWalkSprites;
-        private readonly CurrentLevelManagar _currentLevelManager;
-        private int _currentLevel = 1;
-
-        public event Action OnVictoryWalkStart;
-        public event Action OnVictoryWalkEnd;
-        public event Action<int> OnLevelChange;
+        private readonly Sprite[] _stageWinWalkSprite;
         public event Action OnGameOver;
-
-        public LevelManager(SpriteRenderer stageWinWalkRenderer, Sprite[] stageWinWalkSprites, CurrentLevelManagar currentLevelManager)
+        public event Action<int> OnLevelChange;
+        public event Action<bool> OnTrophyChange; 
+        public event Action OnVictoryWalkStart;
+        public LevelManager(CurrentLevelManagar currentLevelManagar, SpriteRenderer stageWinWalkRenderer, Sprite[] stageWinWalkSprite)
         {
-            this._stageWinWalkRenderer = stageWinWalkRenderer;
-            this._stageWinWalkSprites = stageWinWalkSprites;
-            this._currentLevelManager = currentLevelManager;
+            _currentLevelManagar = currentLevelManagar;
+            _stageWinWalkRenderer = stageWinWalkRenderer;
+            _stageWinWalkSprite = stageWinWalkSprite;
         }
-
-        public void DoorReached()
+        public void OnVictoryWalkEnd()
         {
-            _stageWinWalkRenderer.sprite = _stageWinWalkSprites[_currentLevel - 1];
-            OnVictoryWalkStart?.Invoke();
-        }
-
-        public void OnVictoryWalkEnded()
-        {
-            _currentLevel++;
-            if (_currentLevel == 4)
+            // Handle the end of the victory walk
+            // Example: Spawn the player in the next area
+            _currentLevelManagar.SetHasGun(false);
+            _currentLevelManagar.FuelManager.SetHasJetPack(false);
+            CurrentLevel++;
+            if (CurrentLevel == 4)
             {
                 OnGameOver?.Invoke();
                 return;
             }
-            OnLevelChange?.Invoke(_currentLevel);
-            _currentLevelManager.InstantiatePlayer();
+            OnLevelChange?.Invoke(CurrentLevel);
+            _currentLevelManagar.InstantiatePlayer();
         }
-        public int GetCurrentLevel => _currentLevel;
+        public void ThrophyCollected()
+        {
+            OnTrophyChange?.Invoke(true);
+            _trophyCollected = true;
+        }
+        public void DoorReached()
+        {
+            if (!_trophyCollected) return;
+            _trophyCollected = false;
+            _stageWinWalkRenderer.sprite = _stageWinWalkSprite[_currentLevelManagar.LevelManager.CurrentLevel - 1];
+            _currentLevelManagar.PlayerManager.HasGun = false;
+            _currentLevelManagar.FuelManager.HasJetPack = false;
+            OnTrophyChange?.Invoke(false);
+            OnVictoryWalkStart?.Invoke();
+        }
     }
 }

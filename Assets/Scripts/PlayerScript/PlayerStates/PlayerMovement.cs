@@ -47,9 +47,10 @@ public class PlayerMovement : MonoBehaviour
 
     private void Start()
     {
-        CurrentLevelManagar.Instance.OnVictoryWalkStart += StartVictoryWalk;
+        CurrentLevelManagar.Instance.LevelManager.OnVictoryWalkStart += StartVictoryWalk;
         OnVictoryWalkEnd += CurrentLevelManagar.Instance.OnVictoryWalkEnd;
         _canShoot = CurrentLevelManagar.Instance.GetCanShoot();
+        _hasJetPack = CurrentLevelManagar.Instance.FuelManager.GetCanFly();
         _rb.simulated = false;
         maxFuel=CurrentLevelManagar.Instance.GetMaxFuel();
     }
@@ -71,7 +72,7 @@ public class PlayerMovement : MonoBehaviour
 
     private void OnDisable()
     {
-        CurrentLevelManagar.Instance.OnVictoryWalkStart -= StartVictoryWalk;
+        CurrentLevelManagar.Instance.LevelManager.OnVictoryWalkStart -= StartVictoryWalk;
         OnVictoryWalkEnd -= CurrentLevelManagar.Instance.OnVictoryWalkEnd;
         _controls.Player.Move.performed -= OnMove;
         _controls.Player.Jump.performed -= OnJump;
@@ -141,7 +142,6 @@ public class PlayerMovement : MonoBehaviour
             _animationConttroler.HitGroundWithoutMovement();
             return;
         }
-
         if (_hasStarted && CurrentState == null) TransitionToState(GroundedState);
     }
 

@@ -2,7 +2,7 @@ public abstract class PlayerState
 {
     protected PlayerMovement player;
 
-    public PlayerState(PlayerMovement player)
+    protected PlayerState(PlayerMovement player)
     {
         this.player = player;
     }

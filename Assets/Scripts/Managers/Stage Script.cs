@@ -3,7 +3,6 @@ using UnityEngine.Serialization;
 
 public class StageScript : MonoBehaviour
 {
-    public static StageScript Instance;
     private static readonly int Game = Animator.StringToHash("StartGame");
     private static readonly int StartWalk = Animator.StringToHash("StartWalk");
     private static readonly int EndWalk = Animator.StringToHash("EndWalk");
@@ -16,8 +15,10 @@ public class StageScript : MonoBehaviour
     private void Start()
     {
         _animator = GetComponent<Animator>();
-        CurrentLevelManagar.Instance.OnVictoryWalkStart += OnStartWalk;
         canvas.enabled = false;
+        _didStartGame=false;
+        _controls = new InputSystem_Actions();
+        _controls.Enable();
     }
 
     private void Update()
@@ -35,23 +36,22 @@ public class StageScript : MonoBehaviour
 
     private void OnEnable()
     {
-        if (CurrentLevelManagar.Instance != null)
+        if (CurrentLevelManagar.Instance)
         {
-            CurrentLevelManagar.Instance.OnVictoryWalkStart += OnStartWalk;
-            CurrentLevelManagar.Instance.OnGameOver += OnGameOver;
-            CurrentLevelManagar.Instance.OnLevelChange += OnEndWalk;
+            CurrentLevelManagar.Instance.LevelManager.OnVictoryWalkStart += OnStartWalk;
+            CurrentLevelManagar.Instance.LevelManager.OnGameOver += OnGameOver;
+            CurrentLevelManagar.Instance.LevelManager.OnLevelChange += OnEndWalk;
         }
-
-        _controls.Enable();
+        
     }
 
     private void OnDisable()
     {
-        if (CurrentLevelManagar.Instance != null)
+        if (CurrentLevelManagar.Instance)
         {
-            CurrentLevelManagar.Instance.OnVictoryWalkStart -= OnStartWalk;
-            CurrentLevelManagar.Instance.OnGameOver -= OnGameOver;
-            CurrentLevelManagar.Instance.OnLevelChange -= OnEndWalk;
+            CurrentLevelManagar.Instance.LevelManager.OnVictoryWalkStart -= OnStartWalk;
+            CurrentLevelManagar.Instance.LevelManager.OnGameOver -= OnGameOver;
+            CurrentLevelManagar.Instance.LevelManager.OnLevelChange -= OnEndWalk;
         }
 
         _controls.Disable();
@@ -59,7 +59,7 @@ public class StageScript : MonoBehaviour
 
     private void OnDestroy()
     {
-        if (CurrentLevelManagar.Instance != null) CurrentLevelManagar.Instance.OnVictoryWalkStart -= OnStartWalk;
+        if (CurrentLevelManagar.Instance != null) CurrentLevelManagar.Instance.LevelManager.OnVictoryWalkStart -= OnStartWalk;
     }
 
     private static void GameOver()

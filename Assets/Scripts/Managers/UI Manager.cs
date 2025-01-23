@@ -7,7 +7,7 @@ using UnityEngine.Serialization;
 using UnityEngine.UI;
 using Cache = UnityEngine.Cache;
 
-public class UIManager : MonoSingleton<UIManager>
+public class UIManager : MonoBehaviour
 {
     [FormerlySerializedAs("_numberSprites")] [SerializeField] private Sprite[] numberSprites;
 
@@ -33,23 +33,26 @@ public class UIManager : MonoSingleton<UIManager>
 
     private void OnEnable()
     {
-        CurrentLevelManagar.Instance.OnLevelChange += UpdateLevel;
-        CurrentLevelManagar.Instance.OnTrophyChange += UpdateThrophy;
-        CurrentLevelManagar.Instance.OnGunChange += GotGun;
-        CurrentLevelManagar.Instance.OnJetPackChange += GotJetPack;
-        CurrentLevelManagar.Instance.OnFuelChange += UpdateFuelBar;
+        CurrentLevelManagar currentLevelManagar = CurrentLevelManagar.Instance;
+        CurrentLevelManagar.Instance.LevelManager.OnLevelChange += UpdateLevel;
+        CurrentLevelManagar.Instance.LevelManager.OnTrophyChange += UpdateThrophy;
+        CurrentLevelManagar.Instance.PlayerManager.OnGunChange += GotGun;
+        CurrentLevelManagar.Instance.FuelManager.OnJetPackChange += GotJetPack;
+        CurrentLevelManagar.Instance.FuelManager.OnFuelChange += UpdateFuelBar;
         CurrentLevelManagar.Instance.OnShowTriggerText += SetText;
-        CurrentLevelManagar.Instance.OnLifeChange += UpdateLife;
+        CurrentLevelManagar.Instance.PlayerManager.OnLifeChange += UpdateLife;
+        CurrentLevelManagar.Instance.ScoreManager.OnScoreChange += UpdateScore;
     }
     private void OnDisable()
     {
-        CurrentLevelManagar.Instance.OnLevelChange -= UpdateLevel;
-        CurrentLevelManagar.Instance.OnTrophyChange -= UpdateThrophy;
-        CurrentLevelManagar.Instance.OnGunChange -= GotGun;
-        CurrentLevelManagar.Instance.OnJetPackChange -= GotJetPack;
-        CurrentLevelManagar.Instance.OnFuelChange -= UpdateFuelBar;
+        CurrentLevelManagar.Instance.LevelManager.OnLevelChange -= UpdateLevel;
+        CurrentLevelManagar.Instance.LevelManager.OnTrophyChange -= UpdateThrophy;
+        CurrentLevelManagar.Instance.PlayerManager.OnGunChange -= GotGun;
+        CurrentLevelManagar.Instance.FuelManager.OnJetPackChange -= GotJetPack;
+        CurrentLevelManagar.Instance.FuelManager.OnFuelChange -= UpdateFuelBar;
         CurrentLevelManagar.Instance.OnShowTriggerText -= SetText;
-        CurrentLevelManagar.Instance.OnLifeChange -= UpdateLife;
+        CurrentLevelManagar.Instance.PlayerManager.OnLifeChange -= UpdateLife;
+        CurrentLevelManagar.Instance.ScoreManager.OnScoreChange -= UpdateScore;
     }
 
     private void UpdateThrophy(bool trophyCollected)
@@ -113,7 +116,7 @@ public class UIManager : MonoSingleton<UIManager>
         }
     }
 
-    public void UpdateScore(int score)
+    private void UpdateScore(int score)
     {
         var tenThousands = score / 10000;
         var thousands = score % 10000 / 1000;

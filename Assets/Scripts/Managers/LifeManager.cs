@@ -1,6 +1,6 @@
-using System;
+
 using UnityEngine;
-using UnityEngine.UI;
+
 
 public class LifeManager : MonoBehaviour
 {
@@ -9,7 +9,11 @@ public class LifeManager : MonoBehaviour
 
     private void OnEnable()
     {
-        CurrentLevelManagar.Instance.OnLifeChange += RemoveLife;
+        CurrentLevelManagar.Instance.PlayerManager.OnLifeChange += RemoveLife;
+    }
+    private void OnDisable()
+    {
+        CurrentLevelManagar.Instance.PlayerManager.OnLifeChange -= RemoveLife;
     }
 
     private void Update()

@@ -100,7 +100,28 @@ public class AirborneState : PlayerState
         var hitRight = Physics2D.Raycast(topRight, Vector2.up, 0.05f, _wallLayerMask);
         return hitLeft.collider is not null || hitRight.collider is not null;
     }
-    
+
+    private void DidJump()
+    {
+        if (_justTransitioned)
+        {
+            player.PlaySound(true, true, _jumpSound);
+            _animationConttroler.Jump();
+            _timeInAir = _airTime;
+        }
+    }
+
+    private void DidFall()
+    {
+        if(_justTransitioned)
+            player.PlaySound(true, true, _fallingSound);
+        if (player.GetMoveInput().x != 0&&!_didMoveFromIdle)
+        {
+            _animationConttroler.ResumeMovement();
+            _animationConttroler.FallWhileWalking();
+            _didMoveFromIdle = true;
+        }
+    }
     
 
     private void InputAndAnimate()
@@ -108,27 +129,20 @@ public class AirborneState : PlayerState
         var moveInput = player.GetMoveInput();
         if (_isFalling)
         {
-            if(_justTransitioned)
-                player.PlaySound(true, true, _fallingSound);
-            if (player.GetMoveInput().x != 0&&!_didMoveFromIdle)
-            {
-                _animationConttroler.ResumeMovement();
-                _animationConttroler.FallWhileWalking();
-                _didMoveFromIdle = true;
-            }
+            DidFall();
         }
         else
         {
-            if (_justTransitioned)
-            {
-                player.PlaySound(true, true, _jumpSound);
-                _animationConttroler.Jump();
-                _timeInAir = _airTime;
-            }
+           DidJump();
         }
         ApplyConstantFall();
         CheckForNoFuel();
         player.MovePlayer();
+        ChangeDirection(moveInput);
+    }
+
+    private void ChangeDirection(Vector2 moveInput)
+    {
         switch (moveInput.x)
         {
             case > 0:
