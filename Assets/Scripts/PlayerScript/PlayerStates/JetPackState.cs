@@ -26,7 +26,7 @@ public class JetPackState : PlayerState
 
     private void UpdateFuelBar()
     {
-        CurrentLevelManagar.instance.UpdateFuelBar(_currentFuel, _maxFuel);
+        CurrentLevelManagar.Instance.UpdateFuelBar(_currentFuel, _maxFuel);
     }
 
 
@@ -47,7 +47,7 @@ public class JetPackState : PlayerState
         {
             if (_currentFuel <= 0)
             {
-                CurrentLevelManagar.instance.SetHasJetPack(false);
+                CurrentLevelManagar.Instance.SetHasJetPack(false);
                 player.SetHasJetPack(false);
             }
             player.AirborneState.SetIsFalling(true);
@@ -56,7 +56,7 @@ public class JetPackState : PlayerState
         else
         {
             _currentFuel -= Time.deltaTime * 5; // Decrease fuel
-            CurrentLevelManagar.instance.SetCurrentJetPackFuel(_currentFuel);
+            CurrentLevelManagar.Instance.SetCurrentJetPackFuel(_currentFuel);
             UpdateFuelBar();
         }
     }

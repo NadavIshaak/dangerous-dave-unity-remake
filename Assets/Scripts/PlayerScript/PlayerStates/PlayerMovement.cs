@@ -47,12 +47,11 @@ public class PlayerMovement : MonoBehaviour
 
     private void Start()
     {
-        CurrentLevelManagar.instance.OnVictoryWalkStart += StartVictoryWalk;
-        OnVictoryWalkEnd += CurrentLevelManagar.instance.OnVictoryWalkEnd;
-        OnVictoryWalkEnd += StageScript.Instance.OnEndWalk;
-        _canShoot = CurrentLevelManagar.instance.GetCanShoot();
+        CurrentLevelManagar.Instance.OnVictoryWalkStart += StartVictoryWalk;
+        OnVictoryWalkEnd += CurrentLevelManagar.Instance.OnVictoryWalkEnd;
+        _canShoot = CurrentLevelManagar.Instance.GetCanShoot();
         _rb.simulated = false;
-        maxFuel=CurrentLevelManagar.instance.GetMaxFuel();
+        maxFuel=CurrentLevelManagar.Instance.GetMaxFuel();
     }
 
     private void Update()
@@ -72,9 +71,8 @@ public class PlayerMovement : MonoBehaviour
 
     private void OnDisable()
     {
-        CurrentLevelManagar.instance.OnVictoryWalkStart -= StartVictoryWalk;
-        OnVictoryWalkEnd -= CurrentLevelManagar.instance.OnVictoryWalkEnd;
-        OnVictoryWalkEnd -= StageScript.Instance.OnEndWalk;
+        CurrentLevelManagar.Instance.OnVictoryWalkStart -= StartVictoryWalk;
+        OnVictoryWalkEnd -= CurrentLevelManagar.Instance.OnVictoryWalkEnd;
         _controls.Player.Move.performed -= OnMove;
         _controls.Player.Jump.performed -= OnJump;
         _controls.Player.Move.canceled -= OnMove;
@@ -92,7 +90,7 @@ public class PlayerMovement : MonoBehaviour
 
     public void TriggerDeath()
     {
-        _rb.gravityScale = 0.1f;
+        _rb.gravityScale = 0.05f;
         _collide.enabled = false;
         TransitionToState(DeathState);
     }

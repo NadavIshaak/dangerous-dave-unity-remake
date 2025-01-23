@@ -1,8 +1,11 @@
+using System;
 using DG.Tweening;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Serialization;
 using UnityEngine.UI;
+using Cache = UnityEngine.Cache;
 
 public class UIManager : MonoSingleton<UIManager>
 {
@@ -26,13 +29,35 @@ public class UIManager : MonoSingleton<UIManager>
  [SerializeField] private Image levelOnesRenderer;
    [SerializeField] private Image levelTensRenderer;
     [SerializeField] private TextMeshProUGUI messageText;
-    [SerializeField] private Image talkingDave; 
+    [SerializeField] private Image talkingDave;
 
-    public void UpdateThrophy(bool trophyCollected)
+    private void OnEnable()
+    {
+        CurrentLevelManagar.Instance.OnLevelChange += UpdateLevel;
+        CurrentLevelManagar.Instance.OnTrophyChange += UpdateThrophy;
+        CurrentLevelManagar.Instance.OnGunChange += GotGun;
+        CurrentLevelManagar.Instance.OnJetPackChange += GotJetPack;
+        CurrentLevelManagar.Instance.OnFuelChange += UpdateFuelBar;
+        CurrentLevelManagar.Instance.OnShowTriggerText += SetText;
+        CurrentLevelManagar.Instance.OnLifeChange += UpdateLife;
+    }
+    private void OnDisable()
+    {
+        CurrentLevelManagar.Instance.OnLevelChange -= UpdateLevel;
+        CurrentLevelManagar.Instance.OnTrophyChange -= UpdateThrophy;
+        CurrentLevelManagar.Instance.OnGunChange -= GotGun;
+        CurrentLevelManagar.Instance.OnJetPackChange -= GotJetPack;
+        CurrentLevelManagar.Instance.OnFuelChange -= UpdateFuelBar;
+        CurrentLevelManagar.Instance.OnShowTriggerText -= SetText;
+        CurrentLevelManagar.Instance.OnLifeChange -= UpdateLife;
+    }
+
+    private void UpdateThrophy(bool trophyCollected)
     {
         trophyCollectedRenderer.enabled = trophyCollected;
     }
-    public void UpdateFuelBar(float currentFuel, float maxFuel)
+
+    private void UpdateFuelBar(float currentFuel, float maxFuel)
     {
         var fuelPercentage = currentFuel / maxFuel;
         var blackBoxWidth = fuelBar.rectTransform.rect.width * (1 - fuelPercentage);
@@ -40,7 +65,7 @@ public class UIManager : MonoSingleton<UIManager>
         blackBox.rectTransform.sizeDelta = new Vector2(blackBoxWidth, blackBox.rectTransform.sizeDelta.y);
     }
 
-    public void OnPlayerFinalDeath()
+    private void OnPlayerFinalDeath()
     {
         gunSymbolRenderer.enabled = false;
         gunTextRenderer.enabled = false;
@@ -50,7 +75,8 @@ public class UIManager : MonoSingleton<UIManager>
         fuelBar.enabled = false;
         deadRenderer.enabled = true;
     }
-    public void UpdateLevel(int level)
+
+    private void UpdateLevel(int level)
     {
         var tens = level / 10;
         var ones = level % 10;
@@ -58,19 +84,21 @@ public class UIManager : MonoSingleton<UIManager>
         levelTensRenderer.sprite = numberSprites[tens];
         levelOnesRenderer.sprite = numberSprites[ones];
     }
-    public void GotGun(bool hasGun)
+
+    private void GotGun(bool hasGun)
     {
         gunSymbolRenderer.enabled = hasGun;
         gunTextRenderer.enabled = hasGun;
     }
-    public void GotJetPack(bool hasJetPack)
+
+    private void GotJetPack(bool hasJetPack)
     {
         jetPackTextRenderer.enabled = hasJetPack;
         blackBox.enabled = hasJetPack;
         fuelBar.enabled = hasJetPack;
     }
 
-    public void UpdateLife(int lives)
+    private void UpdateLife(int lives)
     {
         switch (lives)
         {
@@ -80,6 +108,8 @@ public class UIManager : MonoSingleton<UIManager>
                 twoLifeRenderer.enabled = false; break;
             case 1:
                 oneLifeRenderer.enabled = false; break;
+            case 0:
+                OnPlayerFinalDeath(); break;
         }
     }
 
@@ -97,13 +127,14 @@ public class UIManager : MonoSingleton<UIManager>
         tensRenderer.sprite = numberSprites[tens];
         onesRenderer.sprite = numberSprites[ones];
     }
-    public void SetText(string text,bool active)
+
+    private void SetText(string text,bool active)
     {
         messageText.text = text;
-        messageText.gameObject.SetActive(active);
+        //messageText.gameObject.SetActive(active);
+        if (!active) return;
+        messageText.rectTransform.DOShakePosition(1f, new Vector3(0.5f, 0, 0), 5, 90, false, true);
         talkingDave.rectTransform.DOShakePosition(1f, new Vector3(0.5f, 0, 0), 5, 90, false, true);
-        if (active)
-            messageText.rectTransform.DOShakePosition(1f, new Vector3(0.5f, 0, 0), 5, 90, false, true);
     }
    
 }

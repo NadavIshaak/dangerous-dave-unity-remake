@@ -1,11 +1,17 @@
+using System;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class LifeManager : MonoSingleton<LifeManager>
+public class LifeManager : MonoBehaviour
 {
     private InputSystem_Actions _controls;
     private bool _isDead;
-    private int _lives = 4;
+
+    private void OnEnable()
+    {
+        CurrentLevelManagar.Instance.OnLifeChange += RemoveLife;
+    }
+
     private void Update()
     {
         if (!_isDead) return;
@@ -14,25 +20,10 @@ public class LifeManager : MonoSingleton<LifeManager>
         Application.Quit();
     }
 
-    public void RemoveLife()
+    private void RemoveLife(int life)
     {
-        _lives--;
-        if (_lives == 0)
-        {
-            _isDead = true;
-            _controls = new InputSystem_Actions();
-            return;
-        }
-
-        UpdateLifeDisplay();
-    }
-    public int GetLife()
-    {
-        return _lives;
-    }
-
-    private void UpdateLifeDisplay()
-    {
-        UIManager.Instance.UpdateLife(_lives);
+        if (life != 0) return;
+        _isDead = true;
+        _controls = new InputSystem_Actions();
     }
 }

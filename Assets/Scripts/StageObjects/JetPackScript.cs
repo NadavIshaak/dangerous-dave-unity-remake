@@ -7,7 +7,7 @@ public class JetPackScript : Collectible
         base.OnTriggerEnter2D(other);
         var player = FindFirstObjectByType<PlayerMovement>();
         if (player == null) return;
-        CurrentLevelManagar.instance.SetHasJetPack(true);
+        CurrentLevelManagar.Instance.SetHasJetPack(true);
         player.SetHasJetPack(true);
     }
 }

@@ -119,7 +119,7 @@ TextureImporter:
         x: 14
         y: 67
         width: 35
-        height: 63
+        height: 62
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -251,7 +251,7 @@ TextureImporter:
         x: 605
         y: 67
         width: 36
-        height: 64
+        height: 63
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -337,9 +337,9 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 989
-        y: 67
-        width: 71
-        height: 63
+        y: 68
+        width: 70
+        height: 61
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -358,10 +358,10 @@ TextureImporter:
       name: dave-Photoroom_11
       rect:
         serializedVersion: 2
-        x: 1087
+        x: 1088
         y: 67
-        width: 71
-        height: 64
+        width: 70
+        height: 62
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -381,9 +381,9 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 1187
-        y: 67
+        y: 68
         width: 71
-        height: 64
+        height: 62
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -402,10 +402,10 @@ TextureImporter:
       name: dave-Photoroom_13
       rect:
         serializedVersion: 2
-        x: 6
+        x: 7
         y: 0
-        width: 41
-        height: 63
+        width: 40
+        height: 62
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -537,7 +537,7 @@ TextureImporter:
         x: 604
         y: 0
         width: 34
-        height: 63
+        height: 62
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}

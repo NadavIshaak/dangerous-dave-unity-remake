@@ -9,6 +9,7 @@ public class EnemyBullet : DangerousObject, IPoolable
         EnemyBulletPool.Instance.ImmediateReturn(this);
     }
 
+    // ReSharper disable once Unity.RedundantEventFunction
     public void Reset()
     {
         // Reset the object to its default state

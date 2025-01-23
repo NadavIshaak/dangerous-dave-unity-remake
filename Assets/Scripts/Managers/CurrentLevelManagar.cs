@@ -1,38 +1,32 @@
 using System;
+using Managers;
 using Triggers;
 using Unity.Cinemachine;
 using UnityEngine;
 
-public class CurrentLevelManagar : MonoBehaviour
+public class CurrentLevelManagar : MonoSingleton<CurrentLevelManagar>
 {
-    public static CurrentLevelManagar instance;
     [SerializeField] private GameObject Player;
     [SerializeField] private GameObject[] _stagesSpawns;
     [SerializeField] private SpriteRenderer _StageWinWalkRenderer;
     [SerializeField] private Sprite[] _StageWinWalkSprite;
     [SerializeField] private CinemachineSplineCart[] dollyCart;
-    private int _currentLevel = 1;
-    private bool _hasGun;
-    private bool _hasJetPack;
-    private float _currentJetPackFuel;
-    private bool _trophyCollected;
-
-    private void Awake()
-    {
-        if (instance == null)
-        {
-            instance = this;
-            DontDestroyOnLoad(gameObject); // Ensure the SoundManager persists across scenes
-        }
-        else
-        {
-            Destroy(gameObject);
-        }
-    }
+   
+    private PlayerManager playerManager;
+    private LevelManager levelManager;
+    private FuelManager fuelManager;
+    private TrophyManager trophyManager;
 
     public event Action OnVictoryWalkStart;
     public event Action OnInstantiatedPlayer;
     public event Action OnGameOver;
+    public event Action<int> OnLevelChange;
+    public event Action<bool> OnGunChange;
+    public event Action<bool> OnJetPackChange;
+    public event Action<bool> OnTrophyChange; 
+    public event Action<float,float> OnFuelChange;
+    public event Action<string,bool> OnShowTriggerText;
+    public event Action<int> OnLifeChange; 
     public static event Action<string, TriggerRequirements> OnShowTriggerTextWithReq;
     public static event Action OnHideTriggerText;
     
@@ -56,7 +50,7 @@ public class CurrentLevelManagar : MonoBehaviour
             requirement.RequiredLevel==_currentLevel
             && requirement.HasTrophy==_trophyCollected)
         {
-            UIManager.Instance.SetText(message,true);
+            OnShowTriggerText?.Invoke(message,true);
         }
     }
     public static void HideTriggerText()
@@ -71,19 +65,19 @@ public class CurrentLevelManagar : MonoBehaviour
     /// <summary>
     /// Called by OnHideTriggerText. We simply clear or hide the text.
     /// </summary>
-    private static void HideText()
+    private  void HideText()
     {
-        UIManager.Instance.SetText("",false);
+        OnShowTriggerText?.Invoke("",false);
     }
     public void ThrophyCollected()
     {
-        UIManager.Instance.UpdateThrophy(true);
+        OnTrophyChange?.Invoke(true);
         _trophyCollected = true;
     }
 
     public void UpdateFuelBar(float currentFuel, float maxFuel)
     {
-        UIManager.Instance.UpdateFuelBar(currentFuel, maxFuel);
+        OnFuelChange?.Invoke(currentFuel,maxFuel);
     }
 
     public void DoorReached()
@@ -93,7 +87,7 @@ public class CurrentLevelManagar : MonoBehaviour
         _StageWinWalkRenderer.sprite = _StageWinWalkSprite[_currentLevel - 1];
         _hasGun = false;
         _hasJetPack = false;
-        UIManager.Instance.UpdateThrophy(false);
+        OnTrophyChange?.Invoke(false);
         OnVictoryWalkStart?.Invoke();
     }
 
@@ -109,33 +103,27 @@ public class CurrentLevelManagar : MonoBehaviour
             OnGameOver?.Invoke();
             return;
         }
-
-        UpdateLevel();
+        OnLevelChange?.Invoke(_currentLevel);
         InstantiatePlayer();
     }
 
     public void InstantiatePlayer()
     {
-        if (LifeManager.Instance.GetLife() == 0)
+        if (_currentLife==0)
         {
-            UIManager.Instance.OnPlayerFinalDeath();
             return;
         }
-
         var spawnPosition = _stagesSpawns[_currentLevel].transform.position;
         if (_currentLevel is 2 or 3) dollyCart[_currentLevel - 2].SplinePosition = 0;
         Instantiate(Player, spawnPosition, Quaternion.identity);
-        Debug.Log("revived");
         OnInstantiatedPlayer?.Invoke();
     }
-
-    private void UpdateLevel()
-    {
-        UIManager.Instance.UpdateLevel(_currentLevel);
-    }
+    
 
     public void TriggerPlayerDeath()
     {
+        _currentLife--;
+        OnLifeChange?.Invoke(_currentLife);
         var player = FindFirstObjectByType<PlayerMovement>();
         if (player is null) return;
         player.TriggerDeath();
@@ -145,13 +133,13 @@ public class CurrentLevelManagar : MonoBehaviour
     public void SetHasGun(bool hasGun)
     {
         _hasGun = hasGun;
-        UIManager.Instance.GotGun(hasGun);
+        OnGunChange?.Invoke(hasGun);
     }
 
     public void SetHasJetPack(bool hasJetPack)
     {
         _hasJetPack = hasJetPack;
-        UIManager.Instance.GotJetPack(hasJetPack);
+        OnJetPackChange?.Invoke(hasJetPack);
     }
 
     public bool GetCanShoot() { return _hasGun; }
