@@ -39,5 +39,6 @@
             OnLevelChange?.Invoke(_currentLevel);
             _currentLevelManager.InstantiatePlayer();
         }
+        public int GetCurrentLevel => _currentLevel;
     }
 }

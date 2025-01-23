@@ -1,21 +1,24 @@
 using System;
-using Managers;
 using Triggers;
 using Unity.Cinemachine;
 using UnityEngine;
 
 public class CurrentLevelManagar : MonoSingleton<CurrentLevelManagar>
 {
+    public static CurrentLevelManagar instance;
     [SerializeField] private GameObject Player;
     [SerializeField] private GameObject[] _stagesSpawns;
     [SerializeField] private SpriteRenderer _StageWinWalkRenderer;
     [SerializeField] private Sprite[] _StageWinWalkSprite;
     [SerializeField] private CinemachineSplineCart[] dollyCart;
-   
-    private PlayerManager playerManager;
-    private LevelManager levelManager;
-    private FuelManager fuelManager;
-    private TrophyManager trophyManager;
+    private int _currentLevel = 1;
+    private bool _hasGun;
+    private bool _hasJetPack;
+    private float _currentJetPackFuel;
+    private bool _trophyCollected;
+    private int _currentLife = 4;
+
+ 
 
     public event Action OnVictoryWalkStart;
     public event Action OnInstantiatedPlayer;

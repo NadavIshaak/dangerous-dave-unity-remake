@@ -4,19 +4,19 @@
 
     public class TrophyManager
     {
-        private bool trophyCollected;
+        private bool _trophyCollected;
 
         public event Action<bool> OnTrophyChange;
 
         public void ThrophyCollected()
         {
-            trophyCollected = true;
+            _trophyCollected = true;
             OnTrophyChange?.Invoke(true);
         }
 
         public void ResetTrophy()
         {
-            trophyCollected = false;
+            _trophyCollected = false;
             OnTrophyChange?.Invoke(false);
         }
     }

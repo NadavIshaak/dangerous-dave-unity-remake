@@ -11,7 +11,7 @@
 
         public FuelManager(CurrentLevelManagar currentLevelManager)
         {
-            this._currentLevelManager = currentLevelManager;
+            _currentLevelManager = currentLevelManager;
         }
 
         public void UpdateFuelBar(float currentFuel, float maxFuel)

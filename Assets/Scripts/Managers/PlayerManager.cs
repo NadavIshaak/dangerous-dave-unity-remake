@@ -8,14 +8,18 @@
         private readonly GameObject playerPrefab;
         private readonly GameObject[] stagesSpawns;
         private int currentLife = 4;
+        private bool _hasJetPack;
+        private bool _hasGun;
+        private readonly CurrentLevelManagar currentLevelManagar;
 
         public event Action OnPlayerInstantiated;
         public event Action OnPlayerDeath;
 
-        public PlayerManager(GameObject playerPrefab, GameObject[] stagesSpawns)
+        public PlayerManager(GameObject playerPrefab, GameObject[] stagesSpawns,CurrentLevelManagar currentLevelManagar)
         {
             this.playerPrefab = playerPrefab;
             this.stagesSpawns = stagesSpawns;
+            this.currentLevelManagar = currentLevelManagar;
         }
 
         public void InstantiatePlayer(int currentLevel)
@@ -34,7 +38,7 @@
             if (player != null)
             {
                 player.TriggerDeath();
-                UnityEngine.Object.FindObjectOfType<CurrentLevelManagar>().Invoke(nameof(InstantiatePlayer), 3.1f);
+                currentLevelManagar.Invoke(nameof(InstantiatePlayer), 3.1f);
             }
         }
     }
