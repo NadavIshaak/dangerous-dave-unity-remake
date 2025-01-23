@@ -108,7 +108,7 @@ Rigidbody2D:
   m_Mass: 1
   m_LinearDamping: 0
   m_AngularDamping: 0
-  m_GravityScale: 0.95
+  m_GravityScale: 0
   m_Material: {fileID: 6200000, guid: 925d96f343b041947b49f0999d162ac5, type: 2}
   m_IncludeLayers:
     serializedVersion: 2
@@ -132,8 +132,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 52ee1e23800ec4842bcfe3ce9af87fa2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 2.5
-  jumpForce: 5.6
+  moveSpeed: 2.25
   victoryWalkStart: {x: 14.87139, y: 0.9, z: 0}
   wallLayerMask:
     serializedVersion: 2
@@ -145,6 +144,8 @@ MonoBehaviour:
   StuckSound: {fileID: 8300000, guid: da5fc9bdfc52f154a886895efb34629d, type: 3}
   jetpackSound: {fileID: 8300000, guid: 4564f6b03fbe93a49b13f336eba2d281, type: 3}
   maxFuel: 100
+  airSpeed: -2.8
+  airTime: 0.6
 --- !u!95 &1579755278963955509
 Animator:
   serializedVersion: 7

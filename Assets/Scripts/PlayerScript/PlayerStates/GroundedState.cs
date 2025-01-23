@@ -23,7 +23,6 @@ public class GroundedState : PlayerState
         _moveSound = player.GetMoveSound();
         _controls = player.GetControls();
         _animationConttroler = player.GetAnimationConttroler();
-        _jumpForce = player.GetJumpForce();
         _collider = player.GetCollider();
         _rb = player.GetRigidbody();
         _wallLayerMask = player.GetWallLayerMask();
@@ -49,7 +48,6 @@ public class GroundedState : PlayerState
     private void JumpTransition()
     {
         player.AirborneState.SetIsFalling(false);
-        _rb.AddForce(Vector2.up * _jumpForce, ForceMode2D.Impulse);
         player.TransitionToState(player.AirborneState);
     }
 
@@ -103,6 +101,7 @@ public class GroundedState : PlayerState
         var hitRight = Physics2D.Raycast(bottomRight, Vector2.down, 0.20f, _wallLayerMask);
         if (hitLeft.collider is null && hitRight.collider is null)
         {
+            Debug.Log("Fall transition");
             FallTransition();
         }
     }
@@ -120,7 +119,11 @@ public class GroundedState : PlayerState
         CheckForFall();
         CheckForNoFuel();
         player.MovePlayer();
-        if (IsStuck()) return;
+        if (IsStuck())
+        {
+            return;
+        }
+
         if (player.GetMoveInput().x != 0) ChangeDirectionOfMovement();
 
         if (player.GetMoveInput().x == 0 && !_isStop && _firstMove)

@@ -14,6 +14,9 @@ public class AirborneState : PlayerState
     private bool _isFalling=true;
     private bool _didMoveFromIdle;
     private readonly PlayerAnimationConttroler _animationConttroler;
+    private readonly float _fallSpeed;
+    private readonly float _airTime;
+    private float _timeInAir;
 
 
     public AirborneState(PlayerMovement player) : base(player)
@@ -24,6 +27,8 @@ public class AirborneState : PlayerState
         _collider = player.GetCollider();
         _fallingSound = player.GetFallingSound();
         _wallLayerMask = player.GetWallLayerMask();
+        _fallSpeed = player.GetFallSpeed();
+        _airTime = player.GetAirTime();
     }
 
     public override void Enter()
@@ -32,6 +37,7 @@ public class AirborneState : PlayerState
         _moveInAir = false;
         _justTransitioned = true;
         _didMoveFromIdle = false;
+        _timeInAir = -1;
     }
     public override void HandleInput()
     {
@@ -52,7 +58,7 @@ public class AirborneState : PlayerState
                _animationConttroler.HitGroundWithMovement();
             else
               _animationConttroler.HitGroundWithoutMovement();
-            
+            Debug.Log("Grounded");
             player.TransitionToState(player.GroundedState);
         }
     }
@@ -64,6 +70,35 @@ public class AirborneState : PlayerState
             if (JetPackState.GetCurrentFuel() > 0)
                 player.TransitionToState(player.JetPackState);
         _justTransitioned = false;
+    }
+    private void ApplyConstantFall()
+    {
+        var velocity = player.GetRigidbody().linearVelocity;
+        if (_timeInAir > 0&&!CheckForCollisionFromAbove())
+        {
+            velocity.y = -_fallSpeed;
+            _timeInAir -= Time.deltaTime;
+        }
+        else
+        {
+            velocity.y = _fallSpeed;
+            _timeInAir = -1;
+        }
+        if(velocity!=player.GetRigidbody().linearVelocity)
+            player.GetRigidbody().linearVelocity = velocity;
+    }
+
+    private bool CheckForCollisionFromAbove()
+    {
+        var bounds = _collider.bounds;
+
+        // Perform two raycasts to check if the player is grounded
+        var topLeft = new Vector2(bounds.min.x, bounds.max.y); // Add a small buffer distance
+        var topRight = new Vector2(bounds.max.x, bounds.max.y); // Add a small buffer distance
+
+        var hitLeft = Physics2D.Raycast(topLeft, Vector2.up, 0.05f, _wallLayerMask);
+        var hitRight = Physics2D.Raycast(topRight, Vector2.up, 0.05f, _wallLayerMask);
+        return hitLeft.collider is not null || hitRight.collider is not null;
     }
     
     
@@ -88,20 +123,24 @@ public class AirborneState : PlayerState
             {
                 player.PlaySound(true, true, _jumpSound);
                 _animationConttroler.Jump();
+                _timeInAir = _airTime;
             }
         }
+        ApplyConstantFall();
         CheckForNoFuel();
         player.MovePlayer();
-        if (moveInput.x != 0) _moveInAir = true;
-        if (moveInput.x > 0)
+        switch (moveInput.x)
         {
-           _animationConttroler.ChangeDirection(true);
-            player.SetIsRight(true);
-        }
-        else if (moveInput.x < 0)
-        {
-           _animationConttroler.ChangeDirection(false);
-            player.SetIsRight(false);
+            case > 0:
+                _animationConttroler.ChangeDirection(true);
+                player.SetIsRight(true);
+                _moveInAir = true;
+                break;
+            case < 0:
+                _animationConttroler.ChangeDirection(false);
+                player.SetIsRight(false);
+                _moveInAir = true;
+                break;
         }
     }
     public override void Exit()

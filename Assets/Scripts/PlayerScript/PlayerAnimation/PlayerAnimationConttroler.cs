@@ -36,11 +36,12 @@ public class PlayerAnimationConttroler : MonoBehaviour
 
     public void StopMovement()
     {
-        Invoke(nameof(StopInMovement), 0.175f);
+        Invoke(nameof(StopInMovement), 0f);
     }
 
     public void ResumeMovement()
     {
+        CancelInvoke();
         animator.speed = 1;
     }
 

@@ -72,7 +72,6 @@ public class JetPackState : PlayerState
         if (_isFlying)
         {
             SoundManager.Instance.StopSound();
-            _rb.gravityScale = 0.95f; // Re-enable gravity
             _animationConttroler.HitGroundWithoutMovement();
         }
 

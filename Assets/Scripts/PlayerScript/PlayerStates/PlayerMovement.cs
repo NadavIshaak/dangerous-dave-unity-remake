@@ -5,7 +5,6 @@ using UnityEngine.InputSystem;
 public class PlayerMovement : MonoBehaviour
 {
     [SerializeField] private float moveSpeed = 5f;
-    [SerializeField] private float jumpForce = 8f;
     [SerializeField] private Vector3 victoryWalkStart;
     [SerializeField] private LayerMask wallLayerMask;
     [SerializeField] private AudioClip MoveSound;
@@ -15,6 +14,9 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private AudioClip StuckSound;
     [SerializeField] private AudioClip jetpackSound;
     [SerializeField] private float maxFuel = 100f; // Maximum fuel
+    [SerializeField] private float airSpeed = -5f;
+    [SerializeField] private float airTime = 0.7f;
+
     private PlayerAnimationConttroler _animationConttroler;
     private bool _canShoot;
     private Collider2D _collide;
@@ -90,7 +92,7 @@ public class PlayerMovement : MonoBehaviour
 
     public void TriggerDeath()
     {
-        _rb.gravityScale = 0.4f;
+        _rb.gravityScale = 0.1f;
         _collide.enabled = false;
         TransitionToState(DeathState);
     }
@@ -164,11 +166,7 @@ public class PlayerMovement : MonoBehaviour
     {
         return moveSpeed;
     }
-
-    public float GetJumpForce()
-    {
-        return jumpForce;
-    }
+    
 
     public PlayerAnimationConttroler GetAnimationConttroler()
     {
@@ -261,5 +259,13 @@ public class PlayerMovement : MonoBehaviour
     public float GetMaxFuel()
     {
         return maxFuel;
+    }
+    public float GetFallSpeed()
+    {
+        return airSpeed;
+    } 
+    public float GetAirTime()
+    {
+        return airTime;
     }
 }
