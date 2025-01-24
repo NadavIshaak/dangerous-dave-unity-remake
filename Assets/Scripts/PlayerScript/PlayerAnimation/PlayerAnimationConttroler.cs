@@ -36,7 +36,7 @@ public class PlayerAnimationConttroler : MonoBehaviour
 
     public void StopMovement()
     {
-        Invoke(nameof(StopInMovement), 0f);
+        Invoke(nameof(StopInMovement), 0.05f);
     }
 
     public void ResumeMovement()

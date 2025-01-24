@@ -10,7 +10,7 @@ public class JetPackState : PlayerState
     private readonly float _moveSpeed;
     private readonly Rigidbody2D _rb;
     private bool _isFlying;
-    
+
 
     public JetPackState(PlayerMovement player) : base(player)
     {
@@ -35,11 +35,10 @@ public class JetPackState : PlayerState
         if (_currentFuel > 0)
         {
             player.PlaySound(true, true, _jetpackSound);
-            _rb.gravityScale = 0; // Disable gravity
             _isFlying = true;
         }
     }
-    
+
 
     public override void HandleInput()
     {
@@ -50,6 +49,7 @@ public class JetPackState : PlayerState
                 CurrentLevelManagar.Instance.SetHasJetPack(false);
                 player.SetHasJetPack(false);
             }
+
             player.AirborneState.SetIsFalling(true);
             player.TransitionToState(player.AirborneState); // Transition back to the previous state
         }
@@ -76,14 +76,12 @@ public class JetPackState : PlayerState
         }
 
         Debug.Log("Exit JetPackState");
-      
     }
 
     public static float GetCurrentFuel()
     {
         return _currentFuel;
     }
-
 
 
     private void CheckInputAndAnimate()
@@ -94,6 +92,7 @@ public class JetPackState : PlayerState
         if (_isFlying) _animationConttroler.JetPack();
         ChangeDirection(moveInput);
     }
+
     private void ChangeDirection(Vector2 moveInput)
     {
         switch (moveInput.x)

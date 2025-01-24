@@ -22006,7 +22006,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}
-  m_AnchoredPosition: {x: 0, y: 31.999939}
+  m_AnchoredPosition: {x: 0, y: 32.000244}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!114 &302106989
@@ -30724,7 +30724,7 @@ BoxCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: -1.067487, y: 0.7035918}
+  m_Offset: {x: -1.5141752, y: 0.7035918}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -30734,7 +30734,7 @@ BoxCollider2D:
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Size: {x: 5.9133487, y: 4.2312727}
+  m_Size: {x: 5.0199723, y: 4.2312727}
   m_EdgeRadius: 0
 --- !u!1 &432234564
 GameObject:
@@ -39720,7 +39720,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6016783480990931864, guid: da3b20be42289544aa427fa8b97a8867, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 49.01
+      value: 50.13
       objectReference: {fileID: 0}
     - target: {fileID: 6016783480990931864, guid: da3b20be42289544aa427fa8b97a8867, type: 3}
       propertyPath: m_LocalPosition.y
@@ -70103,11 +70103,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 114462757500385858, guid: 2791553a612d84e7c9f3c0a95308376f, type: 3}
       propertyPath: editorData._bezierPath.points.Array.data[8].x
-      value: 2.9943366
+      value: 2.9846916
       objectReference: {fileID: 0}
     - target: {fileID: 114462757500385858, guid: 2791553a612d84e7c9f3c0a95308376f, type: 3}
       propertyPath: editorData._bezierPath.points.Array.data[8].y
-      value: -2.0837727
+      value: -2.0578547
       objectReference: {fileID: 0}
     - target: {fileID: 114462757500385858, guid: 2791553a612d84e7c9f3c0a95308376f, type: 3}
       propertyPath: editorData._bezierPath.points.Array.data[8].z
@@ -70127,11 +70127,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 114462757500385858, guid: 2791553a612d84e7c9f3c0a95308376f, type: 3}
       propertyPath: editorData._bezierPath.points.Array.data[10].x
-      value: 1.4967752
+      value: 1.5064201
       objectReference: {fileID: 0}
     - target: {fileID: 114462757500385858, guid: 2791553a612d84e7c9f3c0a95308376f, type: 3}
       propertyPath: editorData._bezierPath.points.Array.data[10].y
-      value: -2.533041
+      value: -2.558959
       objectReference: {fileID: 0}
     - target: {fileID: 114462757500385858, guid: 2791553a612d84e7c9f3c0a95308376f, type: 3}
       propertyPath: editorData._bezierPath.points.Array.data[10].z
@@ -140733,7 +140733,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 2626413704278675879, guid: ff1ad74048de4c84a94682972d316a10, type: 3}
       propertyPath: shootInterval
-      value: 1
+      value: 1.5
       objectReference: {fileID: 0}
     - target: {fileID: 2626413704278675879, guid: ff1ad74048de4c84a94682972d316a10, type: 3}
       propertyPath: projectileSpeed
@@ -140741,7 +140741,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5050884000345387288, guid: ff1ad74048de4c84a94682972d316a10, type: 3}
       propertyPath: speed
-      value: -4.3
+      value: -4
       objectReference: {fileID: 0}
     - target: {fileID: 5050884000345387288, guid: ff1ad74048de4c84a94682972d316a10, type: 3}
       propertyPath: pathCreator
@@ -140752,12 +140752,20 @@ PrefabInstance:
       value: PinkEnemy
       objectReference: {fileID: 0}
     - target: {fileID: 5452754955035202476, guid: ff1ad74048de4c84a94682972d316a10, type: 3}
+      propertyPath: m_Size.x
+      value: 0.93671405
+      objectReference: {fileID: 0}
+    - target: {fileID: 5452754955035202476, guid: ff1ad74048de4c84a94682972d316a10, type: 3}
       propertyPath: m_Size.y
-      value: 0.7086455
+      value: 0.55602235
+      objectReference: {fileID: 0}
+    - target: {fileID: 5452754955035202476, guid: ff1ad74048de4c84a94682972d316a10, type: 3}
+      propertyPath: m_Offset.x
+      value: -0.010236561
       objectReference: {fileID: 0}
     - target: {fileID: 5452754955035202476, guid: ff1ad74048de4c84a94682972d316a10, type: 3}
       propertyPath: m_Offset.y
-      value: -0.038427144
+      value: -0.0006096065
       objectReference: {fileID: 0}
     - target: {fileID: 8521777072073013136, guid: ff1ad74048de4c84a94682972d316a10, type: 3}
       propertyPath: m_LocalScale.x
@@ -141052,6 +141060,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1841866444}
     m_Modifications:
+    - target: {fileID: 1163522393130158900, guid: da3b20be42289544aa427fa8b97a8867, type: 3}
+      propertyPath: hideOnExit
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1163522393130158900, guid: da3b20be42289544aa427fa8b97a8867, type: 3}
+      propertyPath: requiredScore
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5586412262851581476, guid: da3b20be42289544aa427fa8b97a8867, type: 3}
       propertyPath: m_Name
       value: LevelTriggers

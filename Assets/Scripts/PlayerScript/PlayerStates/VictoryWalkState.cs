@@ -18,7 +18,7 @@ public class VictoryWalkState : PlayerState
         player.GetAnimationConttroler().ChangeDirection(true);
         player.GetAnimationConttroler().Move();
     }
-    
+
 
     public override void HandleInput()
     {

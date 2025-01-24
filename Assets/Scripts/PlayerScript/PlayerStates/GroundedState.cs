@@ -38,10 +38,17 @@ public class GroundedState : PlayerState
     public override void HandleInput()
     {
     }
-    public override void Update() { CheckInputAndAnimate(); }
 
-    public override void Exit() { _animationConttroler.ResumeMovement();}
-    
+    public override void Update()
+    {
+        CheckInputAndAnimate();
+    }
+
+    public override void Exit()
+    {
+        _animationConttroler.ResumeMovement();
+    }
+
     private void JumpTransition()
     {
         player.AirborneState.SetIsFalling(false);
@@ -65,8 +72,8 @@ public class GroundedState : PlayerState
         var hitRight = Physics2D.Raycast(bottomRight, Vector2.right, 0.04f, _wallLayerMask);
         var hitTopLeft = Physics2D.Raycast(topLeft, Vector2.left, 0.04f, _wallLayerMask);
         var hitTopRight = Physics2D.Raycast(topRight, Vector2.right, 0.04f, _wallLayerMask);
-        if ((hitLeft.collider is not null || hitTopLeft.collider is not null) && player.GetMoveInput().x < 0
-            ||((hitRight.collider is not null || hitTopRight.collider is not null) && player.GetMoveInput().x > 0))
+        if (((hitLeft.collider is not null || hitTopLeft.collider is not null) && player.GetMoveInput().x < 0)
+            || ((hitRight.collider is not null || hitTopRight.collider is not null) && player.GetMoveInput().x > 0))
         {
             _animationConttroler.StopMovement();
             if (!_isStuck)
@@ -74,20 +81,23 @@ public class GroundedState : PlayerState
             _isStuck = true;
             return true;
         }
+
         if (!_isStuck) return false;
         SoundManager.Instance.StopSound();
         _animationConttroler.ResumeMovement();
         _isStuck = false;
         return false;
     }
+
     private void CheckForNoFuel()
     {
         _hasJetPack = player.GetHasJetPack();
-        if (_controls.Player.JetPack.WasPressedThisFrame() && _hasJetPack&&!_justTransitioned)
+        if (_controls.Player.JetPack.WasPressedThisFrame() && _hasJetPack && !_justTransitioned)
             if (JetPackState.GetCurrentFuel() > 0)
                 player.TransitionToState(player.JetPackState);
         _justTransitioned = false;
     }
+
     private void CheckForFall()
     {
         var bounds = _collider.bounds;
@@ -101,24 +111,19 @@ public class GroundedState : PlayerState
             FallTransition();
         }
     }
-    
+
     private void CheckForJump()
     {
-        if (_controls.Player.Jump.triggered)
-        {
-            JumpTransition();
-        }
+        if (_controls.Player.Jump.triggered) JumpTransition();
     }
+
     private void CheckInputAndAnimate()
     {
         CheckForJump();
         CheckForFall();
         CheckForNoFuel();
         player.MovePlayer();
-        if (IsStuck())
-        {
-            return;
-        }
+        if (IsStuck()) return;
         if (player.GetMoveInput().x != 0) ChangeDirectionOfMovement();
 
         if (player.GetMoveInput().x == 0 && !_isStop && _firstMove)
@@ -131,6 +136,7 @@ public class GroundedState : PlayerState
             ContinueMovementAfterStop();
         }
     }
+
     private void ChangeDirectionOfMovement()
     {
         if (!_firstMove)
@@ -140,6 +146,7 @@ public class GroundedState : PlayerState
             player.PlaySound(true, true, _moveSound);
             Debug.Log("Move");
         }
+
         _firstMove = true;
         _animationConttroler.ChangeDirection(player.GetMoveInput().x > 0);
         player.SetIsRight(player.GetMoveInput().x > 0);

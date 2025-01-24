@@ -1,37 +1,34 @@
-using System;
 using DG.Tweening;
 using TMPro;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Serialization;
 using UnityEngine.UI;
-using Cache = UnityEngine.Cache;
 
 public class UIManager : MonoBehaviour
 {
-    [FormerlySerializedAs("_numberSprites")] [SerializeField] private Sprite[] numberSprites;
+    [FormerlySerializedAs("_numberSprites")] [SerializeField]
+    private Sprite[] numberSprites;
 
     [SerializeField] private Image tenOfThousandsRenderer;
-   [SerializeField] private Image thousandsRenderer;
-   [SerializeField] private Image hundredsRenderer;
+    [SerializeField] private Image thousandsRenderer;
+    [SerializeField] private Image hundredsRenderer;
     [SerializeField] private Image tensRenderer;
-   [SerializeField] private Image onesRenderer;
-   [SerializeField] private Image oneLifeRenderer;
-     [SerializeField] private Image twoLifeRenderer;
-   [SerializeField] private Image threeLifeRenderer;
+    [SerializeField] private Image onesRenderer;
+    [SerializeField] private Image oneLifeRenderer;
+    [SerializeField] private Image twoLifeRenderer;
+    [SerializeField] private Image threeLifeRenderer;
     [SerializeField] private Image deadRenderer;
     [SerializeField] private Image fuelBar; // The full fuel bar
     [SerializeField] private Image blackBox; // The black box that indicates fuel depletion
-  [SerializeField] private Image gunSymbolRenderer;
+    [SerializeField] private Image gunSymbolRenderer;
     [SerializeField] private Image gunTextRenderer;
     [SerializeField] private Image jetPackTextRenderer;
-  [SerializeField] private Image trophyCollectedRenderer;
- [SerializeField] private Image levelOnesRenderer;
-   [SerializeField] private Image levelTensRenderer;
+    [SerializeField] private Image trophyCollectedRenderer;
+    [SerializeField] private Image levelOnesRenderer;
+    [SerializeField] private Image levelTensRenderer;
     [SerializeField] private TextMeshProUGUI messageText;
     [SerializeField] private Image talkingDave;
 
-   
 
     private void Start()
     {
@@ -78,6 +75,8 @@ public class UIManager : MonoBehaviour
         trophyCollectedRenderer.enabled = false;
         blackBox.enabled = false;
         fuelBar.enabled = false;
+        talkingDave.enabled = false;
+        messageText.enabled = false;
         deadRenderer.enabled = true;
     }
 
@@ -133,13 +132,12 @@ public class UIManager : MonoBehaviour
         onesRenderer.sprite = numberSprites[ones];
     }
 
-    private void SetText(string text,bool active)
+    private void SetText(string text, bool active)
     {
         messageText.text = text;
         //messageText.gameObject.SetActive(active);
         if (!active) return;
-        messageText.rectTransform.DOShakePosition(1f, new Vector3(0.5f, 0, 0), 5, 90, false, true);
-        talkingDave.rectTransform.DOShakePosition(1f, new Vector3(0.5f, 0, 0), 5, 90, false, true);
+        messageText.rectTransform.DOShakePosition(1f, new Vector3(0.5f, 0, 0), 5);
+        talkingDave.rectTransform.DOShakePosition(1f, new Vector3(0.5f, 0, 0), 5);
     }
-   
 }

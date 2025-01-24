@@ -2,20 +2,20 @@ using UnityEngine;
 
 public class AirborneState : PlayerState
 {
-    private readonly InputSystem_Actions _controls;
-    private readonly Collider2D _collider;
-    private readonly AudioClip _fallingSound;
-    private readonly LayerMask _wallLayerMask;
-    private bool _hasJetPack;
-    private bool _isOffGround;
-    private readonly AudioClip _jumpSound;
-    private bool _moveInAir;
-    private bool _justTransitioned=true;
-    private bool _isFalling=true;
-    private bool _didMoveFromIdle;
-    private readonly PlayerAnimationConttroler _animationConttroler;
-    private readonly float _fallSpeed;
     private readonly float _airTime;
+    private readonly PlayerAnimationConttroler _animationConttroler;
+    private readonly Collider2D _collider;
+    private readonly InputSystem_Actions _controls;
+    private readonly AudioClip _fallingSound;
+    private readonly float _fallSpeed;
+    private readonly AudioClip _jumpSound;
+    private readonly LayerMask _wallLayerMask;
+    private bool _didMoveFromIdle;
+    private bool _hasJetPack;
+    private bool _isFalling = true;
+    private bool _isOffGround;
+    private bool _justTransitioned = true;
+    private bool _moveInAir;
     private float _timeInAir;
 
 
@@ -39,6 +39,7 @@ public class AirborneState : PlayerState
         _didMoveFromIdle = false;
         _timeInAir = -1;
     }
+
     public override void HandleInput()
     {
     }
@@ -55,9 +56,9 @@ public class AirborneState : PlayerState
         if (IsGrounded())
         {
             if (_moveInAir)
-               _animationConttroler.HitGroundWithMovement();
+                _animationConttroler.HitGroundWithMovement();
             else
-              _animationConttroler.HitGroundWithoutMovement();
+                _animationConttroler.HitGroundWithoutMovement();
             Debug.Log("Grounded");
             player.TransitionToState(player.GroundedState);
         }
@@ -66,15 +67,16 @@ public class AirborneState : PlayerState
     private void CheckForNoFuel()
     {
         _hasJetPack = player.GetHasJetPack();
-        if (_controls.Player.JetPack.WasPressedThisFrame() && _hasJetPack&&!_justTransitioned)
+        if (_controls.Player.JetPack.WasPressedThisFrame() && _hasJetPack && !_justTransitioned)
             if (JetPackState.GetCurrentFuel() > 0)
                 player.TransitionToState(player.JetPackState);
         _justTransitioned = false;
     }
+
     private void ApplyConstantFall()
     {
         var velocity = player.GetRigidbody().linearVelocity;
-        if (_timeInAir > 0&&!CheckForCollisionFromAbove())
+        if (_timeInAir > 0 && !CheckForCollisionFromAbove())
         {
             velocity.y = -_fallSpeed;
             _timeInAir -= Time.deltaTime;
@@ -84,7 +86,8 @@ public class AirborneState : PlayerState
             velocity.y = _fallSpeed;
             _timeInAir = -1;
         }
-        if(velocity!=player.GetRigidbody().linearVelocity)
+
+        if (velocity != player.GetRigidbody().linearVelocity)
             player.GetRigidbody().linearVelocity = velocity;
     }
 
@@ -113,28 +116,24 @@ public class AirborneState : PlayerState
 
     private void DidFall()
     {
-        if(_justTransitioned)
+        if (_justTransitioned)
             player.PlaySound(true, true, _fallingSound);
-        if (player.GetMoveInput().x != 0&&!_didMoveFromIdle)
+        if (player.GetMoveInput().x != 0 && !_didMoveFromIdle)
         {
             _animationConttroler.ResumeMovement();
             _animationConttroler.FallWhileWalking();
             _didMoveFromIdle = true;
         }
     }
-    
+
 
     private void InputAndAnimate()
     {
         var moveInput = player.GetMoveInput();
         if (_isFalling)
-        {
             DidFall();
-        }
         else
-        {
-           DidJump();
-        }
+            DidJump();
         ApplyConstantFall();
         CheckForNoFuel();
         player.MovePlayer();
@@ -157,6 +156,7 @@ public class AirborneState : PlayerState
                 break;
         }
     }
+
     public override void Exit()
     {
         SoundManager.Instance.StopSound();
@@ -165,12 +165,12 @@ public class AirborneState : PlayerState
     private bool IsGrounded()
     {
         // Get the player's collider bounds
-        
+
         var bounds = _collider.bounds;
 
         // Perform two raycasts to check if the player is grounded
-        var bottomLeft = new Vector2(bounds.min.x, bounds.min.y + 0.1f); // Add a small buffer distance
-        var bottomRight = new Vector2(bounds.max.x, bounds.min.y + 0.1f); // Add a small buffer distance
+        var bottomLeft = new Vector2(bounds.min.x+0.01f, bounds.min.y + 0.1f); // Add a small buffer distance
+        var bottomRight = new Vector2(bounds.max.x-0.01f, bounds.min.y + 0.1f); // Add a small buffer distance
 
         var hitLeft = Physics2D.Raycast(bottomLeft, Vector2.down, 0.145f, _wallLayerMask);
         var hitRight = Physics2D.Raycast(bottomRight, Vector2.down, 0.145f, _wallLayerMask);
@@ -185,6 +185,7 @@ public class AirborneState : PlayerState
                 return hitLeft.collider is not null || hitRight.collider is not null;
         }
     }
+
     public void SetIsFalling(bool isFalling)
     {
         _isFalling = isFalling;

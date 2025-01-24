@@ -4,6 +4,7 @@ public class SoundObject : MonoBehaviour, IPoolable
 {
     //class to handle the sound objects
     [SerializeField] private AudioSource audioSource; // The audio source component
+
     public void Reset()
     {
         // Reset the audio source component
@@ -13,6 +14,7 @@ public class SoundObject : MonoBehaviour, IPoolable
         audioSource.spatialBlend = 0f;
         audioSource.loop = false;
     }
+
     public AudioSource GetAudioSource()
     {
         return audioSource;

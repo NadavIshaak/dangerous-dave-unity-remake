@@ -4,7 +4,9 @@ using UnityEngine.Serialization;
 public class Collectible : MonoBehaviour
 {
     [SerializeField] private int _value = 100;
-    [FormerlySerializedAs("_collectSound")] [SerializeField] private AudioClip collectSound;
+
+    [FormerlySerializedAs("_collectSound")] [SerializeField]
+    private AudioClip collectSound;
 
     protected virtual void OnTriggerEnter2D(Collider2D other)
     {

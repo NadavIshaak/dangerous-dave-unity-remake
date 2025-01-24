@@ -6,12 +6,15 @@ public class StageScript : MonoBehaviour
     private static readonly int Game = Animator.StringToHash("StartGame");
     private static readonly int StartWalk = Animator.StringToHash("StartWalk");
     private static readonly int EndWalk = Animator.StringToHash("EndWalk");
+
     [FormerlySerializedAs("_canvas")] [SerializeField]
     private Canvas canvas;
+
     private Animator _animator;
     private InputSystem_Actions _controls;
     private bool _didEndGame;
     private bool _didStartGame;
+
     private void Start()
     {
         CurrentLevelManagar.Instance.LevelManager.OnVictoryWalkStart += OnStartWalk;
@@ -19,7 +22,7 @@ public class StageScript : MonoBehaviour
         CurrentLevelManagar.Instance.LevelManager.OnLevelChange += OnEndWalk;
         _animator = GetComponent<Animator>();
         canvas.enabled = false;
-        _didStartGame=false;
+        _didStartGame = false;
         _controls = new InputSystem_Actions();
         _controls.Enable();
     }
@@ -37,7 +40,6 @@ public class StageScript : MonoBehaviour
         }
     }
 
-    
 
     private void OnDisable()
     {
@@ -53,7 +55,8 @@ public class StageScript : MonoBehaviour
 
     private void OnDestroy()
     {
-        if (CurrentLevelManagar.Instance != null) CurrentLevelManagar.Instance.LevelManager.OnVictoryWalkStart -= OnStartWalk;
+        if (CurrentLevelManagar.Instance != null)
+            CurrentLevelManagar.Instance.LevelManager.OnVictoryWalkStart -= OnStartWalk;
     }
 
     private static void GameOver()

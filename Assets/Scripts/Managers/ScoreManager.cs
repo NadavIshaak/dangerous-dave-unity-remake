@@ -4,8 +4,8 @@ namespace Managers
 {
     public class ScoreManager
     {
-        public int Score = 0;
         public Action<int> OnScoreChange;
+        public int Score;
 
         public void AddScore(int value)
         {

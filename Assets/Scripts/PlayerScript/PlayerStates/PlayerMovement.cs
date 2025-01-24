@@ -32,6 +32,7 @@ public class PlayerMovement : MonoBehaviour
     public GroundedState GroundedState;
     public JetPackState JetPackState;
     public VictoryWalkState VictoryWalkState;
+
     private void Awake()
     {
         _rb = GetComponent<Rigidbody2D>();
@@ -52,7 +53,7 @@ public class PlayerMovement : MonoBehaviour
         _canShoot = CurrentLevelManagar.Instance.GetCanShoot();
         _hasJetPack = CurrentLevelManagar.Instance.FuelManager.GetCanFly();
         _rb.simulated = false;
-        maxFuel=CurrentLevelManagar.Instance.GetMaxFuel();
+        maxFuel = CurrentLevelManagar.Instance.GetMaxFuel();
     }
 
     private void Update()
@@ -91,7 +92,7 @@ public class PlayerMovement : MonoBehaviour
 
     public void TriggerDeath()
     {
-        _rb.gravityScale = 0.05f;
+        _rb.gravityScale = 0.01f;
         _collide.enabled = false;
         TransitionToState(DeathState);
     }
@@ -120,13 +121,14 @@ public class PlayerMovement : MonoBehaviour
     private void OnMove(InputAction.CallbackContext context)
     {
         _moveInput = context.ReadValue<Vector2>();
-        if(_moveInput.x!=0)
-           CheckForStart();
+        if (_moveInput.x != 0)
+            CheckForStart();
     }
+
     public void PlaySound(bool shouldKeep, bool shouldLoop, AudioClip clip)
     {
         SoundManager.Instance.PlaySound(clip, transform, 1, shouldLoop, shouldKeep);
-    } 
+    }
 
     private void OnJump(InputAction.CallbackContext context)
     {
@@ -142,6 +144,7 @@ public class PlayerMovement : MonoBehaviour
             _animationConttroler.HitGroundWithoutMovement();
             return;
         }
+
         if (_hasStarted && CurrentState == null) TransitionToState(GroundedState);
     }
 
@@ -164,7 +167,7 @@ public class PlayerMovement : MonoBehaviour
     {
         return moveSpeed;
     }
-    
+
 
     public PlayerAnimationConttroler GetAnimationConttroler()
     {
@@ -240,10 +243,12 @@ public class PlayerMovement : MonoBehaviour
     {
         return _hasJetPack;
     }
+
     public void SetIsRight(bool value)
     {
         _isRight = value;
     }
+
     public bool GetIsRight()
     {
         return _isRight;
@@ -258,10 +263,12 @@ public class PlayerMovement : MonoBehaviour
     {
         return maxFuel;
     }
+
     public float GetFallSpeed()
     {
         return airSpeed;
-    } 
+    }
+
     public float GetAirTime()
     {
         return airTime;

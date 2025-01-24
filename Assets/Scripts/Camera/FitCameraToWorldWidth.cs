@@ -1,22 +1,22 @@
 using System;
-using UnityEngine;
 using Unity.Cinemachine;
+using UnityEngine;
 
 public class FitCameraToWorldWidth : MonoBehaviour
 {
     private const float RatioChangeThreshold = 0.01f;
 
     [SerializeField] private CinemachineCamera cinemachineCam;
-    [Header("How many world Unity units fit into the screen width")]
-    [SerializeField] private float width = 10f;
+
+    [Header("How many world Unity units fit into the screen width")] [SerializeField]
+    private float width = 10f;
+
     private float _currRatio;
 
     private void Awake()
     {
         if (cinemachineCam == null)
             cinemachineCam = FindFirstObjectByType<CinemachineCamera>();
-
-    
     }
 
     private void Start()

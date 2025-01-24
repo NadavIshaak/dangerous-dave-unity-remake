@@ -1,22 +1,14 @@
-
-using System;
 using UnityEngine;
-
 
 public class LifeManager : MonoBehaviour
 {
     private InputSystem_Actions _controls;
     private bool _isDead;
-    
+
 
     private void Start()
     {
         CurrentLevelManagar.Instance.PlayerManager.OnLifeChange += RemoveLife;
-    }
-
-    private void OnDisable()
-    {
-        CurrentLevelManagar.Instance.PlayerManager.OnLifeChange -= RemoveLife;
     }
 
     private void Update()
@@ -25,6 +17,11 @@ public class LifeManager : MonoBehaviour
         if (!_controls.Player.Jump.triggered) return;
         _controls.Disable();
         Application.Quit();
+    }
+
+    private void OnDisable()
+    {
+        CurrentLevelManagar.Instance.PlayerManager.OnLifeChange -= RemoveLife;
     }
 
     private void RemoveLife(int life)
