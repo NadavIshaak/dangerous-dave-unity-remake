@@ -1,22 +1,22 @@
 using System;
 using UnityEngine;
+using Unity.Cinemachine;
 
 public class FitCameraToWorldWidth : MonoBehaviour
 {
     private const float RatioChangeThreshold = 0.01f;
 
-    [SerializeField] private Camera cam;
+    [SerializeField] private CinemachineCamera cinemachineCam;
     [Header("How many world Unity units fit into the screen width")]
     [SerializeField] private float width = 10f;
     private float _currRatio;
 
     private void Awake()
     {
-        if (cam == null)
-            cam = Camera.main;
-        
-        if (!cam.orthographic) 
-            Debug.LogWarning("Camera is not orthographic, this script is designed for orthographic cameras");
+        if (cinemachineCam == null)
+            cinemachineCam = FindFirstObjectByType<CinemachineCamera>();
+
+    
     }
 
     private void Start()
@@ -37,9 +37,11 @@ public class FitCameraToWorldWidth : MonoBehaviour
 
     private void FitToWidth()
     {
-        var currHeight = cam.orthographicSize * 2f;
+        if (cinemachineCam == null) return;
+
+        var currHeight = cinemachineCam.Lens.OrthographicSize * 2;
         var currWidth = currHeight * _currRatio;
         var ratioChange = width / currWidth;
-        cam.orthographicSize *= ratioChange;
+        cinemachineCam.Lens.OrthographicSize *= ratioChange;
     }
 }

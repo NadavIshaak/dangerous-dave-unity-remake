@@ -57348,51 +57348,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!1 &809890538
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 809890540}
-  - component: {fileID: 809890539}
-  m_Layer: 0
-  m_Name: ScoreManager
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &809890539
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 809890538}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6aa42cabbf45e714b9e8b705e47cd47d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _score: 0
---- !u!4 &809890540
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 809890538}
-  serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 4.8715305, y: -1.2067032, z: -0.014346391}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &809899323
 GameObject:
   m_ObjectHideFlags: 0
@@ -62267,6 +62222,7 @@ GameObject:
   - component: {fileID: 901104965}
   - component: {fileID: 901104966}
   - component: {fileID: 901104967}
+  - component: {fileID: 901104968}
   m_Layer: 6
   m_Name: Stage2Camera
   m_TagString: Untagged
@@ -62351,6 +62307,20 @@ MonoBehaviour:
     RotationDamping: {x: 1, y: 1, z: 1}
     QuaternionDamping: 1
   FollowOffset: {x: 0, y: 0, z: -10}
+--- !u!114 &901104968
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 901104964}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 24d2ceba1589940449eff24c200bf7d7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cinemachineCam: {fileID: 901104966}
+  width: 17.78
 --- !u!1 &901927331
 GameObject:
   m_ObjectHideFlags: 0
@@ -75651,6 +75621,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1120648683}
   - component: {fileID: 1120648684}
+  - component: {fileID: 1120648685}
   m_Layer: 0
   m_Name: WinScreenCamera
   m_TagString: Untagged
@@ -75716,6 +75687,20 @@ MonoBehaviour:
       BarrelClipping: 0.25
       Anamorphism: 0
   BlendHint: 0
+--- !u!114 &1120648685
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1120648682}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 24d2ceba1589940449eff24c200bf7d7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cinemachineCam: {fileID: 1120648684}
+  width: 17.78
 --- !u!1 &1122695542
 GameObject:
   m_ObjectHideFlags: 0
@@ -89752,13 +89737,13 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1351041510}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 24d2ceba1589940449eff24c200bf7d7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cam: {fileID: 1351041512}
-  width: 12.5
+  cinemachineCam: {fileID: 0}
+  width: 100
 --- !u!1 &1351207988
 GameObject:
   m_ObjectHideFlags: 0
@@ -94593,6 +94578,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1436729783}
   - component: {fileID: 1436729784}
+  - component: {fileID: 1436729785}
   m_Layer: 0
   m_Name: WinWalkScreenCamera
   m_TagString: Untagged
@@ -94658,6 +94644,20 @@ MonoBehaviour:
       BarrelClipping: 0.25
       Anamorphism: 0
   BlendHint: 0
+--- !u!114 &1436729785
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1436729782}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 24d2ceba1589940449eff24c200bf7d7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cinemachineCam: {fileID: 1436729784}
+  width: 17.78
 --- !u!1001 &1438009447
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -104156,6 +104156,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1600066995}
   - component: {fileID: 1600066996}
+  - component: {fileID: 1600066997}
   m_Layer: 0
   m_Name: Stage1Camera
   m_TagString: Untagged
@@ -104221,6 +104222,20 @@ MonoBehaviour:
       BarrelClipping: 0.25
       Anamorphism: 0
   BlendHint: 0
+--- !u!114 &1600066997
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1600066994}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 24d2ceba1589940449eff24c200bf7d7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cinemachineCam: {fileID: 1600066996}
+  width: 17.78
 --- !u!1 &1605249516
 GameObject:
   m_ObjectHideFlags: 0
@@ -110218,6 +110233,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1685716866}
   - component: {fileID: 1685716867}
+  - component: {fileID: 1685716868}
   m_Layer: 0
   m_Name: StartCamera
   m_TagString: Untagged
@@ -110283,6 +110299,20 @@ MonoBehaviour:
       BarrelClipping: 0.25
       Anamorphism: 0
   BlendHint: 0
+--- !u!114 &1685716868
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1685716865}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 24d2ceba1589940449eff24c200bf7d7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cinemachineCam: {fileID: 1685716867}
+  width: 17.78
 --- !u!1001 &1688445125
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -113564,8 +113594,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 12.2
-  m_fontSizeBase: 12.2
+  m_fontSize: 10.68
+  m_fontSizeBase: 10.68
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -118876,6 +118906,7 @@ GameObject:
   - component: {fileID: 1806225088}
   - component: {fileID: 1806225089}
   - component: {fileID: 1806225090}
+  - component: {fileID: 1806225091}
   m_Layer: 0
   m_Name: Stage3Camera
   m_TagString: Untagged
@@ -118960,6 +118991,20 @@ MonoBehaviour:
     RotationDamping: {x: 1, y: 1, z: 1}
     QuaternionDamping: 1
   FollowOffset: {x: 0, y: 0, z: -10}
+--- !u!114 &1806225091
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1806225087}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 24d2ceba1589940449eff24c200bf7d7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cinemachineCam: {fileID: 1806225089}
+  width: 17.78
 --- !u!1 &1806970478
 GameObject:
   m_ObjectHideFlags: 0
@@ -141626,7 +141671,6 @@ SceneRoots:
   - {fileID: 1099071745}
   - {fileID: 814348044}
   - {fileID: 1134891460}
-  - {fileID: 809890540}
   - {fileID: 1259170125}
   - {fileID: 1226881363}
   - {fileID: 61097741}

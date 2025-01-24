@@ -144,7 +144,7 @@ MonoBehaviour:
   StuckSound: {fileID: 8300000, guid: da5fc9bdfc52f154a886895efb34629d, type: 3}
   jetpackSound: {fileID: 8300000, guid: 4564f6b03fbe93a49b13f336eba2d281, type: 3}
   maxFuel: 100
-  airSpeed: -2.8
+  airSpeed: -2.9
   airTime: 0.6
 --- !u!95 &1579755278963955509
 Animator:
@@ -218,7 +218,7 @@ BoxCollider2D:
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 0.35, y: 0.63}
+    oldSize: {x: 0.35, y: 0.62}
     newSize: {x: 0.45, y: 0.64}
     adaptiveTilingThreshold: 0.5
     drawMode: 0

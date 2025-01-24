@@ -14,6 +14,9 @@ public class StageScript : MonoBehaviour
     private bool _didStartGame;
     private void Start()
     {
+        CurrentLevelManagar.Instance.LevelManager.OnVictoryWalkStart += OnStartWalk;
+        CurrentLevelManagar.Instance.LevelManager.OnGameOver += OnGameOver;
+        CurrentLevelManagar.Instance.LevelManager.OnLevelChange += OnEndWalk;
         _animator = GetComponent<Animator>();
         canvas.enabled = false;
         _didStartGame=false;
@@ -34,16 +37,7 @@ public class StageScript : MonoBehaviour
         }
     }
 
-    private void OnEnable()
-    {
-        if (CurrentLevelManagar.Instance)
-        {
-            CurrentLevelManagar.Instance.LevelManager.OnVictoryWalkStart += OnStartWalk;
-            CurrentLevelManagar.Instance.LevelManager.OnGameOver += OnGameOver;
-            CurrentLevelManagar.Instance.LevelManager.OnLevelChange += OnEndWalk;
-        }
-        
-    }
+    
 
     private void OnDisable()
     {

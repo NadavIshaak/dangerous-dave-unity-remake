@@ -1,4 +1,5 @@
 
+using System;
 using UnityEngine;
 
 
@@ -6,11 +7,13 @@ public class LifeManager : MonoBehaviour
 {
     private InputSystem_Actions _controls;
     private bool _isDead;
+    
 
-    private void OnEnable()
+    private void Start()
     {
         CurrentLevelManagar.Instance.PlayerManager.OnLifeChange += RemoveLife;
     }
+
     private void OnDisable()
     {
         CurrentLevelManagar.Instance.PlayerManager.OnLifeChange -= RemoveLife;
@@ -29,5 +32,6 @@ public class LifeManager : MonoBehaviour
         if (life != 0) return;
         _isDead = true;
         _controls = new InputSystem_Actions();
+        _controls.Enable();
     }
 }

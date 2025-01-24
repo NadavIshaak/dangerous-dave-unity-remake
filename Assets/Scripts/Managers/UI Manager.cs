@@ -31,9 +31,10 @@ public class UIManager : MonoBehaviour
     [SerializeField] private TextMeshProUGUI messageText;
     [SerializeField] private Image talkingDave;
 
-    private void OnEnable()
+   
+
+    private void Start()
     {
-        CurrentLevelManagar currentLevelManagar = CurrentLevelManagar.Instance;
         CurrentLevelManagar.Instance.LevelManager.OnLevelChange += UpdateLevel;
         CurrentLevelManagar.Instance.LevelManager.OnTrophyChange += UpdateThrophy;
         CurrentLevelManagar.Instance.PlayerManager.OnGunChange += GotGun;
@@ -43,6 +44,7 @@ public class UIManager : MonoBehaviour
         CurrentLevelManagar.Instance.PlayerManager.OnLifeChange += UpdateLife;
         CurrentLevelManagar.Instance.ScoreManager.OnScoreChange += UpdateScore;
     }
+
     private void OnDisable()
     {
         CurrentLevelManagar.Instance.LevelManager.OnLevelChange -= UpdateLevel;
