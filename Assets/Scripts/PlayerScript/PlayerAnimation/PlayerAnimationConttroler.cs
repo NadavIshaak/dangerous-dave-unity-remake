@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class PlayerAnimationConttroler : MonoBehaviour
@@ -73,5 +74,10 @@ public class PlayerAnimationConttroler : MonoBehaviour
     public void JetPack()
     {
         _animator.SetTrigger(Pack);
+    }
+
+    private void OnDestroy()
+    {
+        CancelInvoke();
     }
 }

@@ -11,7 +11,7 @@ public class EnemyShooting : MonoBehaviour
     private void Start()
     {
         _shootTimer = shootInterval;
-        CurrentLevelManagar.Instance.PlayerManager.OnInstantiatedPlayer += SetNewPlayer;
+        CurrentLevelManagar.instance.PlayerManager.OnInstantiatedPlayer += SetNewPlayer;
     }
 
     private void Update()
@@ -27,7 +27,7 @@ public class EnemyShooting : MonoBehaviour
 
     private void OnDisable()
     {
-        CurrentLevelManagar.Instance.PlayerManager.OnInstantiatedPlayer -= SetNewPlayer;
+        CurrentLevelManagar.instance.PlayerManager.OnInstantiatedPlayer -= SetNewPlayer;
     }
 
     private void SetNewPlayer()

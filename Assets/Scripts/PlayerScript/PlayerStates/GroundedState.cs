@@ -98,29 +98,40 @@ public class GroundedState : PlayerState
         _justTransitioned = false;
     }
 
-    private void CheckForFall()
+    private bool CheckForFall()
     {
         var bounds = _collider.bounds;
-        var bottomLeft = new Vector2(bounds.min.x, bounds.min.y + 0.1f); // Add a small buffer distance
-        var bottomRight = new Vector2(bounds.max.x, bounds.min.y + 0.1f); // Add a small buffer distance
-        var hitLeft = Physics2D.Raycast(bottomLeft, Vector2.down, 0.20f, _wallLayerMask);
-        var hitRight = Physics2D.Raycast(bottomRight, Vector2.down, 0.20f, _wallLayerMask);
+        var bottomLeft = new Vector2(bounds.min.x-0.02f, bounds.min.y ); // Add a small buffer distance
+        var bottomRight = new Vector2(bounds.max.x+0.02f, bounds.min.y ); // Add a small buffer distance
+        var hitLeft = Physics2D.Raycast(bottomLeft, Vector2.down, 0.02f, _wallLayerMask);
+        var hitRight = Physics2D.Raycast(bottomRight, Vector2.down, 0.02f, _wallLayerMask);
+        Debug.DrawRay(bottomLeft, Vector2.down * 0.02f, Color.red);
+        Debug.DrawRay(bottomRight, Vector2.down * 0.02f, Color.red);
         if (hitLeft.collider is null && hitRight.collider is null)
         {
             Debug.Log("Fall transition");
             FallTransition();
+            return true;
         }
+
+        return false;
     }
 
-    private void CheckForJump()
+    private bool CheckForJump()
     {
-        if (_controls.Player.Jump.triggered) JumpTransition();
+        if (_controls.Player.Jump.triggered)
+        {
+            JumpTransition();
+            return true;
+        }
+
+        return false;
     }
 
     private void CheckInputAndAnimate()
     {
-        CheckForJump();
-        CheckForFall();
+        if(CheckForFall()) return;
+        if(CheckForJump()) return;
         CheckForNoFuel();
         player.MovePlayer();
         if (IsStuck()) return;
@@ -148,8 +159,11 @@ public class GroundedState : PlayerState
         }
 
         _firstMove = true;
-        _animationConttroler.ChangeDirection(player.GetMoveInput().x > 0);
-        player.SetIsRight(player.GetMoveInput().x > 0);
+        bool isRight = player.GetIsRight();
+        float moveInput = player.GetMoveInput().x;
+        if (moveInput > 0 && isRight || moveInput < 0 && !isRight) return;
+        _animationConttroler.ChangeDirection(moveInput > 0);
+        player.SetIsRight(moveInput > 0);
     }
 
     private void StopMovement()
@@ -161,6 +175,7 @@ public class GroundedState : PlayerState
 
     private void ContinueMovementAfterStop()
     {
+        Debug.Log("Continue");
         _animationConttroler.ResumeMovement();
         player.PlaySound(true, true, _moveSound);
         _isStop = false;

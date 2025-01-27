@@ -8,7 +8,7 @@ public class LifeManager : MonoBehaviour
 
     private void Start()
     {
-        CurrentLevelManagar.Instance.PlayerManager.OnLifeChange += RemoveLife;
+        CurrentLevelManagar.instance.PlayerManager.OnLifeChange += RemoveLife;
     }
 
     private void Update()
@@ -21,7 +21,7 @@ public class LifeManager : MonoBehaviour
 
     private void OnDisable()
     {
-        CurrentLevelManagar.Instance.PlayerManager.OnLifeChange -= RemoveLife;
+        CurrentLevelManagar.instance.PlayerManager.OnLifeChange -= RemoveLife;
     }
 
     private void RemoveLife(int life)

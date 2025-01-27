@@ -17,9 +17,9 @@ public class StageScript : MonoBehaviour
 
     private void Start()
     {
-        CurrentLevelManagar.Instance.LevelManager.OnVictoryWalkStart += OnStartWalk;
-        CurrentLevelManagar.Instance.LevelManager.OnGameOver += OnGameOver;
-        CurrentLevelManagar.Instance.LevelManager.OnLevelChange += OnEndWalk;
+        CurrentLevelManagar.instance.LevelManager.OnVictoryWalkStart += OnStartWalk;
+        CurrentLevelManagar.instance.LevelManager.OnGameOver += OnGameOver;
+        CurrentLevelManagar.instance.LevelManager.OnLevelChange += OnEndWalk;
         _animator = GetComponent<Animator>();
         canvas.enabled = false;
         _didStartGame = false;
@@ -43,11 +43,11 @@ public class StageScript : MonoBehaviour
 
     private void OnDisable()
     {
-        if (CurrentLevelManagar.Instance)
+        if (CurrentLevelManagar.instance)
         {
-            CurrentLevelManagar.Instance.LevelManager.OnVictoryWalkStart -= OnStartWalk;
-            CurrentLevelManagar.Instance.LevelManager.OnGameOver -= OnGameOver;
-            CurrentLevelManagar.Instance.LevelManager.OnLevelChange -= OnEndWalk;
+            CurrentLevelManagar.instance.LevelManager.OnVictoryWalkStart -= OnStartWalk;
+            CurrentLevelManagar.instance.LevelManager.OnGameOver -= OnGameOver;
+            CurrentLevelManagar.instance.LevelManager.OnLevelChange -= OnEndWalk;
         }
 
         _controls.Disable();
@@ -55,8 +55,8 @@ public class StageScript : MonoBehaviour
 
     private void OnDestroy()
     {
-        if (CurrentLevelManagar.Instance != null)
-            CurrentLevelManagar.Instance.LevelManager.OnVictoryWalkStart -= OnStartWalk;
+        if (CurrentLevelManagar.instance != null)
+            CurrentLevelManagar.instance.LevelManager.OnVictoryWalkStart -= OnStartWalk;
     }
 
     private static void GameOver()
@@ -68,7 +68,7 @@ public class StageScript : MonoBehaviour
     private void StartGame()
     {
         canvas.enabled = true;
-        CurrentLevelManagar.Instance.InstantiatePlayer();
+        CurrentLevelManagar.instance.InstantiatePlayer();
         _animator.SetTrigger(Game);
     }
 

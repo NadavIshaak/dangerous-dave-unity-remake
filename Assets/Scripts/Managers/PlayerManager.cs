@@ -13,6 +13,7 @@ namespace Managers
         private readonly GameObject[] _stagesSpawns;
         private int _playerHealth;
         public bool HasGun;
+        private bool isDead=false;
 
         public PlayerManager(GameObject player, GameObject[] stagesSpawns, CinemachineSplineCart[] dollyCart,
             CurrentLevelManagar currentLevelManagar)
@@ -30,6 +31,7 @@ namespace Managers
 
         public void InstantiatePlayer()
         {
+            isDead = false;
             var currentLevel = _currentLevelManagar.LevelManager.CurrentLevel;
             if (_playerHealth == 0) return;
             var spawnPosition = _stagesSpawns[currentLevel].transform.position;
@@ -40,6 +42,8 @@ namespace Managers
 
         public void TriggerPlayerDeath()
         {
+            if (isDead) return;
+            isDead = true;
             _playerHealth--;
             OnLifeChange?.Invoke(_playerHealth);
             var player = Object.FindFirstObjectByType<PlayerMovement>();

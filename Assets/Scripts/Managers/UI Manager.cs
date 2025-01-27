@@ -32,26 +32,26 @@ public class UIManager : MonoBehaviour
 
     private void Start()
     {
-        CurrentLevelManagar.Instance.LevelManager.OnLevelChange += UpdateLevel;
-        CurrentLevelManagar.Instance.LevelManager.OnTrophyChange += UpdateThrophy;
-        CurrentLevelManagar.Instance.PlayerManager.OnGunChange += GotGun;
-        CurrentLevelManagar.Instance.FuelManager.OnJetPackChange += GotJetPack;
-        CurrentLevelManagar.Instance.FuelManager.OnFuelChange += UpdateFuelBar;
-        CurrentLevelManagar.Instance.OnShowTriggerText += SetText;
-        CurrentLevelManagar.Instance.PlayerManager.OnLifeChange += UpdateLife;
-        CurrentLevelManagar.Instance.ScoreManager.OnScoreChange += UpdateScore;
+        CurrentLevelManagar.instance.LevelManager.OnLevelChange += UpdateLevel;
+        CurrentLevelManagar.instance.LevelManager.OnTrophyChange += UpdateThrophy;
+        CurrentLevelManagar.instance.PlayerManager.OnGunChange += GotGun;
+        CurrentLevelManagar.instance.FuelManager.OnJetPackChange += GotJetPack;
+        CurrentLevelManagar.instance.FuelManager.OnFuelChange += UpdateFuelBar;
+        CurrentLevelManagar.instance.OnShowTriggerText += SetText;
+        CurrentLevelManagar.instance.PlayerManager.OnLifeChange += UpdateLife;
+        CurrentLevelManagar.instance.ScoreManager.OnScoreChange += UpdateScore;
     }
 
     private void OnDisable()
     {
-        CurrentLevelManagar.Instance.LevelManager.OnLevelChange -= UpdateLevel;
-        CurrentLevelManagar.Instance.LevelManager.OnTrophyChange -= UpdateThrophy;
-        CurrentLevelManagar.Instance.PlayerManager.OnGunChange -= GotGun;
-        CurrentLevelManagar.Instance.FuelManager.OnJetPackChange -= GotJetPack;
-        CurrentLevelManagar.Instance.FuelManager.OnFuelChange -= UpdateFuelBar;
-        CurrentLevelManagar.Instance.OnShowTriggerText -= SetText;
-        CurrentLevelManagar.Instance.PlayerManager.OnLifeChange -= UpdateLife;
-        CurrentLevelManagar.Instance.ScoreManager.OnScoreChange -= UpdateScore;
+        CurrentLevelManagar.instance.LevelManager.OnLevelChange -= UpdateLevel;
+        CurrentLevelManagar.instance.LevelManager.OnTrophyChange -= UpdateThrophy;
+        CurrentLevelManagar.instance.PlayerManager.OnGunChange -= GotGun;
+        CurrentLevelManagar.instance.FuelManager.OnJetPackChange -= GotJetPack;
+        CurrentLevelManagar.instance.FuelManager.OnFuelChange -= UpdateFuelBar;
+        CurrentLevelManagar.instance.OnShowTriggerText -= SetText;
+        CurrentLevelManagar.instance.PlayerManager.OnLifeChange -= UpdateLife;
+        CurrentLevelManagar.instance.ScoreManager.OnScoreChange -= UpdateScore;
     }
 
     private void UpdateThrophy(bool trophyCollected)

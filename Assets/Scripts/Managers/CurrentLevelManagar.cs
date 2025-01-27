@@ -5,7 +5,7 @@ using Unity.Cinemachine;
 using UnityEngine;
 using UnityEngine.Serialization;
 
-public class CurrentLevelManagar : MonoSingleton<CurrentLevelManagar>
+public class CurrentLevelManagar : MonoBehaviour
 {
     public static CurrentLevelManagar instance;
 
@@ -37,11 +37,31 @@ public class CurrentLevelManagar : MonoSingleton<CurrentLevelManagar>
         FuelManager = new FuelManager(100);
         ScoreManager = new ScoreManager();
     }
+    private void Awake()
+    {
+        if (instance == null)
+        {
+            instance = this;
+            DontDestroyOnLoad(gameObject); // Ensure the SoundManager persists across scenes
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+    }
 
     private void OnDisable()
     {
         OnShowTriggerTextWithReq -= ShowTextWithRequirement;
         OnHideTriggerText -= HideText;
+        CancelInvoke();
+    }
+
+    private void OnDestroy()
+    {
+        OnShowTriggerTextWithReq -= ShowTextWithRequirement;
+        OnHideTriggerText -= HideText;
+        CancelInvoke();
     }
 
     public event Action<string, bool> OnShowTriggerText;

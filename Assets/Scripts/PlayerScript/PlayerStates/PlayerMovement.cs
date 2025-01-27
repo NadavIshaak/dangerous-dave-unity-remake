@@ -48,12 +48,12 @@ public class PlayerMovement : MonoBehaviour
 
     private void Start()
     {
-        CurrentLevelManagar.Instance.LevelManager.OnVictoryWalkStart += StartVictoryWalk;
-        OnVictoryWalkEnd += CurrentLevelManagar.Instance.OnVictoryWalkEnd;
-        _canShoot = CurrentLevelManagar.Instance.GetCanShoot();
-        _hasJetPack = CurrentLevelManagar.Instance.FuelManager.GetCanFly();
+        CurrentLevelManagar.instance.LevelManager.OnVictoryWalkStart += StartVictoryWalk;
+        OnVictoryWalkEnd += CurrentLevelManagar.instance.OnVictoryWalkEnd;
+        _canShoot = CurrentLevelManagar.instance.GetCanShoot();
+        _hasJetPack = CurrentLevelManagar.instance.FuelManager.GetCanFly();
         _rb.simulated = false;
-        maxFuel = CurrentLevelManagar.Instance.GetMaxFuel();
+        maxFuel = CurrentLevelManagar.instance.GetMaxFuel();
     }
 
     private void Update()
@@ -73,8 +73,8 @@ public class PlayerMovement : MonoBehaviour
 
     private void OnDisable()
     {
-        CurrentLevelManagar.Instance.LevelManager.OnVictoryWalkStart -= StartVictoryWalk;
-        OnVictoryWalkEnd -= CurrentLevelManagar.Instance.OnVictoryWalkEnd;
+        CurrentLevelManagar.instance.LevelManager.OnVictoryWalkStart -= StartVictoryWalk;
+        OnVictoryWalkEnd -= CurrentLevelManagar.instance.OnVictoryWalkEnd;
         _controls.Player.Move.performed -= OnMove;
         _controls.Player.Jump.performed -= OnJump;
         _controls.Player.Move.canceled -= OnMove;

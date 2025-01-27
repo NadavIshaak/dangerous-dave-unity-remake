@@ -9,7 +9,7 @@ public class GunScript : Collectible
         if (player != null)
         {
             player.SetCanShoot(true);
-            CurrentLevelManagar.Instance.SetHasGun(true);
+            CurrentLevelManagar.instance.SetHasGun(true);
         }
     }
 }

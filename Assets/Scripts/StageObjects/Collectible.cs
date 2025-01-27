@@ -12,7 +12,7 @@ public class Collectible : MonoBehaviour
     {
         if (!other.gameObject.CompareTag("Player")) return;
         SoundManager.Instance.PlaySound(collectSound, transform, 1, false, false, false);
-        CurrentLevelManagar.Instance.AddScore(_value);
+        CurrentLevelManagar.instance.AddScore(_value);
         Destroy(gameObject);
     }
 }

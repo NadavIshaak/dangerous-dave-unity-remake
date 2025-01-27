@@ -11,7 +11,7 @@ public class DangerousObject : MonoBehaviour
 
     private void KillPlayer()
     {
-        CurrentLevelManagar.Instance.TriggerPlayerDeath();
+        CurrentLevelManagar.instance.TriggerPlayerDeath();
         SoundManager.Instance.PlaySound(deathSound, transform, 1);
     }
 }

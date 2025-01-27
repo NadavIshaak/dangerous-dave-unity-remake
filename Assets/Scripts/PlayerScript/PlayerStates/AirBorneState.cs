@@ -10,6 +10,7 @@ public class AirborneState : PlayerState
     private readonly float _fallSpeed;
     private readonly AudioClip _jumpSound;
     private readonly LayerMask _wallLayerMask;
+    private readonly Rigidbody2D _rb;
     private bool _didMoveFromIdle;
     private bool _hasJetPack;
     private bool _isFalling = true;
@@ -17,6 +18,8 @@ public class AirborneState : PlayerState
     private bool _justTransitioned = true;
     private bool _moveInAir;
     private float _timeInAir;
+    private readonly float _zeroVelocityFrames = 0.2f; // Number of frames with zero velocity
+    private float _currentZeroVelocityFrame;
 
 
     public AirborneState(PlayerMovement player) : base(player)
@@ -29,6 +32,7 @@ public class AirborneState : PlayerState
         _wallLayerMask = player.GetWallLayerMask();
         _fallSpeed = player.GetFallSpeed();
         _airTime = player.GetAirTime();
+        _rb = player.GetRigidbody();
     }
 
     public override void Enter()
@@ -47,21 +51,26 @@ public class AirborneState : PlayerState
     public override void Update()
     {
         // Airborne movement logic
-        IfGrounded();
+        if(IfGrounded()) return;
         InputAndAnimate();
     }
 
-    private void IfGrounded()
+    private bool IfGrounded()
     {
         if (IsGrounded())
         {
             if (_moveInAir)
                 _animationConttroler.HitGroundWithMovement();
+            
             else
                 _animationConttroler.HitGroundWithoutMovement();
             Debug.Log("Grounded");
+            _animationConttroler.ResumeMovement();
             player.TransitionToState(player.GroundedState);
+            return true;
         }
+
+        return false;
     }
 
     private void CheckForNoFuel()
@@ -76,10 +85,17 @@ public class AirborneState : PlayerState
     private void ApplyConstantFall()
     {
         var velocity = player.GetRigidbody().linearVelocity;
-        if (_timeInAir > 0 && !CheckForCollisionFromAbove())
+        var isCollidedFromAbove = CheckForCollisionFromAbove();
+        if (_timeInAir > 0 && !isCollidedFromAbove)
         {
             velocity.y = -_fallSpeed;
             _timeInAir -= Time.deltaTime;
+            _currentZeroVelocityFrame = 0; // Reset the zero velocity frame counter
+        }
+        else if (_currentZeroVelocityFrame < _zeroVelocityFrames&& !isCollidedFromAbove)
+        {
+            velocity.y = 0;
+            _currentZeroVelocityFrame+=Time.deltaTime;
         }
         else
         {
@@ -87,8 +103,8 @@ public class AirborneState : PlayerState
             _timeInAir = -1;
         }
 
-        if (velocity != player.GetRigidbody().linearVelocity)
-            player.GetRigidbody().linearVelocity = velocity;
+        if (velocity != _rb.linearVelocity)
+            _rb.linearVelocity = velocity;
     }
 
     private bool CheckForCollisionFromAbove()
@@ -99,8 +115,10 @@ public class AirborneState : PlayerState
         var topLeft = new Vector2(bounds.min.x, bounds.max.y); // Add a small buffer distance
         var topRight = new Vector2(bounds.max.x, bounds.max.y); // Add a small buffer distance
 
-        var hitLeft = Physics2D.Raycast(topLeft, Vector2.up, 0.05f, _wallLayerMask);
-        var hitRight = Physics2D.Raycast(topRight, Vector2.up, 0.05f, _wallLayerMask);
+        var hitLeft = Physics2D.Raycast(topLeft, Vector2.up, 0.02f, _wallLayerMask);
+        var hitRight = Physics2D.Raycast(topRight, Vector2.up, 0.02f, _wallLayerMask);
+        Debug.DrawRay(topLeft, Vector2.up * 0.05f, Color.red);
+        Debug.DrawRay(topRight, Vector2.up * 0.05f, Color.red);
         return hitLeft.collider is not null || hitRight.collider is not null;
     }
 
@@ -110,6 +128,7 @@ public class AirborneState : PlayerState
         {
             player.PlaySound(true, true, _jumpSound);
             _animationConttroler.Jump();
+            _animationConttroler.ResumeMovement();
             _timeInAir = _airTime;
         }
     }
@@ -117,11 +136,15 @@ public class AirborneState : PlayerState
     private void DidFall()
     {
         if (_justTransitioned)
+        {
             player.PlaySound(true, true, _fallingSound);
+            _animationConttroler.StopInMovement();
+        }
+
         if (player.GetMoveInput().x != 0 && !_didMoveFromIdle)
         {
-            _animationConttroler.ResumeMovement();
             _animationConttroler.FallWhileWalking();
+            _animationConttroler.ResumeMovement();
             _didMoveFromIdle = true;
         }
     }
@@ -142,17 +165,20 @@ public class AirborneState : PlayerState
 
     private void ChangeDirection(Vector2 moveInput)
     {
+        bool isRight = player.GetIsRight();
         switch (moveInput.x)
         {
             case > 0:
+                _moveInAir = true;
+                if(isRight) return;
                 _animationConttroler.ChangeDirection(true);
                 player.SetIsRight(true);
-                _moveInAir = true;
                 break;
             case < 0:
+                _moveInAir = true;
+                if(!isRight) return;
                 _animationConttroler.ChangeDirection(false);
                 player.SetIsRight(false);
-                _moveInAir = true;
                 break;
         }
     }
@@ -169,11 +195,13 @@ public class AirborneState : PlayerState
         var bounds = _collider.bounds;
 
         // Perform two raycasts to check if the player is grounded
-        var bottomLeft = new Vector2(bounds.min.x+0.01f, bounds.min.y + 0.1f); // Add a small buffer distance
-        var bottomRight = new Vector2(bounds.max.x-0.01f, bounds.min.y + 0.1f); // Add a small buffer distance
+        var bottomLeft = new Vector2(bounds.min.x+0.02f, bounds.min.y ); // Add a small buffer distance
+        var bottomRight = new Vector2(bounds.max.x-0.02f, bounds.min.y); // Add a small buffer distance
 
-        var hitLeft = Physics2D.Raycast(bottomLeft, Vector2.down, 0.145f, _wallLayerMask);
-        var hitRight = Physics2D.Raycast(bottomRight, Vector2.down, 0.145f, _wallLayerMask);
+        var hitLeft = Physics2D.Raycast(bottomLeft, Vector2.down, 0.02f, _wallLayerMask);
+        var hitRight = Physics2D.Raycast(bottomRight, Vector2.down, 0.02f, _wallLayerMask);
+        Debug.DrawRay(bottomLeft, Vector2.down * 0.02f, Color.red);
+        Debug.DrawRay(bottomRight, Vector2.down * 0.02f, Color.red);
         switch (_isOffGround)
         {
             case false when hitLeft.collider is null || hitRight.collider is null:
