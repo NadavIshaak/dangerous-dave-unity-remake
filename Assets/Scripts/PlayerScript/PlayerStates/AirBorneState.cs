@@ -57,7 +57,7 @@ public class AirborneState : PlayerState
 
     private bool IfGrounded()
     {
-        if (IsGrounded())
+        if (IsGrounded()&& !_justTransitioned)
         {
             if (_moveInAir)
                 _animationConttroler.HitGroundWithMovement();
@@ -73,18 +73,23 @@ public class AirborneState : PlayerState
         return false;
     }
 
-    private void CheckForNoFuel()
+    private bool CheckForNoFuel()
     {
         _hasJetPack = player.GetHasJetPack();
         if (_controls.Player.JetPack.WasPressedThisFrame() && _hasJetPack && !_justTransitioned)
             if (JetPackState.GetCurrentFuel() > 0)
+            {
                 player.TransitionToState(player.JetPackState);
+                return true;
+            }
+
         _justTransitioned = false;
+        return false;
     }
 
     private void ApplyConstantFall()
     {
-        var velocity = player.GetRigidbody().linearVelocity;
+        var velocity = _rb.linearVelocity;
         var isCollidedFromAbove = CheckForCollisionFromAbove();
         if (_timeInAir > 0 && !isCollidedFromAbove)
         {
@@ -101,6 +106,7 @@ public class AirborneState : PlayerState
         {
             velocity.y = _fallSpeed;
             _timeInAir = -1;
+            _currentZeroVelocityFrame = _zeroVelocityFrames;
         }
 
         if (velocity != _rb.linearVelocity)
@@ -112,8 +118,8 @@ public class AirborneState : PlayerState
         var bounds = _collider.bounds;
 
         // Perform two raycasts to check if the player is grounded
-        var topLeft = new Vector2(bounds.min.x, bounds.max.y); // Add a small buffer distance
-        var topRight = new Vector2(bounds.max.x, bounds.max.y); // Add a small buffer distance
+        var topLeft = new Vector2(bounds.min.x+0.02f, bounds.max.y); // Add a small buffer distance
+        var topRight = new Vector2(bounds.max.x-0.02f, bounds.max.y); // Add a small buffer distance
 
         var hitLeft = Physics2D.Raycast(topLeft, Vector2.up, 0.02f, _wallLayerMask);
         var hitRight = Physics2D.Raycast(topRight, Vector2.up, 0.02f, _wallLayerMask);
@@ -163,7 +169,7 @@ public class AirborneState : PlayerState
         else
             DidJump();
         
-        CheckForNoFuel();
+        if(CheckForNoFuel()) return;
         player.MovePlayer();
         ChangeDirection(moveInput);
     }
@@ -198,10 +204,12 @@ public class AirborneState : PlayerState
         // Get the player's collider bounds
 
         var bounds = _collider.bounds;
-
+        var bufferSpace = -0.02f;
+        if(_rb.linearVelocity.y>0) return false;
+        if (_rb.linearVelocity.y < 0) bufferSpace *= -1;
         // Perform two raycasts to check if the player is grounded
-        var bottomLeft = new Vector2(bounds.min.x+0.02f, bounds.min.y ); // Add a small buffer distance
-        var bottomRight = new Vector2(bounds.max.x-0.02f, bounds.min.y); // Add a small buffer distance
+        var bottomLeft = new Vector2(bounds.min.x+bufferSpace, bounds.min.y ); // Add a small buffer distance
+        var bottomRight = new Vector2(bounds.max.x-bufferSpace, bounds.min.y); // Add a small buffer distance
 
         var hitLeft = Physics2D.Raycast(bottomLeft, Vector2.down, 0.02f, _wallLayerMask);
         var hitRight = Physics2D.Raycast(bottomRight, Vector2.down, 0.02f, _wallLayerMask);

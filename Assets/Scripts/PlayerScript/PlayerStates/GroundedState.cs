@@ -89,13 +89,18 @@ public class GroundedState : PlayerState
         return false;
     }
 
-    private void CheckForNoFuel()
+    private bool CheckForNoFuel()
     {
         _hasJetPack = player.GetHasJetPack();
         if (_controls.Player.JetPack.WasPressedThisFrame() && _hasJetPack && !_justTransitioned)
             if (JetPackState.GetCurrentFuel() > 0)
+            {
                 player.TransitionToState(player.JetPackState);
+                return true;
+            }
+
         _justTransitioned = false;
+        return false;
     }
 
     private bool CheckForFall()
@@ -130,9 +135,9 @@ public class GroundedState : PlayerState
 
     private void CheckInputAndAnimate()
     {
-        if(CheckForFall()) return;
         if(CheckForJump()) return;
-        CheckForNoFuel();
+        if(CheckForFall()) return;
+        if(CheckForNoFuel()) return;
         player.MovePlayer();
         if (IsStuck()) return;
         if (player.GetMoveInput().x != 0) ChangeDirectionOfMovement();
