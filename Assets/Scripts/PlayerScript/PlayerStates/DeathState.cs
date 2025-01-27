@@ -18,6 +18,11 @@ public class DeathState : PlayerState
         player.Invoke("DestroyPlayer", 3f); // Adjust the delay as needed
     }
 
+    public override void FixedUpdate()
+    {
+        // No fixed update logic in death state
+    }
+
     public override void HandleInput()
     {
         // No input handling in death state

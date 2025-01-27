@@ -78,6 +78,11 @@ public class JetPackState : PlayerState
         Debug.Log("Exit JetPackState");
     }
 
+    public override void FixedUpdate()
+    {
+        // No fixed update during jetpack state
+    }
+
     public static float GetCurrentFuel()
     {
         return _currentFuel;

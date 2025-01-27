@@ -62,6 +62,10 @@ public class PlayerMovement : MonoBehaviour
         CurrentState.HandleInput();
         CurrentState.Update();
     }
+    private void FixedUpdate()
+    {
+        CurrentState?.FixedUpdate();
+    }
 
     private void OnEnable()
     {

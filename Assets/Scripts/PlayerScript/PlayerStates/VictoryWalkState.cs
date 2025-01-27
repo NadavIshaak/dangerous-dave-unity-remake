@@ -25,6 +25,11 @@ public class VictoryWalkState : PlayerState
         // No input handling during victory walk
     }
 
+    public override void FixedUpdate()
+    {
+        // No fixed update during victory walk
+    }
+
     public override void Update()
     {
         // Auto walk logic

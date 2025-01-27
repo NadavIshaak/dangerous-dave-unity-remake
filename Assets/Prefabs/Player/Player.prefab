@@ -118,7 +118,7 @@ Rigidbody2D:
     m_Bits: 0
   m_Interpolate: 1
   m_SleepingMode: 1
-  m_CollisionDetection: 1
+  m_CollisionDetection: 0
   m_Constraints: 4
 --- !u!114 &4410264208077883995
 MonoBehaviour:
@@ -133,7 +133,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moveSpeed: 2.25
-  victoryWalkStart: {x: 14.87139, y: 0.8, z: 0}
+  victoryWalkStart: {x: 14.87139, y: 0.5, z: 0}
   wallLayerMask:
     serializedVersion: 2
     m_Bits: 64
@@ -144,7 +144,7 @@ MonoBehaviour:
   StuckSound: {fileID: 8300000, guid: da5fc9bdfc52f154a886895efb34629d, type: 3}
   jetpackSound: {fileID: 8300000, guid: 4564f6b03fbe93a49b13f336eba2d281, type: 3}
   maxFuel: 100
-  airSpeed: -2.6
+  airSpeed: -2.58
   airTime: 0.6
 --- !u!95 &1579755278963955509
 Animator:

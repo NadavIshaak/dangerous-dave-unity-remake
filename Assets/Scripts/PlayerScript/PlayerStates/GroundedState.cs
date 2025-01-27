@@ -173,6 +173,11 @@ public class GroundedState : PlayerState
         _isStop = true;
     }
 
+    public override void FixedUpdate()
+    {
+        // No fixed update during grounded state
+    }
+
     private void ContinueMovementAfterStop()
     {
         Debug.Log("Continue");

@@ -122,6 +122,11 @@ public class AirborneState : PlayerState
         return hitLeft.collider is not null || hitRight.collider is not null;
     }
 
+    public override void FixedUpdate()
+    {
+        ApplyConstantFall();
+    }
+
     private void DidJump()
     {
         if (_justTransitioned)
@@ -157,7 +162,7 @@ public class AirborneState : PlayerState
             DidFall();
         else
             DidJump();
-        ApplyConstantFall();
+        
         CheckForNoFuel();
         player.MovePlayer();
         ChangeDirection(moveInput);
