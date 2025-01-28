@@ -13,7 +13,7 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private AudioClip WinSound;
     [SerializeField] private AudioClip StuckSound;
     [SerializeField] private AudioClip jetpackSound;
-    [SerializeField] private float maxFuel = 100f; // Maximum fuel
+    [SerializeField] private float maxFuel; // Maximum fuel
     [SerializeField] private float airSpeed = -5f;
     [SerializeField] private float airTime = 0.7f;
 
@@ -27,11 +27,11 @@ public class PlayerMovement : MonoBehaviour
     private Vector2 _moveInput;
     private Rigidbody2D _rb;
     public AirborneState AirborneState;
-    public PlayerState CurrentState;
-    public DeathState DeathState;
+    private PlayerState _currentState;
+    private DeathState _deathState;
     public GroundedState GroundedState;
     public JetPackState JetPackState;
-    public VictoryWalkState VictoryWalkState;
+    private VictoryWalkState _victoryWalkState;
 
     private void Awake()
     {
@@ -41,30 +41,34 @@ public class PlayerMovement : MonoBehaviour
         _animationConttroler = GetComponent<PlayerAnimationConttroler>();
         GroundedState = new GroundedState(this);
         AirborneState = new AirborneState(this);
-        VictoryWalkState = new VictoryWalkState(this);
-        DeathState = new DeathState(this);
+        _victoryWalkState = new VictoryWalkState(this);
+        _deathState = new DeathState(this);
+        if(CurrentLevelManagar.instance is not null)
+            maxFuel = CurrentLevelManagar.instance.GetMaxFuel();
         JetPackState = new JetPackState(this);
     }
 
     private void Start()
     {
         CurrentLevelManagar.instance.LevelManager.OnVictoryWalkStart += StartVictoryWalk;
+        CurrentLevelManagar.instance.FuelManager.OnJetPackChange += SetHasJetPack;
+        CurrentLevelManagar.instance.PlayerManager.OnGunChange += SetCanShoot;
         OnVictoryWalkEnd += CurrentLevelManagar.instance.OnVictoryWalkEnd;
         _canShoot = CurrentLevelManagar.instance.GetCanShoot();
-        _hasJetPack = CurrentLevelManagar.instance.FuelManager.GetCanFly();
+        _hasJetPack = CurrentLevelManagar.instance.GetCanFly();
+        
         _rb.simulated = false;
-        maxFuel = CurrentLevelManagar.instance.GetMaxFuel();
     }
 
     private void Update()
     {
-        if (CurrentState == null) return;
-        CurrentState.HandleInput();
-        CurrentState.Update();
+        if (_currentState == null) return;
+        _currentState.HandleInput();
+        _currentState.Update();
     }
     private void FixedUpdate()
     {
-        CurrentState?.FixedUpdate();
+        _currentState?.FixedUpdate();
     }
 
     private void OnEnable()
@@ -78,6 +82,7 @@ public class PlayerMovement : MonoBehaviour
     private void OnDisable()
     {
         CurrentLevelManagar.instance.LevelManager.OnVictoryWalkStart -= StartVictoryWalk;
+        CurrentLevelManagar.instance.FuelManager.OnJetPackChange -= SetHasJetPack;
         OnVictoryWalkEnd -= CurrentLevelManagar.instance.OnVictoryWalkEnd;
         _controls.Player.Move.performed -= OnMove;
         _controls.Player.Jump.performed -= OnJump;
@@ -89,16 +94,16 @@ public class PlayerMovement : MonoBehaviour
 
     public void TransitionToState(PlayerState state)
     {
-        CurrentState?.Exit();
-        CurrentState = state;
-        CurrentState.Enter();
+        _currentState?.Exit();
+        _currentState = state;
+        _currentState.Enter();
     }
 
     public void TriggerDeath()
     {
         _rb.gravityScale = 0.01f;
         _collide.enabled = false;
-        TransitionToState(DeathState);
+        TransitionToState(_deathState);
     }
 
     private void DestroyPlayer()
@@ -108,7 +113,7 @@ public class PlayerMovement : MonoBehaviour
 
     private void StartVictoryWalk()
     {
-        TransitionToState(VictoryWalkState);
+        TransitionToState(_victoryWalkState);
     }
 
     public void TriggerVictoryWalkEnd()
@@ -141,7 +146,7 @@ public class PlayerMovement : MonoBehaviour
 
     private void CheckForStart()
     {
-        if (CurrentState == null && !_hasStarted)
+        if (_currentState == null && !_hasStarted)
         {
             _rb.simulated = true;
             _hasStarted = true;
@@ -149,7 +154,7 @@ public class PlayerMovement : MonoBehaviour
             return;
         }
 
-        if (_hasStarted && CurrentState == null) TransitionToState(GroundedState);
+        if (_hasStarted && _currentState == null) TransitionToState(GroundedState);
     }
 
     public LayerMask GetWallLayerMask()
@@ -258,7 +263,7 @@ public class PlayerMovement : MonoBehaviour
         return _isRight;
     }
 
-    public void SetHasJetPack(bool value)
+    private void SetHasJetPack(bool value)
     {
         _hasJetPack = value;
     }
