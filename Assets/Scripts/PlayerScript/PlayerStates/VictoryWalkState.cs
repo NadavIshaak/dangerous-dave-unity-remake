@@ -1,5 +1,7 @@
 using UnityEngine;
-
+/**
+ * This class is responsible for handling the victory walk state of the player.
+ */
 public class VictoryWalkState : PlayerState
 {
     private AudioClip WinSound;

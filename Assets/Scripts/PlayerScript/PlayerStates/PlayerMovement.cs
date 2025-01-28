@@ -1,6 +1,8 @@
 using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.Serialization;
+
 /**
  * Player movement class that handles the movement of the player
  * and the transitions between the player states
@@ -10,11 +12,11 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float moveSpeed = 5f;
     [SerializeField] private Vector3 victoryWalkStart;
     [SerializeField] private LayerMask wallLayerMask;
-    [SerializeField] private AudioClip MoveSound;
-    [SerializeField] private AudioClip FallingSound;
+    [FormerlySerializedAs("MoveSound")] [SerializeField] private AudioClip moveSound;
+    [FormerlySerializedAs("FallingSound")] [SerializeField] private AudioClip fallingSound;
     [SerializeField] private AudioClip jumpSound;
-    [SerializeField] private AudioClip WinSound;
-    [SerializeField] private AudioClip StuckSound;
+    [FormerlySerializedAs("WinSound")] [SerializeField] private AudioClip winSound;
+    [FormerlySerializedAs("StuckSound")] [SerializeField] private AudioClip stuckSound;
     [SerializeField] private AudioClip jetpackSound;
     [SerializeField] private float maxFuel; // Maximum fuel
     [SerializeField] private float airSpeed = -5f;
@@ -234,12 +236,12 @@ public class PlayerMovement : MonoBehaviour
 
     public AudioClip GetMoveSound()
     {
-        return MoveSound;
+        return moveSound;
     }
 
     public AudioClip GetFallingSound()
     {
-        return FallingSound;
+        return fallingSound;
     }
 
     public AudioClip GetJumpSound()
@@ -249,7 +251,7 @@ public class PlayerMovement : MonoBehaviour
 
     public AudioClip GetWinSound()
     {
-        return WinSound;
+        return winSound;
     }
 
     public void SetCanShoot(bool value)
@@ -264,7 +266,7 @@ public class PlayerMovement : MonoBehaviour
 
     public AudioClip GetStuckSound()
     {
-        return StuckSound;
+        return stuckSound;
     }
 
     public AudioClip GetJetpackSound()

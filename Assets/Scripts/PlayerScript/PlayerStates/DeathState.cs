@@ -1,5 +1,7 @@
 using UnityEngine;
-
+/**
+ * This class is responsible for handling the player's death state.
+ */
 public class DeathState : PlayerState
 {
     public DeathState(PlayerMovement player) : base(player)

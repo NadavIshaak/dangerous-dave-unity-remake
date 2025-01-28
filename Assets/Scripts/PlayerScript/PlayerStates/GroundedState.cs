@@ -1,5 +1,7 @@
 using UnityEngine;
-
+/**
+ * This class is responsible for handling the grounded state of the player.
+ */
 public class GroundedState : PlayerState
 {
     private readonly PlayerAnimationConttroler _animationConttroler;
@@ -26,7 +28,9 @@ public class GroundedState : PlayerState
         _wallLayerMask = player.GetWallLayerMask();
         _wallHitSound = player.GetStuckSound();
     }
-
+    /**
+     * Set the player's first move to false.
+     */
     public override void Enter()
     {
         _isStop = true;
@@ -49,12 +53,18 @@ public class GroundedState : PlayerState
         _animationConttroler.ResumeMovement();
     }
 
+    /**
+     * Transition to the airborne state.
+     */
     private void JumpTransition()
     {
         player.AirborneState.SetIsFalling(false);
         player.TransitionToState(player.AirborneState);
     }
 
+    /**
+     * Transition to the airborne state.
+     */
     private void FallTransition()
     {
         player.AirborneState.SetIsFalling(true);
@@ -62,6 +72,10 @@ public class GroundedState : PlayerState
         player.TransitionToState(player.AirborneState);
     }
 
+    /**
+     * Check if the player is stuck on a wall. if yes play a sound and stop the player's movement.
+     * If the player is not stuck, resume the player's movement. and stop the sound.
+     */
     private bool IsStuck()
     {
         var bounds = _collider.bounds;
@@ -90,6 +104,11 @@ public class GroundedState : PlayerState
         return false;
     }
 
+    /**
+     * If the player has a jetpack and the jetpack has fuel, and he presses the jetpack button,
+     * transition to the jetpack state.
+     * If the player has no fuel, do nothing.
+     */
     private bool CheckForNoFuel()
     {
         _hasJetPack = player.GetHasJetPack();
@@ -104,6 +123,9 @@ public class GroundedState : PlayerState
         return false;
     }
 
+    /**
+     * Check if the player is falling, if yes transition to the fall state.
+     */
     private bool CheckForFall()
     {
         var bounds = _collider.bounds;
@@ -116,7 +138,6 @@ public class GroundedState : PlayerState
         Debug.DrawRay(bottomRight, Vector2.down * 0.06f, Color.red);
         if (hitLeft.collider is null && hitRight.collider is null)
         {
-            Debug.Log("Fall transition");
             FallTransition();
             return true;
         }
@@ -124,6 +145,9 @@ public class GroundedState : PlayerState
         return false;
     }
 
+    /**
+     * Check if the player pressed the jump button, if yes transition to the jump state.
+     */
     private bool CheckForJump()
     {
         if (_controls.Player.Jump.triggered)
@@ -135,6 +159,9 @@ public class GroundedState : PlayerState
         return false;
     }
 
+    /**
+     * Check the player's input and animate the player accordingly.
+     */
     private void CheckInputAndAnimate()
     {
         if(CheckForJump()) return;
@@ -147,7 +174,6 @@ public class GroundedState : PlayerState
         if (player.GetMoveInput().x == 0 && !_isStop && _firstMove)
         {
             StopMovement();
-            Debug.Log("Stop");
         }
         else if (player.GetMoveInput().x != 0 && _isStop && _firstMove)
         {
@@ -155,6 +181,9 @@ public class GroundedState : PlayerState
         }
     }
 
+    /**
+     * Change the direction of the player's movement, and play the move sound.
+     */
     private void ChangeDirectionOfMovement()
     {
         if (!_firstMove)
@@ -162,17 +191,18 @@ public class GroundedState : PlayerState
             _animationConttroler.ResumeMovement();
             _animationConttroler.Move();
             player.PlaySound(true, true, _moveSound);
-            Debug.Log("Move");
         }
-
         _firstMove = true;
-        bool isRight = player.GetIsRight();
-        float moveInput = player.GetMoveInput().x;
+        var isRight = player.GetIsRight();
+        var moveInput = player.GetMoveInput().x;
         if (moveInput > 0 && isRight || moveInput < 0 && !isRight) return;
         _animationConttroler.ChangeDirection(moveInput > 0);
         player.SetIsRight(moveInput > 0);
     }
 
+    /**
+     * Stop the player's movement and stop the move sound.
+     */
     private void StopMovement()
     {
         _animationConttroler.StopInMovement();
@@ -185,9 +215,11 @@ public class GroundedState : PlayerState
         // No fixed update during grounded state
     }
 
+    /**
+     * Continue the player's movement after stopping it.
+     */
     private void ContinueMovementAfterStop()
     {
-        Debug.Log("Continue");
         _animationConttroler.ResumeMovement();
         player.PlaySound(true, true, _moveSound);
         _isStop = false;

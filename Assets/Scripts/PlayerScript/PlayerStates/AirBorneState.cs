@@ -1,5 +1,7 @@
 using UnityEngine;
-
+/** 
+ * This class is responsible for handling the player's airborne state.
+ */
 public class AirborneState : PlayerState
 {
     private readonly float _airTime;

@@ -1,5 +1,7 @@
 ﻿using UnityEngine;
-
+/**
+ * This class is responsible for handling the jetpack state of the player.
+ */
 public class JetPackState : PlayerState
 {
     private static float _currentFuel;
@@ -21,37 +23,56 @@ public class JetPackState : PlayerState
         UpdateFuelBar();
     }
 
+    /**
+     * Update the fuel bar in the ui with the current fuel and max fuel
+     */
     private void UpdateFuelBar()
     {
         CurrentLevelManagar.instance.UpdateFuelBar(_currentFuel, _maxFuel);
     }
+    
     public override void Enter()
     {
         
             player.PlaySound(true, true, _jetpackSound);
             _animationConttroler.JetPack();
-      
     }
 
-
+    /**
+     * Handle the input for the jetpack state, if the player presses the jetpack button or the fuel is empty,
+     * transition back to the previous state, otherwise decrease the fuel.
+     */
     public override void HandleInput()
     {
         if (_controls.Player.JetPack.WasPressedThisFrame() || _currentFuel <= 0)
         {
-            if (_currentFuel <= 0)
-            {
-                CurrentLevelManagar.instance.SetHasJetPack(false);
-            }
-            player.AirborneState.SetIsFalling(true);
-            player.AirborneState.SetFromJetPack(true);
-            player.TransitionToState(player.AirborneState); // Transition back to the previous state
+            CheckForEndOfJetpack();
         }
         else
         {
-            _currentFuel -= Time.deltaTime * 5; // Decrease fuel
-            CurrentLevelManagar.instance.SetCurrentJetPackFuel(_currentFuel);
-            UpdateFuelBar();
+            DecreaseFuel();
         }
+    }
+
+    private void CheckForEndOfJetpack()
+    {
+        if (_currentFuel <= 0)
+        {
+            CurrentLevelManagar.instance.SetHasJetPack(false);
+        }
+        player.AirborneState.SetIsFalling(true);
+        player.AirborneState.SetFromJetPack(true);
+        player.TransitionToState(player.AirborneState); // Transition back to the previous state
+    }
+
+    /**
+     * Decrease the fuel of the jetpack
+     */
+    private void DecreaseFuel()
+    {
+        _currentFuel -= Time.deltaTime * 5; // Decrease fuel
+        CurrentLevelManagar.instance.SetCurrentJetPackFuel(_currentFuel);
+        UpdateFuelBar();
     }
 
     public override void Update()
@@ -65,7 +86,6 @@ public class JetPackState : PlayerState
             SoundManager.Instance.StopSound();
             _animationConttroler.ResumeMovement();
             _animationConttroler.HitGroundWithoutMovement();
-        Debug.Log("Exit JetPackState");
     }
 
     public override void FixedUpdate()
@@ -79,6 +99,9 @@ public class JetPackState : PlayerState
     }
 
 
+    /**
+     * Check the input and animate the player
+     */
     private void CheckInputAndAnimate()
     {
         var moveInput = player.GetMoveInput();
@@ -86,6 +109,9 @@ public class JetPackState : PlayerState
         ChangeDirection(moveInput);
     }
 
+    /**
+     * Change the direction of the player
+     */
     private void ChangeDirection(Vector2 moveInput)
     {
         var isRight = player.GetIsRight();
