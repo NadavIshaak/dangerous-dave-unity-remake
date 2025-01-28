@@ -72,6 +72,7 @@ public class JetPackState : PlayerState
         if (_isFlying)
         {
             SoundManager.Instance.StopSound();
+            _animationConttroler.ResumeMovement();
             _animationConttroler.HitGroundWithoutMovement();
         }
 
@@ -100,13 +101,16 @@ public class JetPackState : PlayerState
 
     private void ChangeDirection(Vector2 moveInput)
     {
+        var isRight = player.GetIsRight();
         switch (moveInput.x)
         {
             case > 0:
+                if (isRight) return;
                 _animationConttroler.ChangeDirection(true);
                 player.SetIsRight(true);
                 break;
             case < 0:
+                if (!isRight) return;
                 _animationConttroler.ChangeDirection(false);
                 player.SetIsRight(false);
                 break;

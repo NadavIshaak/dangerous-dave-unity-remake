@@ -108,8 +108,8 @@ public class GroundedState : PlayerState
         var bounds = _collider.bounds;
         var bottomLeft = new Vector2(bounds.min.x-0.02f, bounds.min.y ); // Add a small buffer distance
         var bottomRight = new Vector2(bounds.max.x+0.02f, bounds.min.y ); // Add a small buffer distance
-        var hitLeft = Physics2D.Raycast(bottomLeft, Vector2.down, 0.02f, _wallLayerMask);
-        var hitRight = Physics2D.Raycast(bottomRight, Vector2.down, 0.02f, _wallLayerMask);
+        var hitLeft = Physics2D.Raycast(bottomLeft, Vector2.down, 0.04f, _wallLayerMask);
+        var hitRight = Physics2D.Raycast(bottomRight, Vector2.down, 0.04f, _wallLayerMask);
         Debug.DrawRay(bottomLeft, Vector2.down * 0.02f, Color.red);
         Debug.DrawRay(bottomRight, Vector2.down * 0.02f, Color.red);
         if (hitLeft.collider is null && hitRight.collider is null)

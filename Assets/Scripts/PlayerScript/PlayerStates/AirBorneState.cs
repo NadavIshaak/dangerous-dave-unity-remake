@@ -18,7 +18,7 @@ public class AirborneState : PlayerState
     private bool _justTransitioned = true;
     private bool _moveInAir;
     private float _timeInAir;
-    private readonly float _zeroVelocityFrames = 0.2f; // Number of frames with zero velocity
+    private readonly float _zeroVelocityFrames = 0.1f; // Number of frames with zero velocity
     private float _currentZeroVelocityFrame;
 
 
@@ -121,10 +121,10 @@ public class AirborneState : PlayerState
         var topLeft = new Vector2(bounds.min.x+0.02f, bounds.max.y); // Add a small buffer distance
         var topRight = new Vector2(bounds.max.x-0.02f, bounds.max.y); // Add a small buffer distance
 
-        var hitLeft = Physics2D.Raycast(topLeft, Vector2.up, 0.02f, _wallLayerMask);
-        var hitRight = Physics2D.Raycast(topRight, Vector2.up, 0.02f, _wallLayerMask);
-        Debug.DrawRay(topLeft, Vector2.up * 0.05f, Color.red);
-        Debug.DrawRay(topRight, Vector2.up * 0.05f, Color.red);
+        var hitLeft = Physics2D.Raycast(topLeft, Vector2.up, 0.04f, _wallLayerMask);
+        var hitRight = Physics2D.Raycast(topRight, Vector2.up, 0.04f, _wallLayerMask);
+        Debug.DrawRay(topLeft, Vector2.up * 0.02f, Color.red);
+        Debug.DrawRay(topRight, Vector2.up * 0.02f, Color.red);
         return hitLeft.collider is not null || hitRight.collider is not null;
     }
 
@@ -205,16 +205,18 @@ public class AirborneState : PlayerState
 
         var bounds = _collider.bounds;
         var bufferSpace = -0.02f;
-        if(_rb.linearVelocity.y>0) return false;
+        if(_timeInAir>0) return false;
         if (_rb.linearVelocity.y < 0) bufferSpace *= -1;
+        else if(_currentZeroVelocityFrame < _zeroVelocityFrames||_rb.linearVelocity.x==0) bufferSpace = 0;
         // Perform two raycasts to check if the player is grounded
         var bottomLeft = new Vector2(bounds.min.x+bufferSpace, bounds.min.y ); // Add a small buffer distance
         var bottomRight = new Vector2(bounds.max.x-bufferSpace, bounds.min.y); // Add a small buffer distance
 
-        var hitLeft = Physics2D.Raycast(bottomLeft, Vector2.down, 0.02f, _wallLayerMask);
-        var hitRight = Physics2D.Raycast(bottomRight, Vector2.down, 0.02f, _wallLayerMask);
+        var hitLeft = Physics2D.Raycast(bottomLeft, Vector2.down, 0.04f, _wallLayerMask);
+        var hitRight = Physics2D.Raycast(bottomRight, Vector2.down, 0.04f, _wallLayerMask);
         Debug.DrawRay(bottomLeft, Vector2.down * 0.02f, Color.red);
         Debug.DrawRay(bottomRight, Vector2.down * 0.02f, Color.red);
+        Debug.Log("hit");
         switch (_isOffGround)
         {
             case false when hitLeft.collider is null || hitRight.collider is null:
