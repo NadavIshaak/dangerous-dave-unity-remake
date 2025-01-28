@@ -1,3 +1,4 @@
+// Purpose: Abstract class for player states.
 public abstract class PlayerState
 {
     protected PlayerMovement player;

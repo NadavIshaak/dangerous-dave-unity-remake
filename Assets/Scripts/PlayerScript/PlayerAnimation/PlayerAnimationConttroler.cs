@@ -1,6 +1,8 @@
 using System;
 using UnityEngine;
-
+/**
+ * Player animation controller class that handles the player's animations
+ */
 public class PlayerAnimationConttroler : MonoBehaviour
 {
     private static readonly int Move1 = Animator.StringToHash("Move");
@@ -20,62 +22,94 @@ public class PlayerAnimationConttroler : MonoBehaviour
         _spriteRenderer = GetComponent<SpriteRenderer>();
     }
 
+    /**
+     * Play the move animation
+     */
     public void Move()
     {
         _animator.SetTrigger(Move1);
     }
 
+    /**
+     * Change the direction of the player
+     */
     public void ChangeDirection(bool facingRight)
     {
         _spriteRenderer.flipX = !facingRight;
     }
-
+    /**
+     * Stop the player's movement in the animation
+     */
     public void StopInMovement()
     {
         _animator.speed = 0;
     }
-
+    /**
+     * Stop the player's movement in the animation after a few frames
+     */
     public void StopMovement()
     {
         Invoke(nameof(StopInMovement), 0.05f);
     }
 
+    /**
+     * Resume the player's movement in the animation
+     */
     public void ResumeMovement()
     {
         CancelInvoke();
         _animator.speed = 1;
     }
 
+    /**
+     * Play the jump animation
+     */
     public void Jump()
     {
         _animator.SetTrigger(Jump1);
     }
-
+    /**
+     * Play the fall animation while walking
+     */
     public void FallWhileWalking()
     {
         _animator.SetTrigger(WhileWalking);
     }
-
+    /**
+     * Play the hit ground with movement animation
+     */
     public void HitGroundWithMovement()
     {
         _animator.SetTrigger(GroundWithMovement);
     }
 
+    /**
+     * Play the hit ground without movement animation
+     */
     public void HitGroundWithoutMovement()
     {
         _animator.SetTrigger(GroundWithoutMovement);
     }
 
+    /**
+     * Play the death animation
+     */
     public void Death()
     {
         _animator.SetTrigger(Death1);
     }
 
+    /**
+     * Play the jetpack animation
+     */
     public void JetPack()
     {
         _animator.SetTrigger(Pack);
     }
 
+    /**
+     * on destroy stop all invokes
+     */
     private void OnDestroy()
     {
         CancelInvoke();

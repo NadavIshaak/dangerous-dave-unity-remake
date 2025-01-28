@@ -1,5 +1,7 @@
 using UnityEngine;
-
+/**
+ * This class is responsible for handling the movement of the spinner enemy.
+ */
 public class EnemySpinnerMovement : MonoBehaviour
 {
     public float moveDistance = 5f; // Distance to move left and right
@@ -18,6 +20,9 @@ public class EnemySpinnerMovement : MonoBehaviour
         Move();
     }
 
+    /**
+     * Move the enemy left and right
+     */
     private void Move()
     {
         if (_movingRight)

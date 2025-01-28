@@ -1,5 +1,10 @@
 using UnityEngine;
-
+/**
+ * This class is responsible for handling the sounds in the game.
+ * It plays the sounds when called and stops the current sound if needed.
+ * It also ensures that the SoundManager persists across scenes.
+ * keep pool of sound objects to avoid creating and destroying them
+ */
 public class SoundManager : MonoBehaviour
 {
     //class to handle the sounds in the game

@@ -1,6 +1,8 @@
 using System.Collections;
 using UnityEngine;
-
+/**
+ * This class is responsible for handling the enemy bullet pool.
+ */
 public class EnemyBulletPool : MonoPool<EnemyBullet>
 {
     public override void Return(EnemyBullet enemyBullet)

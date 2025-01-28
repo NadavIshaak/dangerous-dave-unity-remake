@@ -6,6 +6,11 @@ public class DeathState : PlayerState
     {
     }
 
+    /** set the player to not be able to shoot,
+     * trigger the death animation,
+     * stop the player's movement,
+     * and schedule the player to be destroyed after a few seconds
+     */
     public override void Enter()
     {
         player.SetCanShoot(false);

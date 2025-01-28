@@ -1,12 +1,18 @@
 using Unity.Cinemachine;
 using UnityEngine;
-
+/**
+ * This class is responsible for handling the screen boundaries.
+ * It is used to move the camera to the next or previous screen when the player crosses the boundary.
+ */
 public class ScreenBoundary : MonoBehaviour
 {
     [SerializeField] private int currentScreenIndex;
     [SerializeField] private CinemachineSplineCart dollyCart;
     private float _boundaryX; // The X position of this boundary in world space
 
+    /**
+     * Check if the player has crossed the boundary and move the camera to the next or previous screen
+     */
     private void OnTriggerEnter2D(Collider2D other)
     {
         if (!other.CompareTag("Player")) return;
@@ -20,6 +26,9 @@ public class ScreenBoundary : MonoBehaviour
             dollyCart.SplinePosition = currentScreenIndex + 1;
     }
 
+    /**
+     * Check if the player has crossed the boundary and move the camera to the next or previous screen
+     */
     private void OnTriggerExit2D(Collider2D other)
     {
         if (!other.CompareTag("Player")) return;

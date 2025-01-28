@@ -4,7 +4,10 @@ using Triggers;
 using Unity.Cinemachine;
 using UnityEngine;
 using UnityEngine.Serialization;
-
+/**
+ * This class is responsible for managing the current level.
+ * It is used to manage the player, fuel, level, and score managers.
+ */
 public class CurrentLevelManagar : MonoBehaviour
 {
     public static CurrentLevelManagar instance;
@@ -68,15 +71,19 @@ public class CurrentLevelManagar : MonoBehaviour
     public static event Action<string, TriggerRequirements> OnShowTriggerTextWithReq;
     public static event Action OnHideTriggerText;
 
+    /**
+     * Show the trigger text if the requirements are met
+     */
     private void ShowTextWithRequirement(string message, TriggerRequirements requirement)
     {
         if (requirement.HasGun == PlayerManager.HasGun &&
             requirement.HasJetPack == FuelManager.HasJetPack &&
             requirement.RequiredScore < ScoreManager.Score &&
             requirement.RequiredLevel == LevelManager.CurrentLevel
-            && requirement.HasTrophy == LevelManager._trophyCollected)
+            && requirement.HasTrophy == LevelManager.TrophyCollected)
             OnShowTriggerText?.Invoke(message, true);
     }
+    //public class method to be used by game objectives:
 
     public static void HideTriggerText()
     {

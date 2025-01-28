@@ -5,6 +5,9 @@ public class SoundObject : MonoBehaviour, IPoolable
     //class to handle the sound objects
     [SerializeField] private AudioSource audioSource; // The audio source component
 
+    /**
+     * Reset the audio source component
+     */
     public void Reset()
     {
         // Reset the audio source component

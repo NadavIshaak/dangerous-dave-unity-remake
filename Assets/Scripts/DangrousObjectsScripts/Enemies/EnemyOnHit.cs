@@ -1,5 +1,8 @@
 using UnityEngine;
 
+/**
+ * This class is responsible for handling the enemy's death.
+ */
 public class EnemyOnHit : MonoBehaviour
 {
     private static readonly int Die = Animator.StringToHash("Die");
@@ -15,12 +18,21 @@ public class EnemyOnHit : MonoBehaviour
         _boxCollider = GetComponent<BoxCollider2D>();
     }
 
+    /**
+     * When the enemy is hit by a bullet, it dies.
+     */
     private void OnCollisionEnter2D(Collision2D other)
     {
         if (!other.gameObject.CompareTag("PlayerBullet")) return;
         OnDeath();
     }
 
+    /**
+     * When the enemy is hit by a
+     * bullet, it dies.
+     * When the enemy dies, it plays the death animation, disables the enemy's shooting and movement,
+     * and destroys the enemy after a set time.
+     */
     private void OnDeath()
     {
         var enemyShooting = GetComponent<EnemyShooting>();

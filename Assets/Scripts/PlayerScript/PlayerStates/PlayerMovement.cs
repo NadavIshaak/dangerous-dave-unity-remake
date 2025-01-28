@@ -1,7 +1,10 @@
 using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
-
+/**
+ * Player movement class that handles the movement of the player
+ * and the transitions between the player states
+ */
 public class PlayerMovement : MonoBehaviour
 {
     [SerializeField] private float moveSpeed = 5f;
@@ -48,6 +51,10 @@ public class PlayerMovement : MonoBehaviour
         JetPackState = new JetPackState(this);
     }
 
+    /** subscribe to the events of the level manager
+     * in start because on awake the level manager
+     * is not yet instantiated for some reason :(
+     */
     private void Start()
     {
         CurrentLevelManagar.instance.LevelManager.OnVictoryWalkStart += StartVictoryWalk;
@@ -92,13 +99,19 @@ public class PlayerMovement : MonoBehaviour
 
     public event Action OnVictoryWalkEnd;
 
+    /**
+     * method to transition to a new state
+     * and exit the current state
+     */
     public void TransitionToState(PlayerState state)
     {
         _currentState?.Exit();
         _currentState = state;
         _currentState.Enter();
     }
-
+/**
+ * when player dies make the player fall and disable the collider,then move to death state
+ */
     public void TriggerDeath()
     {
         _rb.gravityScale = 0.01f;
@@ -120,13 +133,18 @@ public class PlayerMovement : MonoBehaviour
     {
         OnVictoryWalkEnd?.Invoke();
     }
-
+/**
+ * player movement method for most of the player states
+ */
     public void MovePlayer()
     {
         _rb.linearVelocity = new Vector2(_moveInput.x * moveSpeed,
             _rb.linearVelocity.y);
     }
-
+    /**
+     * check for input to start the movement
+     * of the player.
+     */
     private void OnMove(InputAction.CallbackContext context)
     {
         _moveInput = context.ReadValue<Vector2>();
@@ -138,12 +156,18 @@ public class PlayerMovement : MonoBehaviour
     {
         SoundManager.Instance.PlaySound(clip, transform, 1, shouldLoop, shouldKeep);
     }
-
+/**
+ * check for input to start the movement
+ * of the player.
+ */
     private void OnJump(InputAction.CallbackContext context)
     {
         CheckForStart();
     }
-
+/**check for the start of the game, if the game has not started then start the game and
+ * set the player to be able to move,
+ * then on second call to this function transition to the grounded state
+ */
     private void CheckForStart()
     {
         if (_currentState == null && !_hasStarted)
@@ -156,7 +180,7 @@ public class PlayerMovement : MonoBehaviour
 
         if (_hasStarted && _currentState == null) TransitionToState(GroundedState);
     }
-
+// Start of getters and setters for the private fields for the player states.
     public LayerMask GetWallLayerMask()
     {
         return wallLayerMask;

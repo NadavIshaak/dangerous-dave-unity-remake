@@ -43,6 +43,7 @@ public class JetPackState : PlayerState
                 CurrentLevelManagar.instance.SetHasJetPack(false);
             }
             player.AirborneState.SetIsFalling(true);
+            player.AirborneState.SetFromJetPack(true);
             player.TransitionToState(player.AirborneState); // Transition back to the previous state
         }
         else

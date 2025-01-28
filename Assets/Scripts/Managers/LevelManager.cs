@@ -3,12 +3,15 @@ using UnityEngine;
 
 namespace Managers
 {
+    /**
+     * Level manager class that handles the level changes and the trophy collection
+     */
     public class LevelManager
     {
         private readonly CurrentLevelManagar _currentLevelManagar;
         private readonly SpriteRenderer _stageWinWalkRenderer;
         private readonly Sprite[] _stageWinWalkSprite;
-        public bool _trophyCollected;
+        public bool TrophyCollected;
         public int CurrentLevel = 1;
 
         public LevelManager(CurrentLevelManagar currentLevelManagar, SpriteRenderer stageWinWalkRenderer,
@@ -24,6 +27,12 @@ namespace Managers
         public event Action<bool> OnTrophyChange;
         public event Action OnVictoryWalkStart;
 
+        /**
+         * Handle the end of the victory walk,
+         * spawn the player in the next area
+         * make the player lose the gun and jetpack
+         * and change the level, checks for game over
+         */
         public void OnVictoryWalkEnd()
         {
             // Handle the end of the victory walk
@@ -40,17 +49,22 @@ namespace Managers
             OnLevelChange?.Invoke(CurrentLevel);
             _currentLevelManagar.InstantiatePlayer();
         }
-
+        /**
+         * Collect the trophy, change the trophy collected flag,trigger ui change
+         */
         public void ThrophyCollected()
         {
             OnTrophyChange?.Invoke(true);
-            _trophyCollected = true;
+            TrophyCollected = true;
         }
-
+        /**
+         * when reaching the door, check if the trophy was collected,
+         * if yes move to next stage if not do nothing. disable the gun and jetpack
+         */
         public void DoorReached()
         {
-            if (!_trophyCollected) return;
-            _trophyCollected = false;
+            if (!TrophyCollected) return;
+            TrophyCollected = false;
             _stageWinWalkRenderer.sprite = _stageWinWalkSprite[_currentLevelManagar.LevelManager.CurrentLevel - 1];
             _currentLevelManagar.PlayerManager.HasGun = false;
             _currentLevelManagar.FuelManager.HasJetPack = false;

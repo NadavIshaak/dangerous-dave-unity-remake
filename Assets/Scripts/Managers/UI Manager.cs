@@ -3,7 +3,10 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.Serialization;
 using UnityEngine.UI;
-
+/**
+ * This class is responsible for managing the UI elements in the game.
+ * It updates the UI elements based on the player's actions.
+ */
 public class UIManager : MonoBehaviour
 {
     [FormerlySerializedAs("_numberSprites")] [SerializeField]
@@ -54,11 +57,17 @@ public class UIManager : MonoBehaviour
         CurrentLevelManagar.instance.ScoreManager.OnScoreChange -= UpdateScore;
     }
 
+    /**
+     * Update the throphy sentence on the screen to the throphy we get
+     */
     private void UpdateThrophy(bool trophyCollected)
     {
         trophyCollectedRenderer.enabled = trophyCollected;
     }
 
+    /**
+     * Update the fuel bar on the screen to the fuel we get
+     */
     private void UpdateFuelBar(float currentFuel, float maxFuel)
     {
         var fuelPercentage = currentFuel / maxFuel;
@@ -67,6 +76,11 @@ public class UIManager : MonoBehaviour
         blackBox.rectTransform.sizeDelta = new Vector2(blackBoxWidth, blackBox.rectTransform.sizeDelta.y);
     }
 
+    /**
+     * When the player dies for the
+     * last time, show the dead screen
+     * and disable everything else in the ui
+     */
     private void OnPlayerFinalDeath()
     {
         gunSymbolRenderer.enabled = false;
@@ -80,6 +94,9 @@ public class UIManager : MonoBehaviour
         deadRenderer.enabled = true;
     }
 
+    /**
+     * Update the level on the screen to the level we get
+     */
     private void UpdateLevel(int level)
     {
         var tens = level / 10;
@@ -89,12 +106,18 @@ public class UIManager : MonoBehaviour
         levelOnesRenderer.sprite = numberSprites[ones];
     }
 
+    /**
+     * Make the gun symbol and text appear or disappear on the screen
+     */
     private void GotGun(bool hasGun)
     {
         gunSymbolRenderer.enabled = hasGun;
         gunTextRenderer.enabled = hasGun;
     }
 
+    /**
+     * Make the jetpack words and bar appear or disappear on the screen
+     */
     private void GotJetPack(bool hasJetPack)
     {
         jetPackTextRenderer.enabled = hasJetPack;
@@ -102,6 +125,9 @@ public class UIManager : MonoBehaviour
         fuelBar.enabled = hasJetPack;
     }
 
+    /**
+     * Update the life on the screen to the lives we get,make the icon dissapear
+     */
     private void UpdateLife(int lives)
     {
         switch (lives)
@@ -117,6 +143,9 @@ public class UIManager : MonoBehaviour
         }
     }
 
+    /**
+     * Update the score on the screen to the score we get
+     */
     private void UpdateScore(int score)
     {
         var tenThousands = score / 10000;
@@ -132,10 +161,12 @@ public class UIManager : MonoBehaviour
         onesRenderer.sprite = numberSprites[ones];
     }
 
+    /**
+     * show the message text on the screen and make it and ui save shake
+     */
     private void SetText(string text, bool active)
     {
         messageText.text = text;
-        //messageText.gameObject.SetActive(active);
         if (!active) return;
         messageText.rectTransform.DOShakePosition(1f, new Vector3(0.5f, 0, 0), 5);
         talkingDave.rectTransform.DOShakePosition(1f, new Vector3(0.5f, 0, 0), 5);

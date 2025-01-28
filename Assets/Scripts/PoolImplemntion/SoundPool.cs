@@ -1,6 +1,8 @@
 using System.Collections;
 using UnityEngine;
-
+/**
+ * This class is responsible for handling the sound pool.
+ */
 public class SoundPool : MonoPool<SoundObject>
 {
     public override void Return(SoundObject sound)

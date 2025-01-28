@@ -1,5 +1,9 @@
 using UnityEngine;
-
+/**
+ * This script is responsible for shooting the projectile from the player's gun.
+ * It checks if the player can shoot and if the player has pressed the attack button.
+ * If the player can shoot and has pressed the attack button, it will shoot the projectile.
+ */
 public class PlayerGun : MonoBehaviour
 {
     [SerializeField] private float shootInterval = 2f; // Time interval between shots
@@ -20,14 +24,18 @@ public class PlayerGun : MonoBehaviour
 
         if (_shootTimer <= 0f) CheckForShoot();
     }
-
+/**
+ * check for player input for shooting the shot
+ */
     private void CheckForShoot()
     {
         if (_player is null || !_player.GetCanShoot() || !_player.GetControls().Player.Attack.triggered) return;
 
         SetBullet();
     }
-
+/**
+ * gets a bullet from the pool and sets it up to shoot in the desired direction
+ */
     private void SetBullet()
     {
         var direction = _player.GetIsRight() ? Vector3.right : Vector3.left;

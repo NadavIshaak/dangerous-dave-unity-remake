@@ -5,15 +5,19 @@ using Object = UnityEngine.Object;
 
 namespace Managers
 {
+    /**
+     * Player manager class that handles the player's health and gun
+     */
     public class PlayerManager
     {
         private readonly CurrentLevelManagar _currentLevelManagar;
         private readonly CinemachineSplineCart[] _dollyCart;
         private readonly GameObject _player;
         private readonly GameObject[] _stagesSpawns;
+        private GameObject _playerInstance;
         private int _playerHealth;
         public bool HasGun;
-        private bool isDead=false;
+        private bool _isDead=false;
 
         public PlayerManager(GameObject player, GameObject[] stagesSpawns, CinemachineSplineCart[] dollyCart,
             CurrentLevelManagar currentLevelManagar)
@@ -29,35 +33,47 @@ namespace Managers
         public event Action<int> OnLifeChange;
         public event Action<bool> OnGunChange;
 
+        /**
+         * Instantiate the player at the current level spawn point
+         */
         public void InstantiatePlayer()
         {
-            isDead = false;
+            _isDead = false;
             var currentLevel = _currentLevelManagar.LevelManager.CurrentLevel;
             if (_playerHealth == 0) return;
             var spawnPosition = _stagesSpawns[currentLevel].transform.position;
             if (currentLevel is 2 or 3) _dollyCart[currentLevel - 2].SplinePosition = 0;
-            Object.Instantiate(_player, spawnPosition, Quaternion.identity);
+            _playerInstance= Object.Instantiate(_player, spawnPosition, Quaternion.identity);
             OnInstantiatedPlayer?.Invoke();
         }
 
+        /**
+         * Trigger the player's death
+         */
         public void TriggerPlayerDeath()
         {
-            if (isDead) return;
-            isDead = true;
+            if (_isDead) return;
+            _isDead = true;
             _playerHealth--;
             OnLifeChange?.Invoke(_playerHealth);
-            var player = Object.FindFirstObjectByType<PlayerMovement>();
-            if (player is null) return;
-            player.TriggerDeath();
+            
+            if (_playerInstance is null) return;
+            _playerInstance.GetComponent<PlayerMovement>().TriggerDeath();
+            _playerInstance = null;
             _currentLevelManagar.Invoke(nameof(InstantiatePlayer), 3.1f);
         }
 
+        /**
+         * Set the player's gun status
+         */
         public void SetHasGun(bool hasGun)
         {
             HasGun = hasGun;
             OnGunChange?.Invoke(hasGun);
         }
-
+        /**
+         * Get the player's gun status
+         */
         public bool GetCanShoot()
         {
             return HasGun;

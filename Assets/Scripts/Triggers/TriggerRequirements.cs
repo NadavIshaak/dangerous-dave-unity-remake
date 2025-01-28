@@ -1,5 +1,8 @@
 ﻿namespace Triggers
 {
+    /**
+     * Trigger requirements struct that holds the requirements for a trigger to be activated
+     */
     public struct TriggerRequirements
     {
         public string Message;

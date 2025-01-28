@@ -1,6 +1,10 @@
 using UnityEngine;
 using UnityEngine.Serialization;
-
+/**
+ * This class is responsible for managing the stage.
+ * It starts the game, ends the game, and handles the stage animations
+ * that means transaction between cameras.
+ */
 public class StageScript : MonoBehaviour
 {
     private static readonly int Game = Animator.StringToHash("StartGame");
@@ -27,6 +31,10 @@ public class StageScript : MonoBehaviour
         _controls.Enable();
     }
 
+    /**
+     * when is start screen look for the jump button to start the game
+     * when the game is over look for the jump button to quit the game
+     */
     private void Update()
     {
         if (!_didStartGame && _controls.Player.Jump.triggered)
@@ -59,12 +67,18 @@ public class StageScript : MonoBehaviour
             CurrentLevelManagar.instance.LevelManager.OnVictoryWalkStart -= OnStartWalk;
     }
 
+    /**
+     * Ends the game
+     */
     private static void GameOver()
     {
         //ends the game,quits the game and closes it
         Application.Quit();
     }
 
+    /**
+     * Starts the game, instantiates the player and shows the stage 1
+     */
     private void StartGame()
     {
         canvas.enabled = true;
@@ -72,16 +86,24 @@ public class StageScript : MonoBehaviour
         _animator.SetTrigger(Game);
     }
 
+    /**
+     * Makes the cameras move to win walk screen
+     */
     private void OnStartWalk()
     {
         _animator.SetTrigger(StartWalk);
     }
 
+    /**
+     * Makes the cameras move to the next level
+     */
     private void OnEndWalk(int x)
     {
         _animator.SetTrigger(EndWalk);
     }
-
+    /**
+     * When the game is over, disable the canvas and set the game over flag
+     */
     private void OnGameOver()
     {
         canvas.enabled = false;

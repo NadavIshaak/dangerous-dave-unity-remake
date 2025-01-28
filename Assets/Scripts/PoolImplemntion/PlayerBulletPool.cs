@@ -1,6 +1,8 @@
 using System.Collections;
 using UnityEngine;
-
+/**
+ * This class is responsible for handling the player bullet pool.
+ */
 public class PlayerBulletPool : MonoPool<PlayerBullet>
 {
     public override void Return(PlayerBullet bullet)

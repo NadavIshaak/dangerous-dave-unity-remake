@@ -58,6 +58,7 @@ public class GroundedState : PlayerState
     private void FallTransition()
     {
         player.AirborneState.SetIsFalling(true);
+        player.AirborneState.SetFromJetPack(false);
         player.TransitionToState(player.AirborneState);
     }
 
