@@ -1,5 +1,6 @@
 using Triggers;
 using UnityEngine;
+
 /**
  * This class is responsible for handling the level triggers, they require the level maker to
  * set up  requirements for the player to trigger the event and show a message.

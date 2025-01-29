@@ -26,8 +26,6 @@ namespace Managers
         public void SetHasJetPack(bool hasJetPack)
         {
             HasJetPack = hasJetPack;
-            if(hasJetPack)
-                _currentJetPackFuel = 100f;
             OnJetPackChange?.Invoke(hasJetPack);
         }
 
@@ -39,7 +37,6 @@ namespace Managers
         public void SetCurrentJetPackFuel(float fuel)
         {
             _currentJetPackFuel = fuel;
-            
         }
 
         public float GetMaxFuel()

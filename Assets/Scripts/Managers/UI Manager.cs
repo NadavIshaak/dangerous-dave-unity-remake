@@ -3,6 +3,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.Serialization;
 using UnityEngine.UI;
+
 /**
  * This class is responsible for managing the UI elements in the game.
  * It updates the UI elements based on the player's actions.

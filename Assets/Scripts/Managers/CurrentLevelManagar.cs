@@ -4,6 +4,7 @@ using Triggers;
 using Unity.Cinemachine;
 using UnityEngine;
 using UnityEngine.Serialization;
+
 /**
  * This class is responsible for managing the current level.
  * It is used to manage the player, fuel, level, and score managers.
@@ -30,16 +31,6 @@ public class CurrentLevelManagar : MonoBehaviour
     public PlayerManager PlayerManager;
     public ScoreManager ScoreManager;
 
-    private void OnEnable()
-    {
-        // Subscribe to both events
-        OnShowTriggerTextWithReq += ShowTextWithRequirement;
-        OnHideTriggerText += HideText;
-        PlayerManager = new PlayerManager(player, stagesSpawns, dollyCart, this);
-        LevelManager = new LevelManager(this, stageWinWalkRenderer, stageWinWalkSprite);
-        FuelManager = new FuelManager(100);
-        ScoreManager = new ScoreManager();
-    }
     private void Awake()
     {
         if (instance == null)
@@ -51,6 +42,17 @@ public class CurrentLevelManagar : MonoBehaviour
         {
             Destroy(gameObject);
         }
+    }
+
+    private void OnEnable()
+    {
+        // Subscribe to both events
+        OnShowTriggerTextWithReq += ShowTextWithRequirement;
+        OnHideTriggerText += HideText;
+        PlayerManager = new PlayerManager(player, stagesSpawns, dollyCart, this);
+        LevelManager = new LevelManager(this, stageWinWalkRenderer, stageWinWalkSprite);
+        FuelManager = new FuelManager(100);
+        ScoreManager = new ScoreManager();
     }
 
     private void OnDisable()
@@ -83,7 +85,7 @@ public class CurrentLevelManagar : MonoBehaviour
             && requirement.HasTrophy == LevelManager.TrophyCollected)
             OnShowTriggerText?.Invoke(message, true);
     }
-    //public class method to be used by game objectives:
+    //Public class methods to be used by game objectives:
 
     public static void HideTriggerText()
     {

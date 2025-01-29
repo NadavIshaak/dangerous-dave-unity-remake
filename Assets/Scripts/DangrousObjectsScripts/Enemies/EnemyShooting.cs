@@ -7,11 +7,12 @@ public class EnemyShooting : MonoBehaviour
 {
     [SerializeField] private float shootInterval = 2f; // Time interval between shots
     [SerializeField] private float projectileSpeed = 3f; // Speed of the projectile
-    [SerializeField] private bool isRandom = false; // If true, the enemy will shoot at random intervals
+    [SerializeField] private bool isRandom; // If true, the enemy will shoot at random intervals
     [SerializeField] private float minRandomInterval = 1f; // Minimum random interval
     private PlayerMovement _player;
     private Transform _shootPoint; // The point from which the projectile will be shot
     private float _shootTimer;
+
     /**
      * if the shooting is random set to a set random variable
      * if not set cooldown to the interval

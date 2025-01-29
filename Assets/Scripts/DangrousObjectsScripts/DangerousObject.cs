@@ -1,10 +1,12 @@
 using UnityEngine;
+
 /**
  * This class is responsible for handling the dangerous objects in the game.
  */
 public class DangerousObject : MonoBehaviour
 {
     [SerializeField] private AudioClip deathSound;
+
     /**
      * check if the player collides with the dangerous object
      * if the player collides with the dangerous object, kill the player

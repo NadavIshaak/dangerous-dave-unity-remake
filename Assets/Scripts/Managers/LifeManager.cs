@@ -1,4 +1,5 @@
 using UnityEngine;
+
 /**
  * This class is responsible for handling the player's death screen.
  */
@@ -12,9 +13,10 @@ public class LifeManager : MonoBehaviour
     {
         CurrentLevelManagar.instance.PlayerManager.OnLifeChange += RemoveLife;
     }
-/**
- * check if the player is dead and for input so we can close the game
- */
+
+    /**
+     * check if the player is dead and for input so we can close the game
+     */
     private void Update()
     {
         if (!_isDead) return;

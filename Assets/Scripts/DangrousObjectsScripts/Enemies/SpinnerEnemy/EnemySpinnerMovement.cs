@@ -1,4 +1,5 @@
 using UnityEngine;
+
 /**
  * This class is responsible for handling the movement of the spinner enemy.
  */

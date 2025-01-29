@@ -1,5 +1,5 @@
-using System;
 using UnityEngine;
+
 /**
  * Player animation controller class that handles the player's animations
  */
@@ -23,11 +23,20 @@ public class PlayerAnimationConttroler : MonoBehaviour
     }
 
     /**
+     * on destroy stop all invokes
+     */
+    private void OnDestroy()
+    {
+        CancelInvoke();
+    }
+
+    /**
      * Play the move animation
      */
     public void Move()
     {
         _animator.SetTrigger(Move1);
+        Debug.Log("Move animation");
     }
 
     /**
@@ -37,19 +46,23 @@ public class PlayerAnimationConttroler : MonoBehaviour
     {
         _spriteRenderer.flipX = !facingRight;
     }
+
     /**
      * Stop the player's movement in the animation
      */
     public void StopInMovement()
     {
         _animator.speed = 0;
+        Debug.Log("Stop animation");
     }
+
     /**
      * Stop the player's movement in the animation after a few frames
      */
     public void StopMovement()
     {
         Invoke(nameof(StopInMovement), 0.05f);
+        Debug.Log("Invoke Stop");
     }
 
     /**
@@ -59,6 +72,7 @@ public class PlayerAnimationConttroler : MonoBehaviour
     {
         CancelInvoke();
         _animator.speed = 1;
+        Debug.Log("Resume animation");
     }
 
     /**
@@ -68,19 +82,23 @@ public class PlayerAnimationConttroler : MonoBehaviour
     {
         _animator.SetTrigger(Jump1);
     }
+
     /**
      * Play the fall animation while walking
      */
     public void FallWhileWalking()
     {
         _animator.SetTrigger(WhileWalking);
+        Debug.Log("Fall while walking");
     }
+
     /**
      * Play the hit ground with movement animation
      */
     public void HitGroundWithMovement()
     {
         _animator.SetTrigger(GroundWithMovement);
+        Debug.Log("Hit ground with movement");
     }
 
     /**
@@ -105,13 +123,5 @@ public class PlayerAnimationConttroler : MonoBehaviour
     public void JetPack()
     {
         _animator.SetTrigger(Pack);
-    }
-
-    /**
-     * on destroy stop all invokes
-     */
-    private void OnDestroy()
-    {
-        CancelInvoke();
     }
 }

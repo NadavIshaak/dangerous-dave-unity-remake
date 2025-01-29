@@ -1,4 +1,5 @@
 using UnityEngine;
+
 /**
  * This class is responsible for handling the victory walk state of the player.
  */
@@ -9,11 +10,13 @@ public class VictoryWalkState : PlayerState
     public VictoryWalkState(PlayerMovement player) : base(player)
     {
     }
-/** set the player to not be able to shoot,
- * set the player's position to the start of the victory walk,
- * play the victory sound,
- * and start the victory walk animation
- */
+
+    /**
+     * set the player to not be able to shoot,
+     * set the player's position to the start of the victory walk,
+     * play the victory sound,
+     * and start the victory walk animation
+     */
     public override void Enter()
     {
         // Enter victory walk state logic
@@ -36,8 +39,9 @@ public class VictoryWalkState : PlayerState
         // No fixed update during victory walk
     }
 
-    /** check if the player hit the wall, if yes destroy him and trigger the end of the victory walk
-     event.
+    /**
+     * check if the player hit the wall, if yes destroy him and trigger the end of the victory walk
+     * event.
      */
     public override void Update()
     {

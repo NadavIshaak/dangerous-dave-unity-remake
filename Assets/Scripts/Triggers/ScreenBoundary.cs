@@ -1,5 +1,6 @@
 using Unity.Cinemachine;
 using UnityEngine;
+
 /**
  * This class is responsible for handling the screen boundaries.
  * It is used to move the camera to the next or previous screen when the player crosses the boundary.

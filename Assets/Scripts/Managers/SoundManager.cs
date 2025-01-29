@@ -1,4 +1,5 @@
 using UnityEngine;
+
 /**
  * This class is responsible for handling the sounds in the game.
  * It plays the sounds when called and stops the current sound if needed.

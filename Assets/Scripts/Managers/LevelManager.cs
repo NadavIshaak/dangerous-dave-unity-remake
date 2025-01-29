@@ -11,8 +11,8 @@ namespace Managers
         private readonly CurrentLevelManagar _currentLevelManagar;
         private readonly SpriteRenderer _stageWinWalkRenderer;
         private readonly Sprite[] _stageWinWalkSprite;
-        public bool TrophyCollected;
         public int CurrentLevel = 1;
+        public bool TrophyCollected;
 
         public LevelManager(CurrentLevelManagar currentLevelManagar, SpriteRenderer stageWinWalkRenderer,
             Sprite[] stageWinWalkSprite)
@@ -36,7 +36,6 @@ namespace Managers
         public void OnVictoryWalkEnd()
         {
             // Handle the end of the victory walk
-            // Example: Spawn the player in the next area
             _currentLevelManagar.SetHasGun(false);
             _currentLevelManagar.FuelManager.SetHasJetPack(false);
             CurrentLevel++;
@@ -47,8 +46,10 @@ namespace Managers
             }
 
             OnLevelChange?.Invoke(CurrentLevel);
+            _currentLevelManagar.SetCurrentJetPackFuel(100f);
             _currentLevelManagar.InstantiatePlayer();
         }
+
         /**
          * Collect the trophy, change the trophy collected flag,trigger ui change
          */
@@ -57,6 +58,7 @@ namespace Managers
             OnTrophyChange?.Invoke(true);
             TrophyCollected = true;
         }
+
         /**
          * when reaching the door, check if the trophy was collected,
          * if yes move to next stage if not do nothing. disable the gun and jetpack

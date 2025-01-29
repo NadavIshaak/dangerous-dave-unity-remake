@@ -1,4 +1,5 @@
 using UnityEngine;
+
 /**
  * This class is responsible for handling the grounded state of the player.
  */
@@ -28,6 +29,7 @@ public class GroundedState : PlayerState
         _wallLayerMask = player.GetWallLayerMask();
         _wallHitSound = player.GetStuckSound();
     }
+
     /**
      * Set the player's first move to false.
      */
@@ -91,6 +93,7 @@ public class GroundedState : PlayerState
             || ((hitRight.collider is not null || hitTopRight.collider is not null) && player.GetMoveInput().x > 0))
         {
             _animationConttroler.StopMovement();
+            Debug.Log("Stuck");
             if (!_isStuck)
                 player.PlaySound(true, true, _wallHitSound);
             _isStuck = true;
@@ -130,8 +133,8 @@ public class GroundedState : PlayerState
     {
         var bounds = _collider.bounds;
         var buffer = 0.02f;
-        var bottomLeft = new Vector2(bounds.min.x-buffer, bounds.min.y ); // Add a small buffer distance
-        var bottomRight = new Vector2(bounds.max.x+buffer, bounds.min.y ); // Add a small buffer distance
+        var bottomLeft = new Vector2(bounds.min.x - buffer, bounds.min.y); // Add a small buffer distance
+        var bottomRight = new Vector2(bounds.max.x + buffer, bounds.min.y); // Add a small buffer distance
         var hitLeft = Physics2D.Raycast(bottomLeft, Vector2.down, 0.06f, _wallLayerMask);
         var hitRight = Physics2D.Raycast(bottomRight, Vector2.down, 0.06f, _wallLayerMask);
         Debug.DrawRay(bottomLeft, Vector2.down * 0.06f, Color.red);
@@ -164,21 +167,16 @@ public class GroundedState : PlayerState
      */
     private void CheckInputAndAnimate()
     {
-        if(CheckForJump()) return;
-        if(CheckForFall()) return;
-        if(CheckForNoFuel()) return;
+        if (CheckForJump()) return;
+        if (CheckForFall()) return;
+        if (CheckForNoFuel()) return;
         player.MovePlayer();
         if (IsStuck()) return;
         if (player.GetMoveInput().x != 0) ChangeDirectionOfMovement();
 
         if (player.GetMoveInput().x == 0 && !_isStop && _firstMove)
-        {
             StopMovement();
-        }
-        else if (player.GetMoveInput().x != 0 && _isStop && _firstMove)
-        {
-            ContinueMovementAfterStop();
-        }
+        else if (player.GetMoveInput().x != 0 && _isStop && _firstMove) ContinueMovementAfterStop();
     }
 
     /**
@@ -191,11 +189,13 @@ public class GroundedState : PlayerState
             _animationConttroler.ResumeMovement();
             _animationConttroler.Move();
             player.PlaySound(true, true, _moveSound);
+            Debug.Log("Move");
         }
+
         _firstMove = true;
         var isRight = player.GetIsRight();
         var moveInput = player.GetMoveInput().x;
-        if (moveInput > 0 && isRight || moveInput < 0 && !isRight) return;
+        if ((moveInput > 0 && isRight) || (moveInput < 0 && !isRight)) return;
         _animationConttroler.ChangeDirection(moveInput > 0);
         player.SetIsRight(moveInput > 0);
     }

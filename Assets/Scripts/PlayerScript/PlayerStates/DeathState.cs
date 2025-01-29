@@ -1,4 +1,5 @@
 using UnityEngine;
+
 /**
  * This class is responsible for handling the player's death state.
  */
@@ -8,7 +9,8 @@ public class DeathState : PlayerState
     {
     }
 
-    /** set the player to not be able to shoot,
+    /**
+     * set the player to not be able to shoot,
      * trigger the death animation,
      * stop the player's movement,
      * and schedule the player to be destroyed after a few seconds

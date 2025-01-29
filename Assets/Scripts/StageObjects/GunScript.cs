@@ -1,6 +1,6 @@
 using UnityEngine;
 
-    /**
+/**
      * This class is responsible for handling the gun collectible.
      */
 public class GunScript : Collectible

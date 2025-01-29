@@ -14,10 +14,10 @@ namespace Managers
         private readonly CinemachineSplineCart[] _dollyCart;
         private readonly GameObject _player;
         private readonly GameObject[] _stagesSpawns;
-        private GameObject _playerInstance;
+        private bool _isDead;
         private int _playerHealth;
+        private GameObject _playerInstance;
         public bool HasGun;
-        private bool _isDead=false;
 
         public PlayerManager(GameObject player, GameObject[] stagesSpawns, CinemachineSplineCart[] dollyCart,
             CurrentLevelManagar currentLevelManagar)
@@ -43,7 +43,7 @@ namespace Managers
             if (_playerHealth == 0) return;
             var spawnPosition = _stagesSpawns[currentLevel].transform.position;
             if (currentLevel is 2 or 3) _dollyCart[currentLevel - 2].SplinePosition = 0;
-            _playerInstance= Object.Instantiate(_player, spawnPosition, Quaternion.identity);
+            _playerInstance = Object.Instantiate(_player, spawnPosition, Quaternion.identity);
             OnInstantiatedPlayer?.Invoke();
         }
 
@@ -56,7 +56,7 @@ namespace Managers
             _isDead = true;
             _playerHealth--;
             OnLifeChange?.Invoke(_playerHealth);
-            
+
             if (_playerInstance is null) return;
             _playerInstance.GetComponent<PlayerMovement>().TriggerDeath();
             _playerInstance = null;
@@ -71,6 +71,7 @@ namespace Managers
             HasGun = hasGun;
             OnGunChange?.Invoke(hasGun);
         }
+
         /**
          * Get the player's gun status
          */

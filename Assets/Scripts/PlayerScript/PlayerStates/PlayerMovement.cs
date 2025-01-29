@@ -12,11 +12,21 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float moveSpeed = 5f;
     [SerializeField] private Vector3 victoryWalkStart;
     [SerializeField] private LayerMask wallLayerMask;
-    [FormerlySerializedAs("MoveSound")] [SerializeField] private AudioClip moveSound;
-    [FormerlySerializedAs("FallingSound")] [SerializeField] private AudioClip fallingSound;
+
+    [FormerlySerializedAs("MoveSound")] [SerializeField]
+    private AudioClip moveSound;
+
+    [FormerlySerializedAs("FallingSound")] [SerializeField]
+    private AudioClip fallingSound;
+
     [SerializeField] private AudioClip jumpSound;
-    [FormerlySerializedAs("WinSound")] [SerializeField] private AudioClip winSound;
-    [FormerlySerializedAs("StuckSound")] [SerializeField] private AudioClip stuckSound;
+
+    [FormerlySerializedAs("WinSound")] [SerializeField]
+    private AudioClip winSound;
+
+    [FormerlySerializedAs("StuckSound")] [SerializeField]
+    private AudioClip stuckSound;
+
     [SerializeField] private AudioClip jetpackSound;
     [SerializeField] private float maxFuel; // Maximum fuel
     [SerializeField] private float airSpeed = -5f;
@@ -26,17 +36,17 @@ public class PlayerMovement : MonoBehaviour
     private bool _canShoot;
     private Collider2D _collide;
     private InputSystem_Actions _controls;
+    private PlayerState _currentState;
+    private DeathState _deathState;
     private bool _hasJetPack;
     private bool _hasStarted;
     private bool _isRight;
     private Vector2 _moveInput;
     private Rigidbody2D _rb;
+    private VictoryWalkState _victoryWalkState;
     public AirborneState AirborneState;
-    private PlayerState _currentState;
-    private DeathState _deathState;
     public GroundedState GroundedState;
     public JetPackState JetPackState;
-    private VictoryWalkState _victoryWalkState;
 
     private void Awake()
     {
@@ -48,12 +58,13 @@ public class PlayerMovement : MonoBehaviour
         AirborneState = new AirborneState(this);
         _victoryWalkState = new VictoryWalkState(this);
         _deathState = new DeathState(this);
-        if(CurrentLevelManagar.instance is not null)
+        if (CurrentLevelManagar.instance is not null)
             maxFuel = CurrentLevelManagar.instance.GetMaxFuel();
         JetPackState = new JetPackState(this);
     }
 
-    /** subscribe to the events of the level manager
+    /**
+     * subscribe to the events of the level manager
      * in start because on awake the level manager
      * is not yet instantiated for some reason :(
      */
@@ -65,7 +76,7 @@ public class PlayerMovement : MonoBehaviour
         OnVictoryWalkEnd += CurrentLevelManagar.instance.OnVictoryWalkEnd;
         _canShoot = CurrentLevelManagar.instance.GetCanShoot();
         _hasJetPack = CurrentLevelManagar.instance.GetCanFly();
-        
+
         _rb.simulated = false;
     }
 
@@ -75,6 +86,7 @@ public class PlayerMovement : MonoBehaviour
         _currentState.HandleInput();
         _currentState.Update();
     }
+
     private void FixedUpdate()
     {
         _currentState?.FixedUpdate();
@@ -111,9 +123,10 @@ public class PlayerMovement : MonoBehaviour
         _currentState = state;
         _currentState.Enter();
     }
-/**
- * when player dies make the player fall and disable the collider,then move to death state
- */
+
+    /**
+     * when player dies make the player fall and disable the collider,then move to death state
+     */
     public void TriggerDeath()
     {
         _rb.gravityScale = 0.01f;
@@ -135,14 +148,16 @@ public class PlayerMovement : MonoBehaviour
     {
         OnVictoryWalkEnd?.Invoke();
     }
-/**
- * player movement method for most of the player states
- */
+
+    /**
+     * player movement method for most of the player states
+     */
     public void MovePlayer()
     {
         _rb.linearVelocity = new Vector2(_moveInput.x * moveSpeed,
             _rb.linearVelocity.y);
     }
+
     /**
      * check for input to start the movement
      * of the player.
@@ -158,18 +173,21 @@ public class PlayerMovement : MonoBehaviour
     {
         SoundManager.Instance.PlaySound(clip, transform, 1, shouldLoop, shouldKeep);
     }
-/**
- * check for input to start the movement
- * of the player.
- */
+
+    /**
+     * check for input to start the movement
+     * of the player.
+     */
     private void OnJump(InputAction.CallbackContext context)
     {
         CheckForStart();
     }
-/**check for the start of the game, if the game has not started then start the game and
- * set the player to be able to move,
- * then on second call to this function transition to the grounded state
- */
+
+    /**
+     * check for the start of the game, if the game has not started then start the game and
+     * set the player to be able to move,
+     * then on second call to this function transition to the grounded state
+     */
     private void CheckForStart()
     {
         if (_currentState == null && !_hasStarted)
@@ -182,10 +200,15 @@ public class PlayerMovement : MonoBehaviour
 
         if (_hasStarted && _currentState == null) TransitionToState(GroundedState);
     }
+
 // Start of getters and setters for the private fields for the player states.
     public LayerMask GetWallLayerMask()
     {
         return wallLayerMask;
+    }
+    public PlayerState GetCurrentState()
+    {
+        return _currentState;
     }
 
     public Rigidbody2D GetRigidbody()

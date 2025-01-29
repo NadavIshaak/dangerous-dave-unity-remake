@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.Serialization;
+
 /**
  * This class is responsible for managing the stage.
  * It starts the game, ends the game, and handles the stage animations
@@ -101,6 +102,7 @@ public class StageScript : MonoBehaviour
     {
         _animator.SetTrigger(EndWalk);
     }
+
     /**
      * When the game is over, disable the canvas and set the game over flag
      */

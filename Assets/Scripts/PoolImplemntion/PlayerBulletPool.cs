@@ -1,5 +1,6 @@
 using System.Collections;
 using UnityEngine;
+
 /**
  * This class is responsible for handling the player bullet pool.
  */

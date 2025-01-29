@@ -11,7 +11,7 @@ AnimatorStateMachine:
   m_ChildStates:
   - serializedVersion: 1
     m_State: {fileID: 3877907290117041365}
-    m_Position: {x: 290, y: 620, z: 0}
+    m_Position: {x: 310, y: 720, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 1918850450209657051}
     m_Position: {x: 300, y: 500, z: 0}
@@ -26,7 +26,7 @@ AnimatorStateMachine:
     m_Position: {x: 270, y: 300, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 5220553747215913765}
-    m_Position: {x: 290, y: 740, z: 0}
+    m_Position: {x: 310, y: 590, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 8563169543164726738}
     m_Position: {x: 300, y: 830, z: 0}
@@ -35,11 +35,11 @@ AnimatorStateMachine:
     m_Position: {x: 200, y: 900, z: 0}
   m_ChildStateMachines: []
   m_AnyStateTransitions:
-  - {fileID: -354474053652644968}
+  - {fileID: -412503036959679472}
   - {fileID: -8915882504201332451}
   - {fileID: -6615798173633428261}
   - {fileID: 2966606861264640932}
-  - {fileID: -412503036959679472}
+  - {fileID: -354474053652644968}
   - {fileID: 1932625227204777016}
   - {fileID: 6287848184488055566}
   m_EntryTransitions: []
@@ -237,12 +237,6 @@ AnimatorController:
   m_Name: PlayerAnimation
   serializedVersion: 5
   m_AnimatorParameters:
-  - m_Name: Move
-    m_Type: 9
-    m_DefaultFloat: 0
-    m_DefaultInt: 0
-    m_DefaultBool: 0
-    m_Controller: {fileID: 9100000}
   - m_Name: Jump
     m_Type: 9
     m_DefaultFloat: 0
@@ -262,6 +256,12 @@ AnimatorController:
     m_DefaultBool: 0
     m_Controller: {fileID: 9100000}
   - m_Name: HitGroundWithoutMovement
+    m_Type: 9
+    m_DefaultFloat: 0
+    m_DefaultInt: 0
+    m_DefaultBool: 0
+    m_Controller: {fileID: 9100000}
+  - m_Name: Move
     m_Type: 9
     m_DefaultFloat: 0
     m_DefaultInt: 0
