@@ -109,6 +109,7 @@ public class StageScript : MonoBehaviour
      */
     private void OnGameOver()
     {
+        _animator.SetTrigger(EndWalk);
         canvas.enabled = false;
         _didEndGame = true;
     }

@@ -6,25 +6,17 @@ using UnityEngine;
 public class LifeManager : MonoBehaviour
 {
     private InputSystem_Actions _controls;
-    private bool _isDead;
 
 
     private void Start()
     {
         CurrentLevelManagar.instance.PlayerManager.OnLifeChange += RemoveLife;
-    }
-
-    /**
-     * check if the player is dead and for input so we can close the game
-     */
-    private void Update()
-    {
-        if (!_isDead) return;
-        if (!_controls.Player.Jump.triggered) return;
-        if(!_controls.Player.Quit.triggered) return;
+        _controls = new InputSystem_Actions();
+        _controls.Player.Quit.performed += context => Application.Quit();
+        _controls.Player.Jump.performed += context => Application.Quit();
         _controls.Disable();
-        Application.Quit();
     }
+    
 
     private void OnDisable()
     {
@@ -37,8 +29,6 @@ public class LifeManager : MonoBehaviour
     private void RemoveLife(int life)
     {
         if (life != 0) return;
-        _isDead = true;
-        _controls = new InputSystem_Actions();
         _controls.Enable();
     }
 }
