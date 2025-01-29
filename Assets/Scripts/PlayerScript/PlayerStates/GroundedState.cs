@@ -189,7 +189,6 @@ public class GroundedState : PlayerState
             _animationConttroler.ResumeMovement();
             _animationConttroler.Move();
             player.PlaySound(true, true, _moveSound);
-            Debug.Log("Move");
         }
 
         _firstMove = true;

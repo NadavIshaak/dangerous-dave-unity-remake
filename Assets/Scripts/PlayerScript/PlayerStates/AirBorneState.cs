@@ -92,7 +92,6 @@ public class AirborneState : PlayerState
 
             else
                 _animationConttroler.HitGroundWithoutMovement();
-            Debug.Log("Grounded");
             _animationConttroler.ResumeMovement();
             player.TransitionToState(player.GroundedState);
             return true;

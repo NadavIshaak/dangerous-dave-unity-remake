@@ -89,7 +89,6 @@ public class PlayerAnimationConttroler : MonoBehaviour
     public void FallWhileWalking()
     {
         _animator.SetTrigger(WhileWalking);
-        Debug.Log("Fall while walking");
     }
 
     /**
@@ -98,7 +97,6 @@ public class PlayerAnimationConttroler : MonoBehaviour
     public void HitGroundWithMovement()
     {
         _animator.SetTrigger(GroundWithMovement);
-        Debug.Log("Hit ground with movement");
     }
 
     /**

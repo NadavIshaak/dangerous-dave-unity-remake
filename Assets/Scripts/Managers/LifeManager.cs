@@ -12,7 +12,6 @@ public class LifeManager : MonoBehaviour
     private void Start()
     {
         CurrentLevelManagar.instance.PlayerManager.OnLifeChange += RemoveLife;
-        _controls.Player.Quit.performed += context => Application.Quit();
     }
 
     /**
@@ -22,6 +21,7 @@ public class LifeManager : MonoBehaviour
     {
         if (!_isDead) return;
         if (!_controls.Player.Jump.triggered) return;
+        if(!_controls.Player.Quit.triggered) return;
         _controls.Disable();
         Application.Quit();
     }
