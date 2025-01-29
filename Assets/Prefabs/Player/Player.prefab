@@ -144,7 +144,7 @@ MonoBehaviour:
   stuckSound: {fileID: 8300000, guid: da5fc9bdfc52f154a886895efb34629d, type: 3}
   jetpackSound: {fileID: 8300000, guid: 4564f6b03fbe93a49b13f336eba2d281, type: 3}
   maxFuel: 100
-  airSpeed: -2.57
+  airSpeed: -2.5
   airTime: 0.62
 --- !u!95 &1579755278963955509
 Animator:

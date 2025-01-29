@@ -12,6 +12,7 @@ public class LifeManager : MonoBehaviour
     private void Start()
     {
         CurrentLevelManagar.instance.PlayerManager.OnLifeChange += RemoveLife;
+        _controls.Player.Quit.performed += context => Application.Quit();
     }
 
     /**

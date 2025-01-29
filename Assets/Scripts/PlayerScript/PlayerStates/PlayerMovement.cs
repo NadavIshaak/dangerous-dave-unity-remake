@@ -98,6 +98,7 @@ public class PlayerMovement : MonoBehaviour
         _controls.Player.Move.performed += OnMove;
         _controls.Player.Jump.performed += OnJump;
         _controls.Player.Move.canceled += OnMove;
+        _controls.Player.Quit.performed += context => Application.Quit();
     }
 
     private void OnDisable()
@@ -198,7 +199,7 @@ public class PlayerMovement : MonoBehaviour
             return;
         }
 
-        if (_hasStarted && _currentState == null) TransitionToState(GroundedState);
+        if (_hasStarted && _currentState == null) TransitionToState(AirborneState);
     }
 
 // Start of getters and setters for the private fields for the player states.
@@ -206,11 +207,6 @@ public class PlayerMovement : MonoBehaviour
     {
         return wallLayerMask;
     }
-    public PlayerState GetCurrentState()
-    {
-        return _currentState;
-    }
-
     public Rigidbody2D GetRigidbody()
     {
         return _rb;

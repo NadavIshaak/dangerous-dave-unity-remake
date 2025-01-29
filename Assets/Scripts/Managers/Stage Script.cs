@@ -29,6 +29,7 @@ public class StageScript : MonoBehaviour
         canvas.enabled = false;
         _didStartGame = false;
         _controls = new InputSystem_Actions();
+        _controls.Player.Quit.performed += context => Application.Quit();
         _controls.Enable();
     }
 
